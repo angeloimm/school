@@ -1,0 +1,16 @@
+spring:
+  data:
+    mongodb:
+      database: school-manager
+      host: localhost
+logging:
+  level:
+    org:
+      springframework:
+        security: TRACE
+
+server:
+  compression:
+    enabled: true
+    mime-types: text/html,text/xml,text/plain,text/css,text/javascript,application/javascript,application/json
+    min-response-size: 1024
