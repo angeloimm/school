@@ -1,6 +1,8 @@
 package it.olegna.schoolmgmt.service.impl;
 
-import it.olegna.schoolmgmt.persistence.model.Aula;
+import it.olegna.schoolmgmt.dto.CorsoDto;
+import it.olegna.schoolmgmt.mapper.CorsoMapper;
+import it.olegna.schoolmgmt.persistence.model.Corso;
 import it.olegna.schoolmgmt.persistence.repository.AulaRepository;
 import it.olegna.schoolmgmt.service.AulaSvc;
 import lombok.extern.slf4j.Slf4j;
@@ -16,17 +18,20 @@ import java.util.Optional;
 public class AulaSvcImpl implements AulaSvc {
     @Autowired
     private AulaRepository repository;
+    @Autowired
+    private CorsoMapper mapper;
 
     @Override
-    public Aula createModificaAula(Aula aula) {
+    public CorsoDto createModificaAula(CorsoDto aula) {
         log.trace("Salvo aula {}", aula);
-        return repository.save(aula);
+        return mapper.toDto(repository.save(mapper.toEntity(aula)));
     }
 
     @Override
-    public Optional<Aula> findAulaById(String id) {
+    public Optional<CorsoDto> findAulaById(String id) {
         log.trace("Ricerco aula con ID {}", id);
-        return repository.findById(id);
+        Optional<Corso> result = repository.findById(id);
+        return result.isPresent() ? Optional.of(mapper.toDto(result.get())) : Optional.empty();
     }
 
     @Override
@@ -36,8 +41,8 @@ public class AulaSvcImpl implements AulaSvc {
     }
 
     @Override
-    public List<Aula> recuperaAule() {
+    public List<CorsoDto> recuperaAule() {
         log.trace("Recupero tutte le aule");
-        return repository.findAll(Sort.by(Sort.Order.asc("materia")));
+        return mapper.toDtos(repository.findAll(Sort.by(Sort.Order.asc("materia"))));
     }
 }

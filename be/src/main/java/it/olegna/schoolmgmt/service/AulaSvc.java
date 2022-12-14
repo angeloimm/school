@@ -1,16 +1,16 @@
 package it.olegna.schoolmgmt.service;
 
-import it.olegna.schoolmgmt.persistence.model.Aula;
+import it.olegna.schoolmgmt.dto.CorsoDto;
 
 import java.util.List;
 import java.util.Optional;
 
 public interface AulaSvc {
-    Aula createModificaAula(Aula aula);
+    CorsoDto createModificaAula(CorsoDto aula);
 
-    Optional<Aula> findAulaById(String id);
+    Optional<CorsoDto> findAulaById(String id);
 
     void cancellaAula(String idAula);
 
-    List<Aula> recuperaAule();
+    List<CorsoDto> recuperaAule();
 }

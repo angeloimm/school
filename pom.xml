@@ -19,6 +19,6 @@
 	</properties>
 	<modules>
 		<module>be</module>
-		<module>fe</module>
+		<!--module>fe</module-->
 	</modules>
 </project>

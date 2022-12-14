@@ -1,7 +1,7 @@
 package it.olegna.schoolmgmt.web.controller;
 
 import it.olegna.schoolmgmt.dto.ApiResponse;
-import it.olegna.schoolmgmt.persistence.model.Materia;
+import it.olegna.schoolmgmt.dto.MateriaDto;
 import it.olegna.schoolmgmt.service.MateriaSvc;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,15 +27,15 @@ public class MateriaController {
     private MateriaSvc materiaSvc;
 
     @GetMapping(consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE}, produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
-    public ResponseEntity<ApiResponse<List<Materia>>> materie(@RequestParam(name = "q", required = false) String nome) {
+    public ResponseEntity<ApiResponse<List<MateriaDto>>> materie(@RequestParam(name = "q", required = false) String nome) {
         log.trace("Recupero tutti gli utenti");
-        return ResponseEntity.ok(ApiResponse.<List<Materia>>builder().error(false).payload(this.materiaSvc.recuperaMaterie(nome)).build());
+        return ResponseEntity.ok(ApiResponse.<List<MateriaDto>>builder().error(false).payload(this.materiaSvc.recuperaMaterie(nome)).build());
     }
 
     @GetMapping(value = {"{idMateria}"}, consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE}, produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
-    public ResponseEntity<ApiResponse<Materia>> materia(@PathVariable(required = true, name = "idMateria") String id) {
+    public ResponseEntity<ApiResponse<MateriaDto>> materia(@PathVariable(required = true, name = "idMateria") String id) {
         log.info("Recupero i dettagli dell'Materia con ID {}", id);
-        return ResponseEntity.ok(ApiResponse.<Materia>builder().error(false).payload(this.materiaSvc.findMateriaById(id).orElseThrow()).build());
+        return ResponseEntity.ok(ApiResponse.<MateriaDto>builder().error(false).payload(this.materiaSvc.findMateriaById(id).orElseThrow()).build());
     }
 
     @DeleteMapping(value = {"{idMateria}"}, consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE}, produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
@@ -45,12 +45,12 @@ public class MateriaController {
     }
 
     @PostMapping(consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE}, produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
-    public ResponseEntity<ApiResponse<Materia>> creaMateria(@RequestBody Materia Materia) {
-        return ResponseEntity.ok(ApiResponse.<Materia>builder().payload(materiaSvc.createModificaMateria(Materia)).build());
+    public ResponseEntity<ApiResponse<MateriaDto>> creaMateria(@RequestBody MateriaDto materia) {
+        return ResponseEntity.ok(ApiResponse.<MateriaDto>builder().payload(materiaSvc.createModificaMateria(materia)).build());
     }
 
     @PutMapping(consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE}, produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
-    public ResponseEntity<ApiResponse<Materia>> modificaMateria(@RequestBody Materia Materia) {
-        return ResponseEntity.ok(ApiResponse.<Materia>builder().payload(materiaSvc.createModificaMateria(Materia)).build());
+    public ResponseEntity<ApiResponse<MateriaDto>> modificaMateria(@RequestBody MateriaDto materia) {
+        return ResponseEntity.ok(ApiResponse.<MateriaDto>builder().payload(materiaSvc.createModificaMateria(materia)).build());
     }
 }

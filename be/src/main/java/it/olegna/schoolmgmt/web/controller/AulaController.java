@@ -1,7 +1,7 @@
 package it.olegna.schoolmgmt.web.controller;
 
 import it.olegna.schoolmgmt.dto.ApiResponse;
-import it.olegna.schoolmgmt.persistence.model.Aula;
+import it.olegna.schoolmgmt.dto.CorsoDto;
 import it.olegna.schoolmgmt.service.AulaSvc;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,15 +26,15 @@ public class AulaController {
     private AulaSvc aulaSvc;
 
     @GetMapping(consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE}, produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
-    public ResponseEntity<ApiResponse<List<Aula>>> aule() {
+    public ResponseEntity<ApiResponse<List<CorsoDto>>> aule() {
         log.trace("Recupero tutti gli utenti");
-        return ResponseEntity.ok(ApiResponse.<List<Aula>>builder().error(false).payload(this.aulaSvc.recuperaAule()).build());
+        return ResponseEntity.ok(ApiResponse.<List<CorsoDto>>builder().error(false).payload(this.aulaSvc.recuperaAule()).build());
     }
 
     @GetMapping(value = {"{idAula}"}, consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE}, produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
-    public ResponseEntity<ApiResponse<Aula>> aula(@PathVariable(required = true, name = "idAula") String id) {
+    public ResponseEntity<ApiResponse<CorsoDto>> aula(@PathVariable(required = true, name = "idAula") String id) {
         log.info("Recupero i dettagli dell'aula con ID {}", id);
-        return ResponseEntity.ok(ApiResponse.<Aula>builder().error(false).payload(this.aulaSvc.findAulaById(id).orElseThrow()).build());
+        return ResponseEntity.ok(ApiResponse.<CorsoDto>builder().error(false).payload(this.aulaSvc.findAulaById(id).orElseThrow()).build());
     }
 
     @DeleteMapping(value = {"{idAula}"}, consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE}, produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
@@ -44,12 +44,12 @@ public class AulaController {
     }
 
     @PostMapping(consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE}, produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
-    public ResponseEntity<ApiResponse<Aula>> creaAula(@RequestBody Aula Aula) {
-        return ResponseEntity.ok(ApiResponse.<Aula>builder().payload(aulaSvc.createModificaAula(Aula)).build());
+    public ResponseEntity<ApiResponse<CorsoDto>> creaAula(@RequestBody CorsoDto aula) {
+        return ResponseEntity.ok(ApiResponse.<CorsoDto>builder().payload(aulaSvc.createModificaAula(aula)).build());
     }
 
     @PutMapping(consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE}, produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
-    public ResponseEntity<ApiResponse<Aula>> modificaAula(@RequestBody Aula Aula) {
-        return ResponseEntity.ok(ApiResponse.<Aula>builder().payload(aulaSvc.createModificaAula(Aula)).build());
+    public ResponseEntity<ApiResponse<CorsoDto>> modificaAula(@RequestBody CorsoDto aula) {
+        return ResponseEntity.ok(ApiResponse.<CorsoDto>builder().payload(aulaSvc.createModificaAula(aula)).build());
     }
 }

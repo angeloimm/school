@@ -1,5 +1,7 @@
 package it.olegna.schoolmgmt.service.impl;
 
+import it.olegna.schoolmgmt.dto.DisponibilitaDto;
+import it.olegna.schoolmgmt.mapper.DisponibilitaMapper;
 import it.olegna.schoolmgmt.persistence.model.Disponibilita;
 import it.olegna.schoolmgmt.persistence.repository.DisponibilitaRepository;
 import it.olegna.schoolmgmt.service.DisponibilitaSvc;
@@ -16,11 +18,13 @@ import java.util.Optional;
 public class DisponibilitaSvcImpl implements DisponibilitaSvc {
     @Autowired
     private DisponibilitaRepository repository;
+    @Autowired
+    private DisponibilitaMapper mapper;
 
     @Override
-    public Disponibilita createModificaDisponibilita(Disponibilita disponibilita) {
+    public DisponibilitaDto createModificaDisponibilita(DisponibilitaDto disponibilita) {
         log.trace("Salvo disponibilita {}", disponibilita);
-        return repository.save(disponibilita);
+        return mapper.toDto(repository.save(mapper.toEntity(disponibilita)));
     }
 
     @Override
@@ -30,19 +34,22 @@ public class DisponibilitaSvcImpl implements DisponibilitaSvc {
     }
 
     @Override
-    public Optional<Disponibilita> findDisponibilitaById(String id) {
+    public Optional<DisponibilitaDto> findDisponibilitaById(String id) {
         log.info("Ricerco disponibilita con ID {}", id);
-        return repository.findById(id);
+        Optional<Disponibilita> result = repository.findById(id);
+        return result.isEmpty() ? Optional.empty() : Optional.of(mapper.toDto(result.get()));
     }
 
     @Override
-    public Optional<List<Disponibilita>> findDisponibilitaByUsernameDocente(String username) {
+    public Optional<List<DisponibilitaDto>> findDisponibilitaByUsernameDocente(String username) {
         log.info("Ricerco tutte le disponibilita di {}", username);
-        return repository.findByUsernameDocente(username);
+        Optional<List<Disponibilita>> result = repository.findByUsernameDocente(username);
+        return result.isEmpty() ? Optional.empty() : Optional.of(mapper.toDtos(result.get()));
     }
 
     @Override
-    public List<Disponibilita> recuperaDisponibilita() {
-        return repository.findAll(Sort.by(Sort.Order.asc("data")));
+    public List<DisponibilitaDto> recuperaDisponibilita() {
+        List<Disponibilita> result = repository.findAll(Sort.by(Sort.Order.asc("data")));
+        return mapper.toDtos(result);
     }
 }

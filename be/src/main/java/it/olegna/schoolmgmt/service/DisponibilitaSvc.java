@@ -1,19 +1,19 @@
 package it.olegna.schoolmgmt.service;
 
-import it.olegna.schoolmgmt.persistence.model.Disponibilita;
+import it.olegna.schoolmgmt.dto.DisponibilitaDto;
 
 import java.util.List;
 import java.util.Optional;
 
 public interface DisponibilitaSvc {
-    Disponibilita createModificaDisponibilita(Disponibilita disponibilita);
+    DisponibilitaDto createModificaDisponibilita(DisponibilitaDto disponibilita);
 
     void cancellaDisponibilita(String idDisponibilita);
 
-    Optional<Disponibilita> findDisponibilitaById(String id);
+    Optional<DisponibilitaDto> findDisponibilitaById(String id);
 
-    Optional<List<Disponibilita>> findDisponibilitaByUsernameDocente(String username);
+    Optional<List<DisponibilitaDto>> findDisponibilitaByUsernameDocente(String username);
 
-    List<Disponibilita> recuperaDisponibilita();
+    List<DisponibilitaDto> recuperaDisponibilita();
 
 }

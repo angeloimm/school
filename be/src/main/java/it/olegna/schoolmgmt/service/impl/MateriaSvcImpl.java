@@ -1,12 +1,13 @@
 package it.olegna.schoolmgmt.service.impl;
 
+import it.olegna.schoolmgmt.dto.MateriaDto;
+import it.olegna.schoolmgmt.mapper.MateriaMapper;
 import it.olegna.schoolmgmt.persistence.model.Materia;
 import it.olegna.schoolmgmt.persistence.repository.MateriaRepository;
 import it.olegna.schoolmgmt.service.MateriaSvc;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
-import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
@@ -19,18 +20,19 @@ public class MateriaSvcImpl implements MateriaSvc {
     @Autowired
     private MateriaRepository repository;
     @Autowired
-    private MongoTemplate mongoTemplate;
+    private MateriaMapper mapper;
 
     @Override
-    public Materia createModificaMateria(Materia materia) {
+    public MateriaDto createModificaMateria(MateriaDto materia) {
         log.trace("Salvo materia {}", materia);
-        return repository.save(materia);
+        return mapper.toDto(repository.save(mapper.toEntity(materia)));
     }
 
     @Override
-    public Optional<Materia> findMateriaById(String id) {
+    public Optional<MateriaDto> findMateriaById(String id) {
         log.info("Ricrco materia con ID {}", id);
-        return this.repository.findById(id);
+        Optional<Materia> result = this.repository.findById(id);
+        return result.isEmpty() ? Optional.empty() : Optional.of(mapper.toDto(result.get()));
     }
 
     @Override
@@ -40,10 +42,10 @@ public class MateriaSvcImpl implements MateriaSvc {
     }
 
     @Override
-    public List<Materia> recuperaMaterie(String nome) {
+    public List<MateriaDto> recuperaMaterie(String nome) {
         if (!StringUtils.hasText(nome)) {
-            return repository.findAll(Sort.by(Sort.Order.asc("materia")));
+            return mapper.toDtos(repository.findAll(Sort.by(Sort.Order.asc("materia"))));
         }
-        return repository.findByMateriaStartsWith(nome, Sort.by(Sort.Order.asc("materia")));
+        return mapper.toDtos(repository.findByMateriaStartsWith(nome, Sort.by(Sort.Order.asc("materia"))));
     }
 }

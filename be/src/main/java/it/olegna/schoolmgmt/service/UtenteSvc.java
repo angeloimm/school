@@ -1,16 +1,16 @@
 package it.olegna.schoolmgmt.service;
 
-import it.olegna.schoolmgmt.persistence.model.Utente;
+import it.olegna.schoolmgmt.dto.UtenteDto;
 
 import java.util.List;
 import java.util.Optional;
 
 public interface UtenteSvc {
-    Utente createModificaUtente(Utente utente);
+    UtenteDto createModificaUtente(UtenteDto utente);
 
-    Optional<Utente> findUtenteById(String idUtente);
+    Optional<UtenteDto> findUtenteById(String idUtente);
 
     void cancellaUtente(String idUtente);
 
-    List<Utente> recuperaUtenti();
+    List<UtenteDto> recuperaUtenti();
 }

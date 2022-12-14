@@ -1,5 +1,7 @@
 package it.olegna.schoolmgmt.service.impl;
 
+import it.olegna.schoolmgmt.dto.UtenteDto;
+import it.olegna.schoolmgmt.mapper.UtenteMapper;
 import it.olegna.schoolmgmt.persistence.model.Utente;
 import it.olegna.schoolmgmt.persistence.repository.UtenteRepository;
 import it.olegna.schoolmgmt.service.UtenteSvc;
@@ -17,17 +19,20 @@ import java.util.Optional;
 public class UtenteSvcImpl implements UtenteSvc {
     @Autowired
     private UtenteRepository repository;
+    @Autowired
+    private UtenteMapper mapper;
 
     @Override
-    public Utente createModificaUtente(Utente utente) {
+    public UtenteDto createModificaUtente(UtenteDto utente) {
         log.trace("Creazione utente {}", utente);
-        return repository.save(utente);
+        return mapper.toDto(repository.save(mapper.toEntity(utente)));
     }
 
     @Override
-    public Optional<Utente> findUtenteById(String idUtente) {
+    public Optional<UtenteDto> findUtenteById(String idUtente) {
         log.info("Ricerco utente con ID {}", idUtente);
-        return this.repository.findById(idUtente);
+        Optional<Utente> result = this.repository.findById(idUtente);
+        return result.isEmpty() ? Optional.empty() : Optional.of(mapper.toDto(result.get()));
     }
 
     @Override
@@ -37,10 +42,10 @@ public class UtenteSvcImpl implements UtenteSvc {
     }
 
     @Override
-    public List<Utente> recuperaUtenti() {
+    public List<UtenteDto> recuperaUtenti() {
         List<Sort.Order> ordinamento = new ArrayList<>();
         ordinamento.add(Sort.Order.asc("nome"));
         ordinamento.add(Sort.Order.asc("cognome"));
-        return repository.findAll(Sort.by(ordinamento));
+        return mapper.toDtos(repository.findAll(Sort.by(ordinamento)));
     }
 }

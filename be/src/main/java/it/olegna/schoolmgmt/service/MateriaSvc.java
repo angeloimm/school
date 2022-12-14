@@ -1,17 +1,16 @@
 package it.olegna.schoolmgmt.service;
 
-import it.olegna.schoolmgmt.persistence.model.Materia;
+import it.olegna.schoolmgmt.dto.MateriaDto;
 
 import java.util.List;
 import java.util.Optional;
 
 public interface MateriaSvc {
-    Materia createModificaMateria(Materia materia);
+    MateriaDto createModificaMateria(MateriaDto materia);
 
-    Optional<Materia> findMateriaById(String id);
+    Optional<MateriaDto> findMateriaById(String id);
 
     void cancellaMateria(String idMateria);
 
-    List<Materia> recuperaMaterie(String nome);
-
+    List<MateriaDto> recuperaMaterie(String nome);
 }
