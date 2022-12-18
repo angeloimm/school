@@ -3,7 +3,8 @@ package it.olegna.schoolmgmt.service.impl;
 import it.olegna.schoolmgmt.dto.CorsoDto;
 import it.olegna.schoolmgmt.mapper.CorsoMapper;
 import it.olegna.schoolmgmt.persistence.model.Corso;
-import it.olegna.schoolmgmt.persistence.repository.AulaRepository;
+import it.olegna.schoolmgmt.persistence.model.Corso_;
+import it.olegna.schoolmgmt.persistence.repository.CorsoRepository;
 import it.olegna.schoolmgmt.service.AulaSvc;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +18,7 @@ import java.util.Optional;
 @Slf4j
 public class AulaSvcImpl implements AulaSvc {
     @Autowired
-    private AulaRepository repository;
+    private CorsoRepository repository;
     @Autowired
     private CorsoMapper mapper;
 
@@ -43,6 +44,6 @@ public class AulaSvcImpl implements AulaSvc {
     @Override
     public List<CorsoDto> recuperaAule() {
         log.trace("Recupero tutte le aule");
-        return mapper.toDtos(repository.findAll(Sort.by(Sort.Order.asc("materia"))));
+        return mapper.toDtos(repository.findAll());
     }
 }

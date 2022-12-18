@@ -6,6 +6,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
@@ -35,7 +37,9 @@ public class Disponibilita {
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "ID")
     private UUID id;
-    private List<Utente> utenti;
+    @ManyToOne(targetEntity = Utente.class)
+    @JoinColumn(name = "ID_DOCENTE")
+    private Utente docente;
     @ToString.Include
     @EqualsAndHashCode.Include
     @Column(name = "DATA_DISPONIBILITA", nullable = false)

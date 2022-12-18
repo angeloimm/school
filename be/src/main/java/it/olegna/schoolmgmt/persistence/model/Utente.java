@@ -68,7 +68,7 @@ public class Utente {
     private Date dataNascita;
     @ToString.Include
     @EqualsAndHashCode.Include
-    @Column(name = "TIPO_UTENTE", nullable = false, length = 100)
+    @Column(name = "USERNAME", nullable = false, length = 100)
     private String username;
     @Column(name = "PASSWORD", nullable = false, length = 100)
     private String password;
@@ -80,4 +80,8 @@ public class Utente {
     private List<UtenteMateria> materie;
     @OneToMany(mappedBy = "utente", fetch = FetchType.LAZY)
     private List<Allegato> allegati;
+    @OneToMany(mappedBy = "docente", fetch = FetchType.LAZY)
+    private List<Disponibilita> disponibilita;
+    @OneToMany(mappedBy = "studente")
+    private List<StudenteCorso> corsi;
 }

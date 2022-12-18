@@ -1,6 +1,6 @@
 package it.olegna.schoolmgmt.web.controller;
 
-import it.olegna.schoolmgmt.dto.ApiResponse;
+import it.olegna.schoolmgmt.dto.api.ApiResponse;
 import it.olegna.schoolmgmt.dto.MateriaDto;
 import it.olegna.schoolmgmt.service.MateriaSvc;
 import lombok.extern.slf4j.Slf4j;

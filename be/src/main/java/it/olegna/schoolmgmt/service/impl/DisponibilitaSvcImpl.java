@@ -3,11 +3,17 @@ package it.olegna.schoolmgmt.service.impl;
 import it.olegna.schoolmgmt.dto.DisponibilitaDto;
 import it.olegna.schoolmgmt.mapper.DisponibilitaMapper;
 import it.olegna.schoolmgmt.persistence.model.Disponibilita;
+import it.olegna.schoolmgmt.persistence.model.Disponibilita_;
+import it.olegna.schoolmgmt.persistence.model.Utente;
+import it.olegna.schoolmgmt.persistence.model.UtenteMateria;
 import it.olegna.schoolmgmt.persistence.repository.DisponibilitaRepository;
 import it.olegna.schoolmgmt.service.DisponibilitaSvc;
+import jakarta.persistence.criteria.Join;
+import jakarta.persistence.criteria.Predicate;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -43,13 +49,21 @@ public class DisponibilitaSvcImpl implements DisponibilitaSvc {
     @Override
     public Optional<List<DisponibilitaDto>> findDisponibilitaByUsernameDocente(String username) {
         log.info("Ricerco tutte le disponibilita di {}", username);
-        Optional<List<Disponibilita>> result = repository.findByUsernameDocente(username);
-        return result.isEmpty() ? Optional.empty() : Optional.of(mapper.toDtos(result.get()));
+        List<Disponibilita> result = repository.findAll(this.findByUsernameDocente(username));
+        return result.isEmpty() ? Optional.empty() : Optional.of(mapper.toDtos(result));
     }
 
     @Override
     public List<DisponibilitaDto> recuperaDisponibilita() {
-        List<Disponibilita> result = repository.findAll(Sort.by(Sort.Order.asc("data")));
+        List<Disponibilita> result = repository.findAll(Sort.by(Sort.Order.asc(Disponibilita_.DATA_DISPONIBILITA)));
         return mapper.toDtos(result);
+    }
+    private Specification<Disponibilita> findByUsernameDocente(String usernameDocente){
+        return (root, query, criteriaBuilder) -> {
+            Join<Disponibilita, Utente> joinDocente = root.join(Disponibilita_.DOCENTE);
+            Predicate p = criteriaBuilder.equal(joinDocente.get("username"), usernameDocente);
+            log.trace("Creato predicate {} per username docente {}", p, usernameDocente);
+            return p;
+        };
     }
 }

@@ -1,8 +1,8 @@
 package it.olegna.schoolmgmt.web;
 
-import it.olegna.schoolmgmt.dto.ApiError;
-import it.olegna.schoolmgmt.dto.ApiResponse;
-import it.olegna.schoolmgmt.dto.ErrorDetail;
+import it.olegna.schoolmgmt.dto.api.ApiError;
+import it.olegna.schoolmgmt.dto.api.ApiResponse;
+import it.olegna.schoolmgmt.dto.api.ErrorDetail;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;

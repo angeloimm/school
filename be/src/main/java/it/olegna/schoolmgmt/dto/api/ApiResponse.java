@@ -1,4 +1,4 @@
-package it.olegna.schoolmgmt.dto;
+package it.olegna.schoolmgmt.dto.api;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -11,9 +11,9 @@ import lombok.ToString;
 @NoArgsConstructor
 @Builder
 @ToString
-public class ErrorDetail {
-    private String field;
-    private String source;
-    private String code;
-    private String message;
+public class ApiResponse<T> {
+    private boolean error;
+    private T payload;
+    private ApiError errori;
+
 }

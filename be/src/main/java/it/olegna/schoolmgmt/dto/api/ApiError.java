@@ -1,4 +1,4 @@
-package it.olegna.schoolmgmt.dto;
+package it.olegna.schoolmgmt.dto.api;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

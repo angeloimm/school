@@ -1,9 +1,19 @@
 package it.olegna.schoolmgmt.dto;
 
 import it.olegna.schoolmgmt.enums.DisponibilitaEnum;
+import it.olegna.schoolmgmt.persistence.model.Utente;
+import jakarta.persistence.Column;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Temporal;
+import jakarta.persistence.TemporalType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
@@ -16,9 +26,14 @@ import java.util.UUID;
 @Builder
 @ToString
 public class DisponibilitaDto {
+    @ToString.Include
+    @EqualsAndHashCode.Include
     private UUID id;
     private UtenteDto docente;
-    private String usernameDocente;
+    @ToString.Include
+    @EqualsAndHashCode.Include
     private Date dataDisponibilita;
+    @ToString.Include
+    @EqualsAndHashCode.Include
     private DisponibilitaEnum arcoTemporaleDisponibilita;
 }

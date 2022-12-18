@@ -3,6 +3,7 @@ package it.olegna.schoolmgmt.service.impl;
 import it.olegna.schoolmgmt.dto.UtenteDto;
 import it.olegna.schoolmgmt.mapper.UtenteMapper;
 import it.olegna.schoolmgmt.persistence.model.Utente;
+import it.olegna.schoolmgmt.persistence.model.Utente_;
 import it.olegna.schoolmgmt.persistence.repository.UtenteRepository;
 import it.olegna.schoolmgmt.service.UtenteSvc;
 import lombok.extern.slf4j.Slf4j;
@@ -44,8 +45,8 @@ public class UtenteSvcImpl implements UtenteSvc {
     @Override
     public List<UtenteDto> recuperaUtenti() {
         List<Sort.Order> ordinamento = new ArrayList<>();
-        ordinamento.add(Sort.Order.asc("nome"));
-        ordinamento.add(Sort.Order.asc("cognome"));
+        ordinamento.add(Sort.Order.asc(Utente_.NOME));
+        ordinamento.add(Sort.Order.asc(Utente_.COGNOME));
         return mapper.toDtos(repository.findAll(Sort.by(ordinamento)));
     }
 }
