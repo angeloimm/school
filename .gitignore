@@ -317,3 +317,5 @@ front-end-diomedee/android/app/src/main/assets/capacitor.config.json
 capacitor.config.ts
 
 fe/.angular/
+
+db/
