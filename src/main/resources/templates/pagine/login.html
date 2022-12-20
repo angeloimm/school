@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html 	lang="en"
+         xmlns:th="http://www.thymeleaf.org"
+         xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+         layout:decorate="~{layout}">
+
+    <body>
+
+        <th:block layout:fragment="page-handlebars-template">
+
+        </th:block>
+        <th:block layout:fragment="page-body">
+            <div th:if="${SPRING_SECURITY_LAST_EXCEPTION !=null}" th:text="${SPRING_SECURITY_LAST_EXCEPTION.message}" class="alert alert-danger" role="alert">
+
+            </div>
+            <div th:if="${param.error != null}" th:text="#{login.wrong.credentials}" class="alert alert-danger" role="alert">
+
+            </div>
+            <div th:if="${diomedeeErrorCode!=null}" th:switch="${diomedeeErrorCode}" class="alert alert-danger" role="alert">
+
+                <p th:case="0" th:text="#{login.error.client.not.found(${diomedeeClientId})}"></p>
+                <p th:case="1" th:text="#{login.error.redirect.uri.not.valid(${diomedeeRedirectUri},${diomedeeClientId})}"></p>
+                <p th:case="99" th:text="#{login.error.generic}"></p>
+            </div>
+            <form th:action="@{/login}" class="row g-3 needs-validation" novalidate method="post">
+                <input th:if="${_csrf != null}" type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+                 <div class="input-group mb-3">
+				  <span class="input-group-text username" id="basic-addon1"><img class="icon-login-username" src="images/person.svg" alt="Icon user"></span>
+				  <input type="text" class="form-control" id="username" th:placeholder="#{login.username.placeholder}" name="username" required>
+				</div>
+				<div class="input-group mb-3">
+				  <span class="input-group-text pwd" id="basic-addon1"><img class="icon-login-pwd" src="images/lock.png" alt="Icon password"></span>
+				  <input type="password" class="form-control" id="password" th:placeholder="#{login.password.placeholder}" name="password">
+				</div>
+				<div class="text-center">
+					<button type="submit" class="btn btn-accedi" th:text="#{login.submit}"></button>
+				</div>
+                
+            </form>
+        </th:block>
+        <th:block layout:fragment="page-script"></th:block>
+    </body>
+</html>
