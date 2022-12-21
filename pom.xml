@@ -29,6 +29,7 @@
         <org.webjars.popper.version>1.16.1</org.webjars.popper.version>
         <org.webjars.font.awesome.version>6.2.0</org.webjars.font.awesome.version>
         <org.webjars.handlebars.version>4.7.7</org.webjars.handlebars.version>
+        <org.webjars.fullcalendar.version>5.11.3</org.webjars.fullcalendar.version>
     </properties>
     <dependencies>
         <dependency>
@@ -52,6 +53,11 @@
         <dependency>
             <groupId>nz.net.ultraq.thymeleaf</groupId>
             <artifactId>thymeleaf-layout-dialect</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.webjars</groupId>
+            <artifactId>fullcalendar</artifactId>
+            <version>${org.webjars.fullcalendar.version}</version>
         </dependency>
         <dependency>
             <groupId>org.webjars</groupId>
