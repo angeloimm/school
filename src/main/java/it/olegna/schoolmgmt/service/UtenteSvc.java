@@ -13,5 +13,7 @@ public interface UtenteSvc {
     Optional<Utente> findUtenteByUsername(String username);
     void cancellaUtente(String idUtente);
 
+    boolean intiDb();
+
     List<UtenteDto> recuperaUtenti();
 }

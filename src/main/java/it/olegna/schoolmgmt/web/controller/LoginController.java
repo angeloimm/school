@@ -1,5 +1,7 @@
 package it.olegna.schoolmgmt.web.controller;
 
+import it.olegna.schoolmgmt.service.UtenteSvc;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
@@ -11,31 +13,23 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-
-import java.util.Optional;
 
 @Controller
+@RequestMapping(value = "/public")
+@Slf4j
 public class LoginController {
-    public static final String ERROR_CODE_PARAM="diomedeeErrorCode";
-    public static final String CLIENT_ID_PARAM="diomedeeClientId";
-    public static final String REDIRECT_URI_ID_PARAM="diomedeeRedirectUri";
-
+    @Autowired
+    private UtenteSvc utenteSvc;
     @GetMapping("/accedi")
-    public String oauth2LoginPage(Model model,
-                                  @CurrentSecurityContext(expression = "authentication") Authentication authentication,
-                                  @Value("${spring.security.oauth2.server.login.captcha.enabled:true}") boolean enableCaptchaLogin,
-                                  @RequestAttribute(name = "org.springframework.security.web.csrf.CsrfToken", required = false) CsrfToken csrfToken) {
-
-        if (!(authentication instanceof AnonymousAuthenticationToken)) {
-            return "redirect:/";
+    public String loginPage() {
+        if (utenteSvc.intiDb()){
+            log.info("DB vuoto. Inzializzazione DB necessaria");
+            return "redirect:/public/init-db";
         }
-        if (csrfToken != null) {
-            model.addAttribute("_csrfToken", csrfToken);
-        }
-        //SystemSettings systemSettings = new SystemSettings();
-        //model.addAttribute("enableCaptchaLogin", enableCaptchaLogin);
-        //model.addAttribute("systemSettings", systemSettings);
         return "pagine/login";
+    }
+    @GetMapping(value = "/init-db")
+    public String initDbController(){
+        return "pagine/init-db";
     }
 }

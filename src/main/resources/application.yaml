@@ -44,7 +44,7 @@ logging:
 server:
   port: 9090
   servlet:
-    context-path: /gs
+    context-path:
   compression:
     enabled: true
     mime-types: text/html,text/xml,text/plain,text/css,text/javascript,application/javascript,application/json

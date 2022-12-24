@@ -21,7 +21,7 @@ public class ThymeleafConfig {
     @Bean
     public MessageSource messageSource() {
         final ReloadableResourceBundleMessageSource messageSource = new ReloadableResourceBundleMessageSource();
-        messageSource.setBasenames("classpath:messages/schoolmgmt.properties");
+        messageSource.setBasenames("classpath:messages/schoolmgmt");
         messageSource.setUseCodeAsDefaultMessage(true);
         messageSource.setDefaultEncoding("UTF-8");
         messageSource.setCacheSeconds(5);

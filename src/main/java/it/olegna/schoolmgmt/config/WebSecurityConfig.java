@@ -14,7 +14,7 @@ import org.springframework.security.web.csrf.CsrfTokenRequestAttributeHandler;
 
 @Configuration
 public class WebSecurityConfig {
-    public static final String LOGIN_URL = "/accedi";
+    public static final String LOGIN_URL = "/public/accedi";
     @Autowired
     private AuthServerCustomAuthProvider authServerCustomAuthProvider;
     @Bean
@@ -24,6 +24,12 @@ public class WebSecurityConfig {
                 .authorizeHttpRequests(exchanges ->
                         exchanges
                                 .requestMatchers("/public/**",
+                                        "/h2-console",
+                                        "/webjars/**",
+                                        "/js/**",
+                                        "/css/**",
+                                        "/images/**",
+                                        "/actuator/**",
                                         "/v3/api-docs/**",
                                         "/swagger-ui/**",
                                         "/swagger-ui.html", "/public/**", "/websocket/**")

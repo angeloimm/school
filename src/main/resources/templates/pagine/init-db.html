@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html 	lang="en"
+         xmlns:th="http://www.thymeleaf.org"
+         xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+         layout:decorate="~{layout}">
+
+    <body>
+
+        <th:block layout:fragment="page-handlebars-template">
+
+        </th:block>
+        <th:block layout:fragment="page-body">
+            <div class="container-fluid">
+                <div th:text="#{init.db.welcome.msg}" class="alert alert-primary" role="alert">
+                </div>
+                <form id="inserimento-amministratore-form">
+                    <div class="row">
+                        <div class="col">
+                            <label for="nome" class="form-label fw-bold" th:text="#{init.db.nome}"></label>
+                            <input type="text" class="form-control" id="nome" name="nome" th:placeholder="#{init.db.nome}">
+                        </div>
+                        <div class="col">
+                            <label for="cognome" class="form-label fw-bold" th:text="#{init.db.cognome}"></label>
+                            <input type="text" class="form-control" id="cognome" name="cognome" th:placeholder="#{init.db.cognome}">
+                        </div>
+                        <div class="col">
+                            <label for="data-nascita" class="form-label fw-bold" th:text="#{init.db.data-nascita}"></label>
+                            <input type="text" class="form-control" id="data-nascita" name="data-nascita" th:placeholder="#{init.db.data-nascita}">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <label for="sesso" class="form-label fw-bold" th:text="#{init.db.sesso}"></label>
+                            <input type="text" class="form-control" id="sesso" name="sesso" th:placeholder="#{init.db.sesso}">
+                        </div>
+                        <div class="col">
+                            <label for="indirizzo" class="form-label fw-bold" th:text="#{init.db.indirizzo}"></label>
+                            <input type="text" class="form-control" id="indirizzo" name="indirizzo" th:placeholder="#{init.db.indirizzo}">
+                        </div>
+                        <div class="col">
+                            <label for="cf" class="form-label fw-bold" th:text="#{init.db.cf}"></label>
+                            <input type="text" class="form-control" id="cf" name="cf" th:placeholder="#{init.db.cf}">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <label for="username" class="form-label fw-bold" th:text="#{init.db.username}"></label>
+                            <input type="text" class="form-control" id="username" name="username" th:placeholder="#{init.db.username}">
+                        </div>
+                        <div class="col">
+                            <label for="password" class="form-label fw-bold" th:text="#{init.db.password}"></label>
+                            <input type="text" class="form-control" id="password" name="password" th:placeholder="#{init.db.password}">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <button type="button" class="btn btn-primary" id="salva" th:text="#{init.db.btn.save}"></button>
+                        </div>
+                        <div class="col">
+                            <button type="button" class="btn btn-danger" th:text="#{init.db.btn.reset}"></button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </th:block>
+        <th:block layout:fragment="page-script"></th:block>
+    </body>
+</html>

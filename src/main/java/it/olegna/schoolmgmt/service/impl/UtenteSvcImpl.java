@@ -60,4 +60,10 @@ public class UtenteSvcImpl implements UtenteSvc {
         ordinamento.add(Sort.Order.asc(Utente_.COGNOME));
         return mapper.toDtos(repository.findAll(Sort.by(ordinamento)));
     }
+
+    @Override
+    @Transactional(readOnly = true)
+    public boolean intiDb() {
+        return this.repository.count() <= 0;
+    }
 }
