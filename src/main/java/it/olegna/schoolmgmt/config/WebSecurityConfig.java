@@ -28,6 +28,7 @@ public class WebSecurityConfig {
                                         "/webjars/**",
                                         "/js/**",
                                         "/css/**",
+                                        "/fonts/**",
                                         "/images/**",
                                         "/actuator/**",
                                         "/v3/api-docs/**",

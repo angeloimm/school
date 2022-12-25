@@ -14,13 +14,16 @@
         <meta name="description" th:content="#{layout.metadescription}">
         <link rel="stylesheet" th:href="@{/webjars/bootstrap/5.2.2/css/bootstrap.min.css}" />
         <link rel="stylesheet" th:href="@{/css/site.css}" />
+        <th:block layout:fragment="page-head"></th:block>
     </head>
     <body>
         <th:block layout:fragment="page-handlebars-template"></th:block>
         <div class="container">
-        <header class="d-flex flex-wrap justify-content-center py-3 mb-4 border-bottom">
-			<img th:src="@{/images/banner-2-3.jpg}" class="rounded mx-auto d-block">
-		</header>
+        <header>
+            <div class="text-center">
+                <img th:src="@{/images/banner-2-3-scale.jpg}" class="rounded mx-auto d-block">
+            </div>
+        </header>
         </div>
 		<div class="container" sec:authorize="isAuthenticated()">
 
@@ -71,5 +74,16 @@
         <script type="text/javascript" th:src="@{/webjars/handlebars/4.7.7/handlebars.min.js}"></script>
         <script type="text/javascript" th:src="@{/js/layout.shared.js}"></script>
         <th:block layout:fragment="page-script"></th:block>
+
+    <div class="modal fade"
+         id="operazioneInCorsoModal"
+         tabindex="-1"
+         role="dialog"
+         aria-labelledby="exampleModalLabel"
+         aria-hidden="true">
+        <div class="spinner-border text-dark" role="status">
+            <span class="sr-only" th:text="#{shared.messages.saving}"></span>
+        </div>
+    </div>
     </body>
 </html>

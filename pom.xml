@@ -30,6 +30,7 @@
         <org.webjars.font.awesome.version>6.2.0</org.webjars.font.awesome.version>
         <org.webjars.handlebars.version>4.7.7</org.webjars.handlebars.version>
         <org.webjars.fullcalendar.version>5.11.3</org.webjars.fullcalendar.version>
+        <org.webjars.momentjs.version>2.29.4</org.webjars.momentjs.version>
     </properties>
     <dependencies>
         <dependency>
@@ -57,6 +58,11 @@
         <dependency>
             <groupId>nz.net.ultraq.thymeleaf</groupId>
             <artifactId>thymeleaf-layout-dialect</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.webjars</groupId>
+            <artifactId>momentjs</artifactId>
+            <version>${org.webjars.momentjs.version}</version>
         </dependency>
         <dependency>
             <groupId>org.webjars</groupId>

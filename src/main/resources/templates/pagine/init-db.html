@@ -3,66 +3,97 @@
          xmlns:th="http://www.thymeleaf.org"
          xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
          layout:decorate="~{layout}">
-
+<th:block layout:fragment="page-head">
+    <head>
+        <link rel="stylesheet" th:href="@{/css/gijgo.min.css}" />
+    </head>
+</th:block>
     <body>
 
         <th:block layout:fragment="page-handlebars-template">
 
         </th:block>
         <th:block layout:fragment="page-body">
-            <div class="container-fluid">
-                <div th:text="#{init.db.welcome.msg}" class="alert alert-primary" role="alert">
+            <div class="container-fluid width80">
+                <div th:text="#{init.db.welcome.msg}" class="alert alert-primary" role="alert" style="margin-top:1%;">
                 </div>
-                <form id="inserimento-amministratore-form">
+                <form id="inserimento-amministratore-form"
+                      th:data-salva-admin-url="@{/public/init/admin}"
+                      class="needs-validation"
+                      novalidate>
                     <div class="row">
                         <div class="col">
-                            <label for="nome" class="form-label fw-bold" th:text="#{init.db.nome}"></label>
-                            <input type="text" class="form-control" id="nome" name="nome" th:placeholder="#{init.db.nome}">
+                            <label for="nome" class="form-label fw-bold" th:text="#{init.db.nome} + '*'"></label>
+                            <input type="text" class="form-control" id="nome" name="nome" th:placeholder="#{init.db.nome}" required>
+                            <div class="invalid-feedback" th:text="#{shared.messages.required}"></div>
+                            <div class="valid-feedback"></div>
                         </div>
                         <div class="col">
-                            <label for="cognome" class="form-label fw-bold" th:text="#{init.db.cognome}"></label>
-                            <input type="text" class="form-control" id="cognome" name="cognome" th:placeholder="#{init.db.cognome}">
+                            <label for="cognome" class="form-label fw-bold" th:text="#{init.db.cognome} + '*'"></label>
+                            <input type="text" class="form-control" id="cognome" name="cognome" th:placeholder="#{init.db.cognome}" required>
+                            <div class="invalid-feedback" th:text="#{shared.messages.required}"></div>
+                            <div class="valid-feedback"></div>
                         </div>
                         <div class="col">
-                            <label for="data-nascita" class="form-label fw-bold" th:text="#{init.db.data-nascita}"></label>
-                            <input type="text" class="form-control" id="data-nascita" name="data-nascita" th:placeholder="#{init.db.data-nascita}">
+                            <label for="dataNascita" class="form-label fw-bold" th:text="#{init.db.data-nascita} + '*'"></label>
+                            <input type="text" id="dataNascita" name="dataNascita" th:placeholder="#{init.db.data-nascita}" required>
+                            <div class="invalid-feedback" th:text="#{shared.messages.required}"></div>
+                            <div class="valid-feedback"></div>
+                        </div>
+                        <div class="col">
+                            <label for="codiceFiscale" class="form-label fw-bold" th:text="#{init.db.cf} + '*'"></label>
+                            <input type="text" class="form-control" id="codiceFiscale" name="codiceFiscale" th:placeholder="#{init.db.cf}" required>
+                            <div class="invalid-feedback" th:text="#{shared.messages.required}"></div>
+                            <div class="valid-feedback"></div>
+                        </div>
+                        <div class="col">
+                            <label for="sesso" class="form-label fw-bold" th:text="#{init.db.sesso} + '*'"></label>
+                            <select class="form-select" id="sesso" name="sesso" aria-label="Default select example" required>
+                                <option selected value="" th:text="#{init.db.sesso}"></option>
+                                <option value="M" th:text="#{init.db.select.male}"></option>
+                                <option value="F" th:text="#{init.db.select.female}"></option>
+                                <option value="O" th:text="#{init.db.select.other}"></option>
+                            </select>
+                            <div class="invalid-feedback" th:text="#{shared.messages.required}"></div>
+                            <div class="valid-feedback"></div>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col">
-                            <label for="sesso" class="form-label fw-bold" th:text="#{init.db.sesso}"></label>
-                            <input type="text" class="form-control" id="sesso" name="sesso" th:placeholder="#{init.db.sesso}">
-                        </div>
-                        <div class="col">
-                            <label for="indirizzo" class="form-label fw-bold" th:text="#{init.db.indirizzo}"></label>
-                            <input type="text" class="form-control" id="indirizzo" name="indirizzo" th:placeholder="#{init.db.indirizzo}">
-                        </div>
-                        <div class="col">
-                            <label for="cf" class="form-label fw-bold" th:text="#{init.db.cf}"></label>
-                            <input type="text" class="form-control" id="cf" name="cf" th:placeholder="#{init.db.cf}">
+                            <label for="indirizzo" class="form-label fw-bold" th:text="#{init.db.indirizzo} + '*'"></label>
+                            <input type="text" class="form-control" id="indirizzo" name="indirizzo" th:placeholder="#{init.db.indirizzo}" required>
+                            <div class="invalid-feedback" th:text="#{shared.messages.required}"></div>
+                            <div class="valid-feedback"></div>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col">
-                            <label for="username" class="form-label fw-bold" th:text="#{init.db.username}"></label>
-                            <input type="text" class="form-control" id="username" name="username" th:placeholder="#{init.db.username}">
+                            <label for="username" class="form-label fw-bold" th:text="#{init.db.username} + '*'"></label>
+                            <input type="text" class="form-control" id="username" name="username" th:placeholder="#{init.db.username}" required>
+                            <div class="invalid-feedback" th:text="#{shared.messages.required}"></div>
+                            <div class="valid-feedback"></div>
                         </div>
                         <div class="col">
-                            <label for="password" class="form-label fw-bold" th:text="#{init.db.password}"></label>
-                            <input type="text" class="form-control" id="password" name="password" th:placeholder="#{init.db.password}">
+                            <label for="password" class="form-label fw-bold" th:text="#{init.db.password} + '*'"></label>
+                            <input type="text" class="form-control" id="password" name="password" th:placeholder="#{init.db.password}" required>
+                            <div class="invalid-feedback" th:text="#{shared.messages.required}"></div>
+                            <div class="valid-feedback"></div>
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col">
-                            <button type="button" class="btn btn-primary" id="salva" th:text="#{init.db.btn.save}"></button>
-                        </div>
-                        <div class="col">
-                            <button type="button" class="btn btn-danger" th:text="#{init.db.btn.reset}"></button>
+                        <div class="d-flex justify-content-end pt-3">
+                            <input type="submit" style="margin-right:1%;" class="btn btn-primary btn-lg ms-2" id="salva" th:value="#{init.db.btn.save}">
+                            <input type="reset" class="btn btn-light btn-lg" th:value="#{init.db.btn.reset}">
                         </div>
                     </div>
                 </form>
             </div>
         </th:block>
-        <th:block layout:fragment="page-script"></th:block>
+        <th:block layout:fragment="page-script">
+            <script type="text/javascript" th:src="@{/js/gijgo.min.js}"></script>
+            <script type="text/javascript" th:src="@{/webjars/momentjs/2.29.4/min/moment-with-locales.min.js}"></script>
+            <script type="text/javascript" th:src="@{/js/messages/messages.it-it.min.js}"></script>
+            <script type="text/javascript" th:src="@{/js/init-db.js}"></script>
+        </th:block>
     </body>
 </html>
