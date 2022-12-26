@@ -1,10 +1,13 @@
 $(function() {
+  $("#saveOk").hide();
+  $("#saveKo").hide();
   $("#dataNascita").datepicker({
     uiLibrary: 'bootstrap5',
     locale: 'it-it',
     format: 'dd/mm/yyyy',
     showOtherMonths: true,
     calendarWeeks: false,
+    maxDate: new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate()),
     modal: false,
     footer: true
   });
@@ -13,9 +16,7 @@ $(function() {
     let form = document.getElementById("inserimento-amministratore-form");
     if(form.checkValidity()){
         event.preventDefault();
-        alert("OK "+convertFormToJSON(form));
         let datiAmministratore = convertFormToJSON(form);
-
         let dataNascitaString = $("#dataNascita").datepicker().value();
         datiAmministratore.dataNascita = moment(dataNascitaString, 'dd/mm/yyyy').toDate().getTime();
         salvaAmministratore( datiAmministratore );
@@ -31,21 +32,21 @@ function salvaAmministratore( datiAmministratore ){
 			data:JSON.stringify(datiAmministratore),
 			contentType: "application/json; charset=utf-8",
 			beforeSend: function(xhr) {
-
-				$("#operazioneInCorsoModal").modal({
-				    show: true
-				});
+			    $.blockUI({ message: $('#operazioneInCorsoMessage') });
 			},
 			complete:function(xhr, status){
-				$("#operazioneInCorsoModal").modal({
-				    show: false
-				});
-			},
+            	$.unblockUI();
+            },
 			success : function(result) {
-				console.log("OK");
+			    $("#saveOk").show();
+				setTimeout(salvataggioOk, 5000);
 			},
 			error: function(XMLHttpRequest, textStatus, errorThrown) {
-				console.log("Errore "+textStatus);
+				$("#saveKo").show();
 			}
 		});
+}
+function salvataggioOk(){
+    $("#salva").prop("disabled",true);
+    window.location.href = $("#inserimento-amministratore-form").data("login-redirect-url");
 }

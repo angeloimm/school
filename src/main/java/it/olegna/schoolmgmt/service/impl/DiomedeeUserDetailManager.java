@@ -14,7 +14,7 @@ import java.util.Collections;
 @Slf4j
 public class DiomedeeUserDetailManager implements UserDetailsManager {
     private Authentication authentication;
-    private UtenteSvc utenteSvc;
+    private final UtenteSvc utenteSvc;
 
     public DiomedeeUserDetailManager(UtenteSvc utenteSvc) {
         this.utenteSvc = utenteSvc;

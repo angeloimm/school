@@ -8,11 +8,7 @@ import it.olegna.schoolmgmt.persistence.repository.MateriaRepository;
 import it.olegna.schoolmgmt.service.MateriaSvc;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
@@ -54,8 +50,8 @@ public class MateriaSvcImpl implements MateriaSvc {
         }
 
         Optional<List<Materia>> p = repository.findByNomeMateriaStartsWithIgnoreCase(nome, Sort.by(Sort.Order.asc(Materia_.NOME_MATERIA)));
-        if(p.isEmpty()) {
-            return  Collections.emptyList();
+        if (p.isEmpty()) {
+            return Collections.emptyList();
         }
         return mapper.toDtos(p.get());
     }

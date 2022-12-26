@@ -37,6 +37,6 @@ public class Corso {
     @OneToOne
     @JoinColumn(name = "ID_DISPONIBILITA", referencedColumnName = "ID")
     private Disponibilita disponibilita;
-    @OneToMany(mappedBy = "corso",fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "corso", fetch = FetchType.LAZY)
     private List<StudenteCorso> studenti;
 }

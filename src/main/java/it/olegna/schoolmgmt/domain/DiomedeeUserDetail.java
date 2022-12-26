@@ -53,7 +53,7 @@ public class DiomedeeUserDetail implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        if (tipoUtente == null || tipoUtente.isEmpty()){
+        if (tipoUtente == null || tipoUtente.isEmpty()) {
             return Collections.emptyList();
         }
         List<GrantedAuthority> result = new ArrayList<>();

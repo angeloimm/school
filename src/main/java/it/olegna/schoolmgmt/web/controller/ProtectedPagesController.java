@@ -8,23 +8,15 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
-@RequestMapping(value = "/public")
+@RequestMapping(value = "/protected")
 @Slf4j
-public class LoginController {
+public class ProtectedPagesController {
     @Autowired
     private UtenteSvc utenteSvc;
 
-    @GetMapping("/accedi")
+    @GetMapping("/hp")
     public String loginPage() {
-        if (utenteSvc.intiDb()) {
-            log.info("DB vuoto. Inzializzazione DB necessaria");
-            return "redirect:/public/init-db";
-        }
-        return "pagine/login";
-    }
 
-    @GetMapping(value = "/init-db")
-    public String initDbController() {
-        return "pagine/init-db";
+        return "pagine/hp";
     }
 }

@@ -11,6 +11,7 @@ import java.util.List;
 public interface MateriaMapper {
     @Mapping(target = "utenti", ignore = true)
     MateriaDto toDto(Materia Materia);
+
     @Mapping(target = "utenti", ignore = true)
     Materia toEntity(MateriaDto dto);
 

@@ -9,12 +9,12 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import javax.swing.text.html.Option;
 import java.util.List;
 import java.util.Optional;
 
 @Repository
 public interface MateriaRepository extends JpaRepository<Materia, String>, JpaSpecificationExecutor<Materia> {
     Page findByNomeMateriaStartsWithIgnoreCase(@Param("nomeMateria") String nome, Pageable pageable);
+
     Optional<List<Materia>> findByNomeMateriaStartsWithIgnoreCase(@Param("nomeMateria") String nome, Sort s);
 }

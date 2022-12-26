@@ -1,15 +1,6 @@
 package it.olegna.schoolmgmt.dto;
 
 import it.olegna.schoolmgmt.enums.DisponibilitaEnum;
-import it.olegna.schoolmgmt.persistence.model.Utente;
-import jakarta.persistence.Column;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Temporal;
-import jakarta.persistence.TemporalType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

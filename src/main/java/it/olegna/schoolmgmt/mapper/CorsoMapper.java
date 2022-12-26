@@ -11,6 +11,7 @@ import java.util.List;
 public interface CorsoMapper {
     @Mapping(target = "studenti", ignore = true)
     CorsoDto toDto(Corso corso);
+
     @Mapping(target = "studenti", ignore = true)
     Corso toEntity(CorsoDto dto);
 

@@ -1,7 +1,9 @@
 package it.olegna.schoolmgmt.persistence.model;
 
+import it.olegna.schoolmgmt.converters.TipoUtenteConverter;
 import it.olegna.schoolmgmt.enums.TipoUtenteEnum;
 import jakarta.persistence.Column;
+import jakarta.persistence.Convert;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -60,6 +62,7 @@ public class Utente {
     @ToString.Include
     @EqualsAndHashCode.Include
     @Column(name = "TIPO_UTENTE", nullable = false, length = 50)
+    @Convert(converter = TipoUtenteConverter.class)
     private TipoUtenteEnum tipoUtente;
     @ToString.Include
     @EqualsAndHashCode.Include

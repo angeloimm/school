@@ -3,12 +3,10 @@ package it.olegna.schoolmgmt.service.impl;
 import it.olegna.schoolmgmt.dto.CorsoDto;
 import it.olegna.schoolmgmt.mapper.CorsoMapper;
 import it.olegna.schoolmgmt.persistence.model.Corso;
-import it.olegna.schoolmgmt.persistence.model.Corso_;
 import it.olegna.schoolmgmt.persistence.repository.CorsoRepository;
 import it.olegna.schoolmgmt.service.AulaSvc;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

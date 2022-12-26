@@ -5,7 +5,6 @@ import it.olegna.schoolmgmt.mapper.DisponibilitaMapper;
 import it.olegna.schoolmgmt.persistence.model.Disponibilita;
 import it.olegna.schoolmgmt.persistence.model.Disponibilita_;
 import it.olegna.schoolmgmt.persistence.model.Utente;
-import it.olegna.schoolmgmt.persistence.model.UtenteMateria;
 import it.olegna.schoolmgmt.persistence.repository.DisponibilitaRepository;
 import it.olegna.schoolmgmt.service.DisponibilitaSvc;
 import jakarta.persistence.criteria.Join;
@@ -58,7 +57,8 @@ public class DisponibilitaSvcImpl implements DisponibilitaSvc {
         List<Disponibilita> result = repository.findAll(Sort.by(Sort.Order.asc(Disponibilita_.DATA_DISPONIBILITA)));
         return mapper.toDtos(result);
     }
-    private Specification<Disponibilita> findByUsernameDocente(String usernameDocente){
+
+    private Specification<Disponibilita> findByUsernameDocente(String usernameDocente) {
         return (root, query, criteriaBuilder) -> {
             Join<Disponibilita, Utente> joinDocente = root.join(Disponibilita_.DOCENTE);
             Predicate p = criteriaBuilder.equal(joinDocente.get("username"), usernameDocente);

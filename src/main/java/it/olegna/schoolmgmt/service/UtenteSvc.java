@@ -10,7 +10,9 @@ public interface UtenteSvc {
     UtenteDto createModificaUtente(UtenteDto utente);
 
     Optional<UtenteDto> findUtenteById(String idUtente);
+
     Optional<Utente> findUtenteByUsername(String username);
+
     void cancellaUtente(String idUtente);
 
     boolean intiDb();

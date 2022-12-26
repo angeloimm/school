@@ -1,7 +1,7 @@
 package it.olegna.schoolmgmt.web.controller;
 
-import it.olegna.schoolmgmt.dto.api.ApiResponse;
 import it.olegna.schoolmgmt.dto.CorsoDto;
+import it.olegna.schoolmgmt.dto.api.ApiResponse;
 import it.olegna.schoolmgmt.service.AulaSvc;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
