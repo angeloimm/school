@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en"
+      layout:decorate="~{layout}"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      xmlns:th="http://www.thymeleaf.org">
+<th:block layout:fragment="page-head">
+    <head>
+        <link rel="stylesheet" th:href="@{/webjars/datatables/1.13.1/css/dataTables.bootstrap5.min.css}"/>
+    </head>
+</th:block>
+<body>
+
+<th:block layout:fragment="page-handlebars-template">
+
+</th:block>
+<th:block layout:fragment="page-body">
+    <div class="container-fluid width80">
+        <div class="alert alert-primary" role="alert" style="margin-top:1%;" th:text="#{utenti.welcome.msg.studenti(${#authentication.principal.nome},${#authentication.principal.cognome})}" th:if="${param.tipoUtente[0] == 'S'}">
+        </div>
+        <div class="alert alert-primary" role="alert" style="margin-top:1%;" th:text="#{utenti.welcome.msg.docenti(${#authentication.principal.nome},${#authentication.principal.cognome})}" th:if="${param.tipoUtente[0] == 'D'}">
+        </div>
+        <div class="row">
+            <div class="col">
+                <table id="elencoUtenti"
+                       th:data-table-lang-url="@{/js/datatable-plugins/languages/italian.lang}"
+                       class="table">
+                    <thead>
+                        <tr>
+                            <th th:text="#{utenti.table.nome}"></th>
+                            <th th:text="#{utenti.table.cognome}"></th>
+                            <th th:text="#{utenti.table.sesso}"></th>
+                            <th th:text="#{utenti.table.dataNascita}"></th>
+                            <th th:text="#{utenti.table.codiceFiscale}"></th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="utente: ${utenti}">
+                            <td th:text="${utente.nome}" />
+                            <td th:text="${utente.cognome}" />
+                            <td th:text="${utente.sesso}" />
+                            <td th:text="${#dates.format(utente.dataNascita, 'dd/MM/yyyy')}" />
+                            <td th:text="${utente.codiceFiscale}" />
+                            <td>
+                                <div class="text-nowrap col-12">
+                                    <a 	th:href="@{/protected/utenti/{id}}"
+                                          class="btn btn-success"
+                                          data-toggle="tooltip"
+                                          data-placement="top"
+                                          sec:authorize="hasRole('AMMINISTRATORE')"
+                                          th:title="#{utenti.table.action.edit}">
+                                        <i class="fas fa-edit"></i>
+                                    </a>
+                                    <button type="button"
+                                            href="#"
+                                            th:data-utenti-delete-url="@{/protected/utenti/{id}}"
+                                            class="btn btn-danger cambio-stato-ente"
+                                            data-toggle="tooltip"
+                                            data-placement="top"
+                                            sec:authorize="hasRole('AMMINISTRATORE')"
+                                            th:title="#{utenti.table.action.delete}">
+                                        <i class="far fa-trash-alt"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</th:block>
+<th:block layout:fragment="page-script">
+
+    <script th:src="@{/webjars/momentjs/2.29.4/min/moment-with-locales.min.js}" type="text/javascript"></script>
+    <script th:src="@{/webjars/datatables/1.13.1/js/jquery.dataTables.min.js}" type="text/javascript"></script>
+    <script th:src="@{/webjars/datatables/1.13.1/js/dataTables.bootstrap5.min.js}" type="text/javascript"></script>
+    <script th:src="@{/js/protected/utenti.js}" type="text/javascript"></script>
+</th:block>
+</body>
+</html>

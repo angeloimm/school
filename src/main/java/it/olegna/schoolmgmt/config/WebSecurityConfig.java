@@ -22,6 +22,7 @@ import java.io.IOException;
 @Configuration
 public class WebSecurityConfig {
     public static final String LOGIN_URL = "/public/accedi";
+    public static final String LOGOUT_URL = "/public/logout";
     public static final String SUCCESS_URL = "/protected/hp";
     @Autowired
     private SchoolUserDetailManager schoolUserDetailManager;
@@ -42,7 +43,10 @@ public class WebSecurityConfig {
                                         "/actuator/**",
                                         "/v3/api-docs/**",
                                         "/swagger-ui/**",
-                                        "/swagger-ui.html", "/public/**", "/websocket/**")
+                                        "/bootstrap-icons/**",
+                                        "/swagger-ui.html",
+                                        "/public/**",
+                                        "/websocket/**")
                                 .permitAll()
                                 .requestMatchers("/protected/**")
                                 .authenticated())
@@ -60,6 +64,8 @@ public class WebSecurityConfig {
                     })
                 .and()
                 .logout()
+                    .logoutUrl(LOGOUT_URL)
+                    .permitAll()
                     .clearAuthentication(true)
                     .invalidateHttpSession(true)
                     .deleteCookies("JSESSIONID")

@@ -21,6 +21,10 @@
              th:text="#{login.wrong.credentials}">
 
         </div>
+        <div class="alert alert-success" role="alert" th:if="${param.logout != null}"
+             th:text="#{login.logout.success}">
+
+        </div>
         <div class="alert alert-danger" role="alert" th:if="${diomedeeErrorCode!=null}"
              th:switch="${diomedeeErrorCode}">
 

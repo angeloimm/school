@@ -26,13 +26,21 @@
         <org.webjars.jquery.version>3.6.1</org.webjars.jquery.version>
         <org.webjars.jquery.blockui.version>2.70-1</org.webjars.jquery.blockui.version>
         <org.webjars.bootstrap.version>5.2.2</org.webjars.bootstrap.version>
+        <org.webjars.bootstrapicon.version>1.8.1</org.webjars.bootstrapicon.version>
         <org.webjars.popper.version>1.16.1</org.webjars.popper.version>
         <org.webjars.font.awesome.version>6.2.0</org.webjars.font.awesome.version>
         <org.webjars.handlebars.version>4.7.7</org.webjars.handlebars.version>
         <org.webjars.fullcalendar.version>5.11.3</org.webjars.fullcalendar.version>
         <org.webjars.momentjs.version>2.29.4</org.webjars.momentjs.version>
+        <org.webjars.datatables.version>1.13.1</org.webjars.datatables.version>
+        <com.github.gavlyukovskiy.datasource.proxy.version>1.8.1</com.github.gavlyukovskiy.datasource.proxy.version>
     </properties>
     <dependencies>
+        <dependency>
+            <groupId>com.github.gavlyukovskiy</groupId>
+            <artifactId>datasource-proxy-spring-boot-starter</artifactId>
+            <version>${com.github.gavlyukovskiy.datasource.proxy.version}</version>
+        </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-thymeleaf</artifactId>
@@ -84,6 +92,12 @@
             <artifactId>jquery-blockui</artifactId>
             <version>${org.webjars.jquery.blockui.version}</version>
         </dependency>
+        <dependency>
+            <groupId>org.webjars</groupId>
+            <artifactId>datatables</artifactId>
+            <version>${org.webjars.datatables.version}</version>
+        </dependency>
+
         <dependency>
             <groupId>org.webjars</groupId>
             <artifactId>bootstrap</artifactId>

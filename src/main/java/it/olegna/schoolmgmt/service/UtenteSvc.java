@@ -1,6 +1,8 @@
 package it.olegna.schoolmgmt.service;
 
 import it.olegna.schoolmgmt.dto.UtenteDto;
+import it.olegna.schoolmgmt.dto.UtenteTableDto;
+import it.olegna.schoolmgmt.enums.TipoUtenteEnum;
 import it.olegna.schoolmgmt.persistence.model.Utente;
 
 import java.util.List;
@@ -18,4 +20,6 @@ public interface UtenteSvc {
     boolean intiDb();
 
     List<UtenteDto> recuperaUtenti();
+
+    Optional<List<UtenteTableDto>> findByTipoUtente(TipoUtenteEnum tipoUtenteEnum);
 }

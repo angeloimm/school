@@ -1,6 +1,8 @@
 package it.olegna.schoolmgmt.service.impl;
 
 import it.olegna.schoolmgmt.dto.UtenteDto;
+import it.olegna.schoolmgmt.dto.UtenteTableDto;
+import it.olegna.schoolmgmt.enums.TipoUtenteEnum;
 import it.olegna.schoolmgmt.mapper.UtenteMapper;
 import it.olegna.schoolmgmt.persistence.model.Utente;
 import it.olegna.schoolmgmt.persistence.model.Utente_;
@@ -64,6 +66,19 @@ public class UtenteSvcImpl implements UtenteSvc {
         ordinamento.add(Sort.Order.asc(Utente_.NOME));
         ordinamento.add(Sort.Order.asc(Utente_.COGNOME));
         return mapper.toDtos(repository.findAll(Sort.by(ordinamento)));
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Optional<List<UtenteTableDto>> findByTipoUtente(TipoUtenteEnum tipoUtenteEnum) {
+        List<Sort.Order> ordinamento = new ArrayList<>();
+        ordinamento.add(Sort.Order.asc(Utente_.NOME));
+        ordinamento.add(Sort.Order.asc(Utente_.COGNOME));
+        List<UtenteTableDto> utentePage = this.repository.findByTipoUtente(tipoUtenteEnum, Sort.by(ordinamento));
+        if( utentePage.isEmpty() ) {
+            return Optional.empty();
+        }
+        return Optional.of(utentePage);
     }
 
     @Override
