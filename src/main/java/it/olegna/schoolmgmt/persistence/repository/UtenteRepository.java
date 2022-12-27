@@ -11,4 +11,6 @@ import java.util.Optional;
 @Repository
 public interface UtenteRepository extends JpaRepository<Utente, String>, JpaSpecificationExecutor<Utente> {
     Optional<Utente> findByUsername(@Param("username") String na);
+
+    long countByUsername(@Param("username") String uName);
 }

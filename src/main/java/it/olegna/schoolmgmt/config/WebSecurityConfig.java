@@ -1,23 +1,30 @@
 package it.olegna.schoolmgmt.config;
 
-import it.olegna.schoolmgmt.service.impl.AuthServerCustomAuthProvider;
+import it.olegna.schoolmgmt.service.impl.SchoolUserDetailManager;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 import org.springframework.security.web.csrf.CsrfTokenRequestAttributeHandler;
+
+import java.io.IOException;
 
 @Configuration
 public class WebSecurityConfig {
     public static final String LOGIN_URL = "/public/accedi";
     public static final String SUCCESS_URL = "/protected/hp";
     @Autowired
-    private AuthServerCustomAuthProvider authServerCustomAuthProvider;
+    private SchoolUserDetailManager schoolUserDetailManager;
 
     @Bean
     public SecurityFilterChain configure(HttpSecurity http) throws Exception {
@@ -39,33 +46,36 @@ public class WebSecurityConfig {
                                 .permitAll()
                                 .requestMatchers("/protected/**")
                                 .authenticated())
-                .csrf(csrf -> {
-                    csrf.csrfTokenRequestHandler(new CsrfTokenRequestAttributeHandler());
-                    csrf.csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse());
-                })
                 .formLogin()
-                .loginPage(LOGIN_URL)
-                .loginProcessingUrl("/login")
-                .permitAll()
-                .usernameParameter("username")
-                .passwordParameter("password")
-                .defaultSuccessUrl(SUCCESS_URL)
+                    .loginPage(LOGIN_URL)
+                    .loginProcessingUrl("/login")
+                    .permitAll()
+                    .usernameParameter("username")
+                    .passwordParameter("password")
+                    .successHandler(new AuthenticationSuccessHandler() {
+                        @Override
+                        public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
+                            response.sendRedirect("/protected/hp");
+                        }
+                    })
                 .and()
                 .logout()
-                .clearAuthentication(true)
-                .invalidateHttpSession(true)
-                .deleteCookies("JSESSIONID")
+                    .clearAuthentication(true)
+                    .invalidateHttpSession(true)
+                    .deleteCookies("JSESSIONID")
                 .and()
                 .build();
-    }
-
-    @Autowired
-    public void customAuthProvider(AuthenticationManagerBuilder auth) {
-        auth.authenticationProvider(authServerCustomAuthProvider);
     }
 
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
+    }
+
+    public DaoAuthenticationProvider schoolAuthenticationProvider() {
+        DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
+        provider.setPasswordEncoder(passwordEncoder());
+        provider.setUserDetailsService(schoolUserDetailManager);
+        return provider;
     }
 }

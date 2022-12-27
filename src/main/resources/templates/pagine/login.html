@@ -17,13 +17,16 @@
              th:if="${SPRING_SECURITY_LAST_EXCEPTION !=null}" th:text="${SPRING_SECURITY_LAST_EXCEPTION.message}">
 
         </div>
-        <div class="alert alert-danger" role="alert" th:if="${param.error != null}" th:text="#{login.wrong.credentials}">
+        <div class="alert alert-danger" role="alert" th:if="${param.error != null}"
+             th:text="#{login.wrong.credentials}">
 
         </div>
-        <div class="alert alert-danger" role="alert" th:if="${diomedeeErrorCode!=null}" th:switch="${diomedeeErrorCode}">
+        <div class="alert alert-danger" role="alert" th:if="${diomedeeErrorCode!=null}"
+             th:switch="${diomedeeErrorCode}">
 
             <p th:case="0" th:text="#{login.error.client.not.found(${diomedeeClientId})}"></p>
-            <p th:case="1" th:text="#{login.error.redirect.uri.not.valid(${diomedeeRedirectUri},${diomedeeClientId})}"></p>
+            <p th:case="1"
+               th:text="#{login.error.redirect.uri.not.valid(${diomedeeRedirectUri},${diomedeeClientId})}"></p>
             <p th:case="99" th:text="#{login.error.generic}"></p>
         </div>
         <form class="needs-validation" method="post" novalidate th:action="@{/login}">

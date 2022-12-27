@@ -22,7 +22,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @Builder
 @ToString
-public class DiomedeeUserDetail implements UserDetails {
+public class SchoolUserDetail implements UserDetails {
     private UUID idUtente;
     private String username;
     // Indica l'ID generato da WSO2 e restituito dall'oggetto Resource quando salvo
@@ -57,7 +57,7 @@ public class DiomedeeUserDetail implements UserDetails {
             return Collections.emptyList();
         }
         List<GrantedAuthority> result = new ArrayList<>();
-        this.tipoUtente.stream().forEach(ruolo -> result.add(new SimpleGrantedAuthority(ruolo.name())));
+        this.tipoUtente.stream().forEach(ruolo -> result.add(new SimpleGrantedAuthority("ROLE_".concat(ruolo.name()))));
         return result;
     }
 

@@ -9,6 +9,7 @@ import it.olegna.schoolmgmt.service.UtenteSvc;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,11 +24,15 @@ public class UtenteSvcImpl implements UtenteSvc {
     private UtenteRepository repository;
     @Autowired
     private UtenteMapper mapper;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @Override
     @Transactional(readOnly = false)
     public UtenteDto createModificaUtente(UtenteDto utente) {
         log.trace("Creazione utente {}", utente);
+        String originalPwd = utente.getPassword();
+        utente.setPassword(passwordEncoder.encode(originalPwd));
         return mapper.toDto(repository.save(mapper.toEntity(utente)));
     }
 
