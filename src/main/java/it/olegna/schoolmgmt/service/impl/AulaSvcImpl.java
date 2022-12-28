@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 @Slf4j
@@ -27,14 +28,14 @@ public class AulaSvcImpl implements AulaSvc {
     }
 
     @Override
-    public Optional<CorsoDto> findAulaById(String id) {
+    public Optional<CorsoDto> findAulaById(UUID id) {
         log.trace("Ricerco aula con ID {}", id);
         Optional<Corso> result = repository.findById(id);
         return result.isPresent() ? Optional.of(mapper.toDto(result.get())) : Optional.empty();
     }
 
     @Override
-    public void cancellaAula(String idAula) {
+    public void cancellaAula(UUID idAula) {
         log.info("Cancello aula con ID {}", idAula);
         repository.deleteById(idAula);
     }

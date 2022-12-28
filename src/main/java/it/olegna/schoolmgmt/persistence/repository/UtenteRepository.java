@@ -13,12 +13,14 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Repository
-public interface UtenteRepository extends JpaRepository<Utente, String>, JpaSpecificationExecutor<Utente> {
+public interface UtenteRepository extends JpaRepository<Utente, UUID>, JpaSpecificationExecutor<Utente> {
     Optional<Utente> findByUsername(@Param("username") String na);
 
     long countByUsername(@Param("username") String uName);
 
     List<UtenteTableDto> findByTipoUtente(@Param("tipoUtente") TipoUtenteEnum tipoUtente, Sort sort);
+    Page<UtenteTableDto> findByTipoUtente(@Param("tipoUtente") TipoUtenteEnum tipoUtente, Pageable pageable);
 }

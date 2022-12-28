@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/public/aule")
@@ -32,7 +33,7 @@ public class AulaController {
     }
 
     @GetMapping(value = {"{idAula}"}, consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE}, produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
-    public ResponseEntity<ApiResponse<CorsoDto>> aula(@PathVariable(required = true, name = "idAula") String id) {
+    public ResponseEntity<ApiResponse<CorsoDto>> aula(@PathVariable(required = true, name = "idAula") UUID id) {
         log.info("Recupero i dettagli dell'aula con ID {}", id);
         return ResponseEntity.ok(ApiResponse.<CorsoDto>builder().error(false).payload(this.aulaSvc.findAulaById(id).orElseThrow()).build());
     }

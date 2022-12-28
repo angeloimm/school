@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/public/materie")
@@ -33,7 +34,7 @@ public class MateriaController {
     }
 
     @GetMapping(value = {"{idMateria}"}, consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE}, produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
-    public ResponseEntity<ApiResponse<MateriaDto>> materia(@PathVariable(required = true, name = "idMateria") String id) {
+    public ResponseEntity<ApiResponse<MateriaDto>> materia(@PathVariable(required = true, name = "idMateria") UUID id) {
         log.info("Recupero i dettagli dell'Materia con ID {}", id);
         return ResponseEntity.ok(ApiResponse.<MateriaDto>builder().error(false).payload(this.materiaSvc.findMateriaById(id).orElseThrow()).build());
     }

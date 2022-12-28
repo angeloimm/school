@@ -8,16 +8,13 @@ import org.springframework.context.support.ReloadableResourceBundleMessageSource
 //import org.thymeleaf.extras.springsecurity5.dialect.SpringSecurityDialect;
 
 @Configuration
-public class ThymeleafConfig {
+public class AppConfig {
     @Bean
     public LayoutDialect layoutDialect() {
         return new LayoutDialect();
     }
 
-    //@Bean
-    /*public SpringSecurityDialect springSecurityDialect(){
-        return new SpringSecurityDialect();
-    }*/
+
     @Bean
     public MessageSource messageSource() {
         final ReloadableResourceBundleMessageSource messageSource = new ReloadableResourceBundleMessageSource();

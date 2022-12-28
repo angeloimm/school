@@ -34,6 +34,7 @@ public class WebSecurityConfig {
                 .authorizeHttpRequests(exchanges ->
                         exchanges
                                 .requestMatchers("/public/**",
+                                        "/favicon.ico",
                                         "/h2-console",
                                         "/webjars/**",
                                         "/js/**",

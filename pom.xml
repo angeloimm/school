@@ -34,6 +34,8 @@
         <org.webjars.momentjs.version>2.29.4</org.webjars.momentjs.version>
         <org.webjars.datatables.version>1.13.1</org.webjars.datatables.version>
         <com.github.gavlyukovskiy.datasource.proxy.version>1.8.1</com.github.gavlyukovskiy.datasource.proxy.version>
+        <blueimp.file.upload.version>10.31.0</blueimp.file.upload.version>
+        <org.webjars.npm.select2.version>4.1.0-rc.0</org.webjars.npm.select2.version>
     </properties>
     <dependencies>
         <dependency>
@@ -66,6 +68,16 @@
         <dependency>
             <groupId>nz.net.ultraq.thymeleaf</groupId>
             <artifactId>thymeleaf-layout-dialect</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.webjars.npm</groupId>
+            <artifactId>select2</artifactId>
+            <version>${org.webjars.npm.select2.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.webjars.bower</groupId>
+            <artifactId>blueimp-file-upload</artifactId>
+            <version>${blueimp.file.upload.version}</version>
         </dependency>
         <dependency>
             <groupId>org.webjars</groupId>

@@ -11,9 +11,10 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Repository
-public interface MateriaRepository extends JpaRepository<Materia, String>, JpaSpecificationExecutor<Materia> {
+public interface MateriaRepository extends JpaRepository<Materia, UUID>, JpaSpecificationExecutor<Materia> {
     Page findByNomeMateriaStartsWithIgnoreCase(@Param("nomeMateria") String nome, Pageable pageable);
 
     Optional<List<Materia>> findByNomeMateriaStartsWithIgnoreCase(@Param("nomeMateria") String nome, Sort s);

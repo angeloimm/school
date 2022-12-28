@@ -1,12 +1,14 @@
 package it.olegna.schoolmgmt.dto;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.UUID;
 
@@ -23,5 +25,7 @@ public class AllegatoDto {
     private String nomeFile;
     private String contentTypeFile;
     private Integer dimensioneFile;
-    private UtenteDto utente;
+    private UUID idUtente;
+    @JsonIgnore
+    private MultipartFile multipartFile;
 }

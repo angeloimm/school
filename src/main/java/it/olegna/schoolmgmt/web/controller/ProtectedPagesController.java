@@ -29,9 +29,7 @@ public class ProtectedPagesController {
         return "pagine/hp";
     }
     @GetMapping("/user")
-    public String userPage(@RequestParam(required = true, name = "tipoUtente") String tipoUtente,
-                           Model model
-                           ) {
+    public String userPage(@RequestParam(name = "tipoUtente") String tipoUtente, Model model) {
         TipoUtenteEnum tipoUtenteEnum = null;
         switch (tipoUtente){
             case "S":
@@ -44,13 +42,9 @@ public class ProtectedPagesController {
                 tipoUtenteEnum = TipoUtenteEnum.AMMINISTRATORE;
                 break;
             default:
-                throw new IllegalArgumentException("Tipo utente non riconosciuto "+tipoUtente+". Valori ammessi: S, D e A");
+                throw new IllegalArgumentException("Tipo utente non noto "+tipoUtente);
         }
-        log.info("Ricerco gli utenti per tipo utente {}", tipoUtente);
-        Optional<List<UtenteTableDto>> utenti = this.utenteSvc.findByTipoUtente(tipoUtenteEnum);
-        if( utenti.isPresent() ){
-            model.addAttribute("utenti", utenti.get());
-        }
+        model.addAttribute("tipoUtenteEnum", tipoUtenteEnum.name());
         return "pagine/utenti";
     }
 }

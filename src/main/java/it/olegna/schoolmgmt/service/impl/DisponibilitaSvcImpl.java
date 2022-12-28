@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 @Slf4j
@@ -33,13 +34,13 @@ public class DisponibilitaSvcImpl implements DisponibilitaSvc {
     }
 
     @Override
-    public void cancellaDisponibilita(String idDisponibilita) {
+    public void cancellaDisponibilita(UUID idDisponibilita) {
         log.info("Cancello disponibilita con ID {}", idDisponibilita);
         repository.deleteById(idDisponibilita);
     }
 
     @Override
-    public Optional<DisponibilitaDto> findDisponibilitaById(String id) {
+    public Optional<DisponibilitaDto> findDisponibilitaById(UUID id) {
         log.info("Ricerco disponibilita con ID {}", id);
         Optional<Disponibilita> result = repository.findById(id);
         return result.isEmpty() ? Optional.empty() : Optional.of(mapper.toDto(result.get()));

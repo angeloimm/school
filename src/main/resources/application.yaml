@@ -38,7 +38,8 @@ logging:
   level:
     org:
       springframework:
-        security: INFO
+        web: TRACE
+        security: TRACE
       hibernate:
         SQL: INFO
       type:

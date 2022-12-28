@@ -7,12 +7,241 @@
 <th:block layout:fragment="page-head">
     <head>
         <link rel="stylesheet" th:href="@{/webjars/datatables/1.13.1/css/dataTables.bootstrap5.min.css}"/>
+        <link rel="stylesheet" th:href="@{/css/gijgo.min.css}"/>
+        <link rel="stylesheet" th:href="@{/webjars/blueimp-file-upload/10.31.0/css/jquery.fileupload.css}">
+        <link rel="stylesheet" th:href="@{/webjars/blueimp-file-upload/10.31.0/css/jquery.fileupload-ui.css}">
+        <noscript>
+            <link rel="stylesheet" th:href="@{/webjars/blueimp-file-upload/10.31.0/css/jquery.fileupload-noscript.css}">
+        </noscript>
+        <noscript>
+            <link rel="stylesheet" th:href="@{/webjars/blueimp-file-upload/10.31.0/css/jquery.fileupload-ui-noscript.css}">
+        </noscript>
     </head>
 </th:block>
 <body>
 
 <th:block layout:fragment="page-handlebars-template">
+    <script type="text/x-handlebars-template" id="templateDatiUtente">
+        <form class="needs-validation"
+              id="inserimento-modifica-utente-form"
+              method="POST"
+              th:action="@{/protected/utenti}"
+              novalidate>
+            <input type="hidden" id="tipoUtenteEnum" name="tipoUtenteEnum" th:value="${tipoUtenteEnum}">
+            <div class="row">
+                <div class="col">
+                    <label class="form-label fw-bold" for="nome" th:text="#{init.db.nome} + '*'"></label>
+                    <input class="form-control" id="nome" name="nome" required th:placeholder="#{init.db.nome}"
+                           type="text" value="{{nome}}">
+                    <div class="invalid-feedback" th:text="#{shared.messages.required}"></div>
+                    <div class="valid-feedback"></div>
+                </div>
+                <div class="col">
+                    <label class="form-label fw-bold" for="cognome" th:text="#{init.db.cognome} + '*'"></label>
+                    <input class="form-control" id="cognome" name="cognome" required
+                           th:placeholder="#{init.db.cognome}" type="text" value="{{cognome}}">
+                    <div class="invalid-feedback" th:text="#{shared.messages.required}"></div>
+                    <div class="valid-feedback"></div>
+                </div>
+                <div class="col">
+                    <label class="form-label fw-bold" for="dataNascita" th:text="#{init.db.data-nascita} + '*'"></label>
+                    <input id="dataNascita" name="dataNascita" required th:placeholder="#{init.db.data-nascita}"
+                           type="text" value="{{dataNascita}}">
+                    <div class="invalid-feedback" th:text="#{shared.messages.required}"></div>
+                    <div class="valid-feedback"></div>
+                </div>
+                <div class="col">
+                    <label class="form-label fw-bold" for="codiceFiscale" th:text="#{init.db.cf} + '*'"></label>
+                    <input class="form-control" id="codiceFiscale" name="codiceFiscale" required
+                           th:placeholder="#{init.db.cf}" type="text" value="{{codiceFiscale}}">
+                    <div class="invalid-feedback" th:text="#{shared.messages.required}"></div>
+                    <div class="valid-feedback"></div>
+                </div>
+                <div class="col">
+                    <label class="form-label fw-bold" for="sesso" th:text="#{init.db.sesso} + '*'"></label>
+                    <select aria-label="Default select example" class="form-select" id="sesso" name="sesso" required>
+                        <option selected th:text="#{init.db.sesso}" value=""></option>
+                        <option th:text="#{init.db.select.male}" value="M" {{#ifEquals sesso "M"}}selected{{/ifEquals}}></option>
+                        <option th:text="#{init.db.select.female}" value="F" {{#ifEquals sesso "F"}}selected{{/ifEquals}}></option>
+                        <option th:text="#{init.db.select.other}" value="O" {{#ifEquals sesso "O"}}selected{{/ifEquals}}></option>
+                    </select>
+                    <div class="invalid-feedback" th:text="#{shared.messages.required}"></div>
+                    <div class="valid-feedback"></div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <label class="form-label fw-bold" for="indirizzo" th:text="#{init.db.indirizzo} + '*'"></label>
+                    <input class="form-control" id="indirizzo" name="indirizzo" required
+                           th:placeholder="#{init.db.indirizzo}" type="text" value="{{codiceFiscale}}">
+                    <div class="invalid-feedback" th:text="#{shared.messages.required}"></div>
+                    <div class="valid-feedback"></div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <label class="form-label fw-bold" for="username" th:text="#{init.db.username} + '*'"></label>
+                    <input class="form-control" id="username" name="username" required
+                           th:placeholder="#{init.db.username}" type="text" value="{{codiceFiscale}}">
+                    <div class="invalid-feedback" th:text="#{shared.messages.required}"></div>
+                    <div class="valid-feedback"></div>
+                </div>
+                <div class="col">
+                    <label class="form-label fw-bold" for="password" th:text="#{init.db.password} + '*'"></label>
+                    <input class="form-control" id="password" name="password" required
+                           th:placeholder="#{init.db.password}" type="password">
+                    <div class="invalid-feedback" th:text="#{shared.messages.required}"></div>
+                    <div class="valid-feedback"></div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col fileupload-buttonbar" style="margin-top:1%;">
+                    <div>
+                        <small th:utext="#{file.upload.information(pdf,5MB)}"></small>
+                    </div>
+	                <span class="btn btn-success fileinput-button font-weigth-bold">
+                        <i class="glyphicon glyphicon-plus"></i>
+                        <span class="font-weigth-bold" th:text="#{file.upload.add}"></span>
+                        <input
+                                type="file"
+                                id="allegati-utente"
+                                multiple
+                                name="allegati-utente"
+                                th:data-file-not-allowed="#{file.upload.tipo.file.not.allowed}"
+                                th:data-too-many-files="#{file.upload.too.many.files}"
+                                th:data-file-too-big="#{file.upload.too.big}"
+                                th:data-file-too-small="#{file.upload.too.small}"
+                                th:data-upload-url="@{/protected/allegati}">
+                    </span>
+                    <div class="help-block with-errors"></div>
+                    <!-- The global file processing state -->
+                    <span class="fileupload-process"></span>
+                    <!-- </div> -->
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <!-- The global progress state -->
+                    <div class="fileupload-progress hidden fade">
+                        <!-- The global progress bar -->
+                        <div class="progress progress-striped active" role="progressbar" aria-valuemin="0" aria-valuemax="100">
+                            <div class="progress-bar progress-bar-success" style="width: 0%;"></div>
+                        </div>
+                        <!-- The extended global progress state -->
+                        <div class="progress-extended">&nbsp;</div>
+                    </div>
+                    <!-- The table listing the files available for upload/download -->
+                    <table id="elencoFile" role="presentation" class="table table-striped">
+                        <tbody class="files"></tbody>
+                    </table>
+                    <div id="elencoErroriUploadFile"></div>
+                </div>
+            </div>
+            <div class="divider"></div>
+            <div class="row">
+                <div class="col">
+                    <div role="presentation" class="table table-striped files dropZoneInfo">
+                        <div id="dropzone" class="fade well">
+                            <!-- <div id="dropzone" class="alert alert-info"> -->
+                            <span class="text-bg-primary p-3 fw-bold" th:text="#{file.upload.dropzone.msg}"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="d-flex justify-content-end pt-3">
+                    <input class="btn btn-primary btn-lg ms-2" id="salva" style="margin-right:1%;"
+                           th:value="#{init.db.btn.save}"
+                           th:data-salvataggio-utente-url="@{/protected/utenti/save-utente}"
+                           type="submit">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" th:text="#{init.db.btn.reset}"></button>
+                </div>
+            </div>
+        </form>
+    </script>
+    <script type="text/x-handlebars-template" id="templateErroreUploadFile">
+        <div class="alert alert-danger">
+            Ci sono i seguenti errori
+            <ul class="list-group">
+                {{#each this}}
+                <li class="list-group-item">
+                    <strong>{{this.fileName}}</strong>
+                    <ul class="list-group">
+                        {{#each this.errori}}
+                        <li class="list-group-item">{{this}}</li>
+                        {{/each}}
+                    </ul>
+                </li>
+                {{/each}}
+            </ul>
+        </div>
+    </script>
+    <script type="text/x-handlebars-template" id="templateDownload">
+        {{! Il class template-download serve ad abilitare il pulsante di elimina; il class fade a dare degli effetti nella comparsa della riga }}
 
+        <div id="tmplDownloadDiv" class="col template-download">
+            <div class="row nom">
+                {{#if error}}
+                <div class="col">
+                    <div class="alert alert-danger">
+                        <strong><i class="fa fa-warning" aria-hidden="true"></i></strong> {{{error}}}
+                    </div>
+                </div>
+                {{else}}
+                <div class="col">
+                    <div class="alert alert-success">
+                        <strong><i class="fa fa-file" aria-hidden="true"></i></strong>
+                        <i>{{file.name}}</i> <span th:text="#{file.upload.ok}"></span>
+                    </div>
+                </div>
+                {{/if}}
+            </div>
+        </div>
+    </script>
+    <script type="text/x-handlebars-template" id="templateUpload">
+        {{! Il class template-upload serve ad abilitare il pulsante di upload; il class fade a dare degli effetti nella comparsa della riga }}
+        <div class="template-upload">
+            <div class="row align-items-center box nom">
+                <div class="col">
+                    <div class="alert alert-info">
+                        <strong><i class="fa fa-file" aria-hidden="true"></i></strong> <i>{{file.name}}</i> ({{dimensione}})
+                        <div><strong class="error text-danger"></strong></div>
+                    </div>
+                    <div class="progress progress-striped active" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+                        <div class="progress-bar progress-bar-success" style="width:0%;"></div>
+                    </div>
+                </div>
+                <div class="col-auto nopr posizColSup">
+                    <button class="btn btn-danger cancel">
+                        <i class="glyphicon glyphicon-ban-circle"></i>
+                        <span>Cancella</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </script>
+    <script type="text/x-handlebars-template" id="templateAzioniUtente">
+        <div class="text-nowrap col">
+            <button type="button"
+                    class="btn btn-success modifica-utente"
+                    th:data-url-dettaglio-utente="@{/protected/utenti/{{idUtente}}}"
+                    data-toggle="tooltip"
+                    data-placement="top"
+                    th:title="#{utenti.table.actions.tooltip.modifica}"
+            >
+                <i class="fas fa-edit"></i>
+            </button>
+            <button type="button"
+                    class="btn btn-danger cancella-utente"
+                    data-toggle="tooltip"
+                    th:data-url-cancella-utente="@{/protected/utenti/{{idUtente}}}"
+                    data-placement="top"
+                    th:title="#{utenti.table.actions.tooltip.cancella}"
+            >
+                <i class="far fa-trash-alt"></i>
+            </button>
+        </div>
+    </script>
 </th:block>
 <th:block layout:fragment="page-body">
     <div class="container-fluid width80">
@@ -24,58 +253,56 @@
             <div class="col">
                 <table id="elencoUtenti"
                        th:data-table-lang-url="@{/js/datatable-plugins/languages/italian.lang}"
+                       th:data-elenco-utenti-url="@{/protected/utenti}"
                        class="table">
                     <thead>
                         <tr>
                             <th th:text="#{utenti.table.nome}"></th>
                             <th th:text="#{utenti.table.cognome}"></th>
                             <th th:text="#{utenti.table.sesso}"></th>
-                            <th th:text="#{utenti.table.dataNascita}"></th>
                             <th th:text="#{utenti.table.codiceFiscale}"></th>
+                            <th th:text="#{utenti.table.dataNascita}"></th>
                             <th></th>
                         </tr>
                     </thead>
-                    <tbody>
-                        <tr th:each="utente: ${utenti}">
-                            <td th:text="${utente.nome}" />
-                            <td th:text="${utente.cognome}" />
-                            <td th:text="${utente.sesso}" />
-                            <td th:text="${#dates.format(utente.dataNascita, 'dd/MM/yyyy')}" />
-                            <td th:text="${utente.codiceFiscale}" />
-                            <td>
-                                <div class="text-nowrap col-12">
-                                    <a 	th:href="@{/protected/utenti/{id}}"
-                                          class="btn btn-success"
-                                          data-toggle="tooltip"
-                                          data-placement="top"
-                                          sec:authorize="hasRole('AMMINISTRATORE')"
-                                          th:title="#{utenti.table.action.edit}">
-                                        <i class="fas fa-edit"></i>
-                                    </a>
-                                    <button type="button"
-                                            href="#"
-                                            th:data-utenti-delete-url="@{/protected/utenti/{id}}"
-                                            class="btn btn-danger cambio-stato-ente"
-                                            data-toggle="tooltip"
-                                            data-placement="top"
-                                            sec:authorize="hasRole('AMMINISTRATORE')"
-                                            th:title="#{utenti.table.action.delete}">
-                                        <i class="far fa-trash-alt"></i>
-                                    </button>
-                                </div>
-                            </td>
-                        </tr>
-                    </tbody>
                 </table>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <button id="aggiungiUtente"
+                        class="btn btn-primary"
+                        th:data-add-utente-dialog-title="#{utenti.add}"
+                        th:text="#{utenti.add}"></button>
+            </div>
+        </div>
+    </div>
+    <div id="dati-utente-modal" class="modal fade" tabindex="-1">
+        <div class="modal-dialog modal-fullscreen">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalTitle"></h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body" id="modalBody">
+
+                </div>
             </div>
         </div>
     </div>
 </th:block>
 <th:block layout:fragment="page-script">
-
+    <script th:src="@{/js/gijgo.min.js}" type="text/javascript"></script>
     <script th:src="@{/webjars/momentjs/2.29.4/min/moment-with-locales.min.js}" type="text/javascript"></script>
+    <script th:src="@{/js/messages/messages.it-it.min.js}" type="text/javascript"></script>
     <script th:src="@{/webjars/datatables/1.13.1/js/jquery.dataTables.min.js}" type="text/javascript"></script>
     <script th:src="@{/webjars/datatables/1.13.1/js/dataTables.bootstrap5.min.js}" type="text/javascript"></script>
+    <script type="text/javascript" th:src="@{/webjars/blueimp-file-upload/10.31.0/js/vendor/jquery.ui.widget.js}"></script>
+    <script type="text/javascript" th:src="@{/webjars/blueimp-file-upload/10.31.0/js/jquery.iframe-transport.js}"></script>
+    <script type="text/javascript" th:src="@{/webjars/blueimp-file-upload/10.31.0/js/jquery.fileupload.js}"></script>
+    <script type="text/javascript" th:src="@{/webjars/blueimp-file-upload/10.31.0/js/jquery.fileupload-process.js}"></script>
+    <script type="text/javascript" th:src="@{/webjars/blueimp-file-upload/10.31.0/js/jquery.fileupload-validate.js}"></script>
+    <script type="text/javascript" th:src="@{/webjars/blueimp-file-upload/10.31.0/js/jquery.fileupload-ui.js}"></script>
     <script th:src="@{/js/protected/utenti.js}" type="text/javascript"></script>
 </th:block>
 </body>

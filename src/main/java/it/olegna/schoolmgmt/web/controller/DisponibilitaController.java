@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/public/disponibilita")
@@ -38,7 +39,7 @@ public class DisponibilitaController {
     }
 
     @GetMapping(value = {"{idDisponibilita}"}, consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE}, produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
-    public ResponseEntity<ApiResponse<DisponibilitaDto>> Disponibilita(@PathVariable(required = true, name = "idDisponibilita") String id) {
+    public ResponseEntity<ApiResponse<DisponibilitaDto>> Disponibilita(@PathVariable(required = true, name = "idDisponibilita") UUID id) {
         log.info("Recupero i dettagli dell'Disponibilita con ID {}", id);
         return ResponseEntity.ok(ApiResponse.<DisponibilitaDto>builder().error(false).payload(this.disponibilitaSvc.findDisponibilitaById(id).orElseThrow()).build());
     }

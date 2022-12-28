@@ -15,6 +15,7 @@ import org.springframework.util.StringUtils;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Slf4j
 @Service
@@ -31,14 +32,14 @@ public class MateriaSvcImpl implements MateriaSvc {
     }
 
     @Override
-    public Optional<MateriaDto> findMateriaById(String id) {
+    public Optional<MateriaDto> findMateriaById(UUID id) {
         log.info("Ricrco materia con ID {}", id);
         Optional<Materia> result = this.repository.findById(id);
         return result.isEmpty() ? Optional.empty() : Optional.of(mapper.toDto(result.get()));
     }
 
     @Override
-    public void cancellaMateria(String idMateria) {
+    public void cancellaMateria(UUID idMateria) {
         log.info("Cancellazione materia con ID {}", idMateria);
         repository.deleteById(idMateria);
     }

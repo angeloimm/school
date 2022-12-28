@@ -1,25 +1,32 @@
 package it.olegna.schoolmgmt.service;
 
+import it.olegna.schoolmgmt.dto.FileUploadResponseDto;
 import it.olegna.schoolmgmt.dto.UtenteDto;
 import it.olegna.schoolmgmt.dto.UtenteTableDto;
+import it.olegna.schoolmgmt.dto.UtenteWithAttachDto;
 import it.olegna.schoolmgmt.enums.TipoUtenteEnum;
 import it.olegna.schoolmgmt.persistence.model.Utente;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 public interface UtenteSvc {
     UtenteDto createModificaUtente(UtenteDto utente);
+    UtenteDto createUtenteWithAttach(UtenteWithAttachDto utente);
 
-    Optional<UtenteDto> findUtenteById(String idUtente);
+    Optional<UtenteDto> findUtenteById(UUID idUtente);
 
     Optional<Utente> findUtenteByUsername(String username);
 
-    void cancellaUtente(String idUtente);
+    void cancellaUtente(UUID idUtente);
 
     boolean intiDb();
 
     List<UtenteDto> recuperaUtenti();
 
     Optional<List<UtenteTableDto>> findByTipoUtente(TipoUtenteEnum tipoUtenteEnum);
+    Page<UtenteTableDto> findByTipoUtente(TipoUtenteEnum tipoUtenteEnum, Pageable pageable);
 }
