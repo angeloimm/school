@@ -1,6 +1,5 @@
 package it.olegna.schoolmgmt.service;
 
-import it.olegna.schoolmgmt.dto.FileUploadResponseDto;
 import it.olegna.schoolmgmt.dto.UtenteDto;
 import it.olegna.schoolmgmt.dto.UtenteTableDto;
 import it.olegna.schoolmgmt.dto.UtenteWithAttachDto;
@@ -29,4 +28,5 @@ public interface UtenteSvc {
 
     Optional<List<UtenteTableDto>> findByTipoUtente(TipoUtenteEnum tipoUtenteEnum);
     Page<UtenteTableDto> findByTipoUtente(TipoUtenteEnum tipoUtenteEnum, Pageable pageable);
+    Boolean usernameValid(String value);
 }

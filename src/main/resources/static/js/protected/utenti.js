@@ -5,6 +5,7 @@ var templateUploadFile = Handlebars.compile($('#templateUpload').html());
 var templateErroreUploadFile = Handlebars.compile($('#templateErroreUploadFile').html());
 var tabellaUtenti = null;
 var idAllegati = [];
+var datiUtenteModal = null;
 $(function() {
     inizializzaTabellaUtenti();
     addModalEventsListener();
@@ -19,8 +20,8 @@ $(function() {
         $("#modalBody").empty();
         $("#modalBody").append(templateDatiUtente(datiUtente));
         let modalOptions = {};
-        let addUtenteModal = new bootstrap.Modal(document.getElementById('dati-utente-modal'), modalOptions);
-        addUtenteModal.show();
+        datiUtenteModal = new bootstrap.Modal(document.getElementById('dati-utente-modal'), modalOptions);
+        datiUtenteModal.show();
     });
 });
 function addModalEventsListener(){
@@ -61,6 +62,10 @@ function addModalEventsListener(){
               });
             //Inizializzo uploader
             initUploadZone();
+            //Avvio il listener per controllo username
+            $("#username").blur(function(evt){
+                verifyUsername($(this));
+            });
     });
 }
 function inizializzaTabellaUtenti(){
@@ -263,9 +268,10 @@ function initUploadZone(){
                     },
         			success : function(result) {
         			    tabellaUtenti.ajax.reload();
+        			    datiUtenteModal.hide();
         			},
         			error: function(XMLHttpRequest, textStatus, errorThrown) {
-        				$("#saveKo").show();
+        				alert("Errore salvataggio dati utente");
         			}
         		});
     });
@@ -281,4 +287,43 @@ function formatBytes(bytes,decimals) {
 	   sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'],
 	   i = Math.floor(Math.log(bytes) / Math.log(k));
 	return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
+}
+function verifyUsername(jqueryElement){
+    let username = jqueryElement.val();
+    let url = jqueryElement.data("username-validation-url");
+    let finalUrl = url.endsWith("/")?url+username:url+"/"+username;
+    $.ajax({
+        url:  finalUrl,
+        type:'GET',
+        dataType: "json",
+        //data:JSON.stringify(elementiForm),
+        contentType: "application/json",
+        beforeSend: function(xhr) {
+            $.blockUI({ message: $('#operazioneInCorsoMessage') });
+        },
+        complete:function(xhr, status){
+            $.unblockUI();
+        },
+        success : function(result) {
+            let usernameValida = result.payload;
+            if(usernameValida) {
+                jqueryElement.addClass("is-valid");
+                jqueryElement.removeClass("is-invalid");
+                (jqueryElement[0]).setCustomValidity("");
+                /*el.classList.add("is-valid");
+                el.classList.remove("is-invalid");
+                el.setCustomValidity("");*/
+            } else {
+                jqueryElement.removeClass("is-valid");
+                jqueryElement.addClass("is-invalid");
+                (jqueryElement[0]).setCustomValidity("invalid");
+                /*el.classList.remove("is-valid");
+                el.classList.add("is-invalid");
+                el.setCustomValidity("invalid");*/
+            }
+        },
+        error: function(XMLHttpRequest, textStatus, errorThrown) {
+            alert("Errore nel processo di validazione della username");
+        }
+    });
 }

@@ -35,7 +35,7 @@ public class WebSecurityConfig {
                         exchanges
                                 .requestMatchers("/public/**",
                                         "/favicon.ico",
-                                        "/h2-console",
+                                        "/h2-console/**",
                                         "/webjars/**",
                                         "/js/**",
                                         "/css/**",
@@ -63,6 +63,8 @@ public class WebSecurityConfig {
                             response.sendRedirect("/protected/hp");
                         }
                     })
+                .and()
+                .csrf().ignoringRequestMatchers("/h2-console/**")
                 .and()
                 .logout()
                     .logoutUrl(LOGOUT_URL)

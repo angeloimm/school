@@ -119,6 +119,14 @@ public class UtenteSvcImpl implements UtenteSvc {
     public Page<UtenteTableDto> findByTipoUtente(TipoUtenteEnum tipoUtenteEnum, Pageable pageable) {
         return this.repository.findByTipoUtente(tipoUtenteEnum, pageable);
     }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Boolean usernameValid(String value) {
+
+        return repository.countByUsernameStartsWith(value) <= 0;
+    }
+
     @Override
     @Transactional(readOnly = true)
     public boolean intiDb() {

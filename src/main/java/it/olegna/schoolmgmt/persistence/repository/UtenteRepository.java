@@ -20,6 +20,7 @@ public interface UtenteRepository extends JpaRepository<Utente, UUID>, JpaSpecif
     Optional<Utente> findByUsername(@Param("username") String na);
 
     long countByUsername(@Param("username") String uName);
+    long countByUsernameStartsWith(@Param("username") String uName);
 
     List<UtenteTableDto> findByTipoUtente(@Param("tipoUtente") TipoUtenteEnum tipoUtente, Sort sort);
     Page<UtenteTableDto> findByTipoUtente(@Param("tipoUtente") TipoUtenteEnum tipoUtente, Pageable pageable);
