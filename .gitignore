@@ -319,3 +319,7 @@ capacitor.config.ts
 fe/.angular/
 
 db/
+
+fe/.vscode/
+
+fe/.editorconfig

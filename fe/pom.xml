@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>it.olegna</groupId>
+		<artifactId>school.pom</artifactId>
+		<version>1.0</version>
+	</parent>
+	<groupId>it.olegna</groupId>
+	<artifactId>schoolmgmt.fe</artifactId>
+	<packaging>jar</packaging>
+	<description>Parte FE per il progetto DIOMEDEE</description>
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<node.version>v18.12.1</node.version>
+	</properties>
+	<developers>
+		<developer>
+			<id>angeloimm</id>
+			<name>Angel Immediata</name>
+			<roles>
+				<role>Solution Architect</role>
+			</roles>
+			<email>angelo.immediata@eng.it</email>
+			<organization>Engineering Ingegneria Informatica S.p.A.</organization>
+			<organizationUrl>http://wwww.eng.it</organizationUrl>
+		</developer>
+	</developers>
+	<build>
+		<pluginManagement>
+			<plugins>
+				<plugin>
+					<artifactId>maven-clean-plugin</artifactId>
+					<version>3.1.0</version>
+				</plugin>
+				<plugin>
+					<groupId>com.github.eirslett</groupId>
+					<artifactId>frontend-maven-plugin</artifactId>
+					<version>1.12.0</version>
+				</plugin>
+			</plugins>
+		</pluginManagement>
+		<plugins>
+			<plugin>
+				<artifactId>maven-clean-plugin</artifactId>
+				<configuration>
+					<filesets>
+						<fileset>
+							<directory>dist</directory>
+							<includes>
+								<include>*</include>
+								<include>**/*</include>
+							</includes>
+						</fileset>
+					</filesets>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>com.github.eirslett</groupId>
+				<artifactId>frontend-maven-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>install node and npm</id>
+						<goals>
+							<goal>install-node-and-npm</goal>
+						</goals>
+						<configuration>
+							<nodeVersion>${node.version}</nodeVersion>
+							<arguments>run build</arguments>
+							<npmInheritsProxyConfigFromMaven>true</npmInheritsProxyConfigFromMaven>
+						</configuration>
+					</execution>
+					<execution>
+						<id>set npm registry</id>
+						<goals>
+							<goal>npm</goal>
+						</goals>
+						<!--<configuration> <arguments>config set bin-links true</arguments>
+							</configuration> -->
+					</execution>
+					<execution>
+						<id>npm install</id>
+						<goals>
+							<goal>npm</goal>
+						</goals>
+						<!-- optional: default phase is "generate-resources" -->
+						<phase>generate-resources</phase>
+						<configuration>
+							<arguments>install</arguments>
+						</configuration>
+					</execution>
+					<execution>
+						<id>npm run build</id>
+						<goals>
+							<goal>npm</goal>
+						</goals>
+						<configuration>
+							<arguments>run build</arguments>
+							<npmInheritsProxyConfigFromMaven>true</npmInheritsProxyConfigFromMaven>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+</project>
