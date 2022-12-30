@@ -59,5 +59,11 @@ public class AllegatoController {
                                                         .build());
         return ResponseEntity.ok(FileUploadResponseDto.builder().files(Collections.singletonList(uploadedFileDto)).build());
     }
-
+    @DeleteMapping( value = {"/{idFile}"},
+                    consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE},
+                    produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE} )
+    public ResponseEntity<ApiResponse<Boolean>> deleteFile(@PathVariable(name = "idFile", required = true)UUID id){
+        this.allegatoSvc.deleteById(id);
+        return ResponseEntity.ok(ApiResponse.<Boolean>builder().payload(Boolean.TRUE).build());
+    }
 }

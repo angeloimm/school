@@ -66,6 +66,33 @@ function addModalEventsListener(){
             $("#username").blur(function(evt){
                 verifyUsername($(this));
             });
+
+            /*$(".cancella-file-server").click(function(evt){
+                evt.preventDefault();
+                let idFile = $(this).data("id-file");
+                let baseUrl = $(this).data("delete-file-url");
+                let finalUrl = baseUrl.endsWith("/")?baseUrl+idFile:baseUrl+"/"+idFile;
+                $.ajax({
+                    url:  finalUrl,
+                    type:'DELETE',
+                    //dataType: "json",
+                    //data:JSON.stringify(elementiForm),
+                    contentType: "application/json",
+                    beforeSend: function(xhr) {
+                        $.blockUI({ message: $('#operazioneInCorsoMessage') });
+                    },
+                    complete:function(xhr, status){
+                        $.unblockUI();
+                    },
+                    success : function(result) {
+                        //tabellaUtenti.ajax.reload();
+                        //datiUtenteModal.hide();
+                    },
+                    error: function(XMLHttpRequest, textStatus, errorThrown) {
+                        alert("Errore salvataggio dati utente");
+                    }
+                });
+            });*/
     });
 }
 function inizializzaTabellaUtenti(){
@@ -251,34 +278,39 @@ function initUploadZone(){
 				});
     $("#salva").click(function(evt){
         evt.preventDefault();
-        var elementiForm = formDataElementiForm();
-        elementiForm.allegati = idAllegati;
-        var theUrl = $(this).data("salvataggio-utente-url");
-        $.ajax({
-        			url:  theUrl,
-        			type:'POST',
-        			dataType: "json",
-        			data:JSON.stringify(elementiForm),
-        			contentType: "application/json",
-        			beforeSend: function(xhr) {
-        			    $.blockUI({ message: $('#operazioneInCorsoMessage') });
-        			},
-        			complete:function(xhr, status){
-                    	$.unblockUI();
-                    },
-        			success : function(result) {
-        			    tabellaUtenti.ajax.reload();
-        			    datiUtenteModal.hide();
-        			},
-        			error: function(XMLHttpRequest, textStatus, errorThrown) {
-        				alert("Errore salvataggio dati utente");
-        			}
-        		});
+        let formUtente = $("#inserimento-modifica-utente-form")[0];
+        formUtente.classList.add('was-validated');
+        if( formUtente.checkValidity() ){
+            var elementiForm = formDataElementiForm();
+            elementiForm.allegati = idAllegati;
+            var theUrl = $(this).data("salvataggio-utente-url");
+            $.ajax({
+                        url:  theUrl,
+                        type:'POST',
+                        dataType: "json",
+                        data:JSON.stringify(elementiForm),
+                        contentType: "application/json",
+                        beforeSend: function(xhr) {
+                            $.blockUI({ message: $('#operazioneInCorsoMessage') });
+                        },
+                        complete:function(xhr, status){
+                            $.unblockUI();
+                        },
+                        success : function(result) {
+                            tabellaUtenti.ajax.reload();
+                            datiUtenteModal.hide();
+                        },
+                        error: function(XMLHttpRequest, textStatus, errorThrown) {
+                            alert("Errore salvataggio dati utente");
+                        }
+                    });
+        }
     });
     $('#inserimento-modifica-utente-form').on('fileuploadsubmit', function (e, data) {
 
    		return true;
    	});
+
 }
 function formatBytes(bytes,decimals) {
 	if(bytes == 0) return '0 Bytes';
