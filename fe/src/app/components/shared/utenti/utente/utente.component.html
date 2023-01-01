@@ -1,60 +1,77 @@
 <div class="grid">
     <div class="col-12">
         <div class="card">
-            <div class="p-fluid p-formgrid grid">
-                <input pInputText id="tipoUtente" type="hidden" />
-                <input pInputText id="attivo" type="hidden" />
-                <div class="field col-12 md:col-3">
-                    <label htmlFor="nome"><strong>{{'utente.nome' | translate}} *</strong></label>
-                    <input pInputText id="nome" type="text" required />
-                </div>
-                <div class="field col-12 md:col-3">
-                    <label htmlFor="cognome"><strong>{{'utente.cognome' | translate}} *</strong></label>
-                    <input pInputText id="cognome" type="text" required />
-                </div>
-                <div class="field col-12 md:col-3">
-                    <label htmlFor="codiceFiscale"><strong>{{'utente.codiceFiscale' | translate}} *</strong></label>
-                    <input pInputText id="codiceFiscale" type="text" />
-                </div>
-                <div class="field col-12 md:col-3">
-                    <label htmlFor="dataNascita"><strong>{{'utente.dataNascita' | translate}} *</strong></label>
-                    <p-calendar inputId="dataNascita"></p-calendar>
-                </div>
-                <div class="field col-12">
-                    <label htmlFor="indirizzo"><strong>{{'utente.indirizzo' | translate}} *</strong></label>
-                    <input pInputTextarea id="indirizzo" rows="4" required />
-                </div>
-                <div class="field col-12 md:col-6">
-                    <label htmlFor="username"><strong>{{'utente.username' | translate}} *</strong></label>
-                    <input pInputText id="username" type="text" required />
-                </div>
-                <div class="field col-12 md:col-6">
-                    <label htmlFor="password"><strong>{{'utente.password' | translate}} *</strong></label>
-                    <input pInputText id="password" type="text" required />
-                </div>
-                <div class="field col-12">
-                    <label htmlFor="allegati"><strong>{{'utente.allegati' | translate}}</strong></label>
-                    <p-fileUpload name="allegati" [multiple]=multipleUpload (onUpload)="onUpload($event)"
-                        accept="application/pdf" uploadLabel="{{'uploader.uploadLabel' | translate}}"
-                        cancelLabel="{{'uploader.cancelLabel' | translate}}" [maxFileSize]=5000000>
-                        <ng-template pTemplate="content">
-                            <ul *ngIf="uploadedFiles.length">
-                                <li *ngFor="let file of uploadedFiles">{{file.name}} - {{file.size}} bytes</li>
-                            </ul>
-                        </ng-template>
-                    </p-fileUpload>
-                </div>
+            <p-messages [(value)]="msgs"></p-messages>
+        </div>
+    </div>
+    <div class="col-12">
+        <div class="card">
+            <form [formGroup]="userDetailsForm" (ngSubmit)="onSubmitUserDetails(userDetailsForm.value)">
+                <div class="p-fluid p-formgrid grid">
+                    <input pInputText id="tipoUtente" type="hidden" />
+                    <input pInputText id="attivo" type="hidden" />
+                    <div class="field col-12 md:col-3">
+                        <label htmlFor="nome"><strong>{{'utente.nome' | translate}} *</strong></label>
+                        <input pInputText id="nome" type="text" required formControlName="nome" />
+                    </div>
+                    <div class="field col-12 md:col-3">
+                        <label htmlFor="cognome"><strong>{{'utente.cognome' | translate}} *</strong></label>
+                        <input pInputText id="cognome" type="text" required formControlName="cognome" />
+                    </div>
+                    <div class="field col-12 md:col-3">
+                        <label htmlFor="codiceFiscale"><strong>{{'utente.codiceFiscale' | translate}} *</strong></label>
+                        <input pInputText id="codiceFiscale" type="text" required formControlName="codiceFiscale" />
+                    </div>
+                    <div class="field col-12 md:col-3">
+                        <label htmlFor="dataNascita"><strong>{{'utente.dataNascita' | translate}} *</strong></label>
+                        <p-calendar inputId="dataNascita" formControlName="dataNascita"></p-calendar>
+                    </div>
+                    <div class="field col-12">
+                        <label htmlFor="indirizzo"><strong>{{'utente.indirizzo' | translate}} *</strong></label>
+                        <input pInputTextarea id="indirizzo" rows="4" required formControlName="indirizzo" />
+                    </div>
+                    <div class="field col-12 md:col-4">
+                        <label htmlFor="username"><strong>{{'utente.username' | translate}} *</strong></label>
+                        <input pInputText id="username" type="text" required formControlName="username" />
+                    </div>
+                    <div formGroupName="matchingPasswords" class="field col-12 md:col-8">
+                        <div class="md:col-4">
+                            <label htmlFor="password"><strong>{{'utente.password' | translate}} *</strong></label>
+                            <input pInputText id="password" type="password" required />
+                        </div>
+                        <div class="md:col-4">
+                            <label htmlFor="confermapassword"><strong>{{'utente.confermapassword' | translate}}
+                                    *</strong></label>
+                            <input pInputText id="confermapassword" type="password" required />
+                        </div>
+                    </div>
+                    <div class="field col-12">
+                        <label htmlFor="allegati"><strong>{{'utente.allegati' | translate}}</strong></label>
+                        <p-fileUpload name="allegati" [multiple]=multipleUpload (onUpload)="onUpload($event)"
+                            accept="application/pdf" chooseLabel="{{'uploader.chooseLabel' | translate}}"
+                            uploadLabel="{{'uploader.uploadLabel' | translate}}"
+                            cancelLabel="{{'uploader.cancelLabel' | translate}}" [showUploadButton]=false
+                            [showCancelButton]=false [maxFileSize]=5000000>
+                            <ng-template pTemplate="content">
+                                <ul *ngIf="uploadedFiles.length">
+                                    <li *ngFor="let file of uploadedFiles">{{file.name}} - {{file.size}} bytes</li>
+                                </ul>
+                            </ng-template>
+                        </p-fileUpload>
+                    </div>
 
-                <div class="grid">
-                <div class="col">
-                    <button pButton label="{{'azioni.salva' | translate}}" type="button"></button>
-                </div>
-                <div class="col">
-                    <button pButton label="{{'azioni.annulla' | translate}}" type="button" class="p-button-secondary"></button>
-                </div>
-                </div>
+                    <div class="grid">
+                        <div class="col">
+                            <button pButton label="{{'azioni.salva' | translate}}" type="button"></button>
+                        </div>
+                        <div class="col">
+                            <button pButton label="{{'azioni.annulla' | translate}}" type="button"
+                                class="p-button-secondary"></button>
+                        </div>
+                    </div>
 
-            </div>
+                </div>
+            </form>
         </div>
     </div>
 </div>

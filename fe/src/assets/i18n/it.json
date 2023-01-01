@@ -1,5 +1,16 @@
 {
+    "topbar":{
+        "titolo":"Programmazione corsi"
+    },
     "utente":{
+        "titolo-pannello":"Inserimento utente",
+        "inserimento-amministratore":"Inserimento amministratore del sistema",
+        "inserimento-docente":"Inserimento dati docente",
+        "inserimento-studente":"Inserimento dati studente",
+        "modifica-amministratore":"Inserimento amministratore del sistema",
+        "modifica-docente":"Modifica dati docente",
+        "modifica-studente":"Modifica dati studente",
+        "tipo-utente-sconosciuto":"Tipo utente {{tipo}} non riconosciuto",
         "nome":"Nome",
         "cognome":"Cognome",
         "codiceFiscale":"Codice Fiscale",
@@ -7,9 +18,11 @@
         "indirizzo":"Indirizzo",
         "username":"Username",
         "password":"Password",
+        "confermapassword":"Conferma password",
         "allegati":"Allegati utente"
     },
     "uploader":{
+        "chooseLabel":"Scegli file",
         "uploadLabel":"Allega file",
         "cancelLabel":"Cancella file"
     },
