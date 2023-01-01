@@ -1,10 +1,10 @@
-import { HttpClient } from '@angular/common/http';
+
 import { Component, OnInit } from '@angular/core';
-import { Route, Router } from '@angular/router';
-import { ApiResponse } from './models/api-response-models';
+import { Router } from '@angular/router';
 import { CONST } from './shared/constants';
 import { InitDbServiceService } from './shared/services/api/init-db-service.service';
 import { LoggingServiceService } from './shared/services/logging-service.service';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-root',
@@ -15,7 +15,11 @@ export class AppComponent implements OnInit {
   loading:boolean = false;
   constructor(private log:LoggingServiceService, 
               private initDb:InitDbServiceService,
-              private router:Router){}
+              private router:Router,
+              private translate:TranslateService){
+                translate.setDefaultLang('it');
+                translate.use('it');
+              }
   ngOnInit(): void {
     this.log.printLog("Controllo se necessario inizializzare o meno");
     this.initApplication();

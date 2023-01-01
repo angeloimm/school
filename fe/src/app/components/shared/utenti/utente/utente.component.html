@@ -1,52 +1,60 @@
-<div class="p-fluid p-formgrid grid">
-    <input pInputText id="tipoUtente" type="hidden" [(ngModel)]="utente.tipoUtente" [value]="utente.tipoUtente" />
-    <input pInputText id="attivo" type="hidden" [(ngModel)]="utente.attivo" [value]="utente.attivo" />
-    <div class="field col-12 md:col-3">
-        <label htmlFor="nome">{{'utente.nome' | translate}} *</label>
-        <input pInputText id="nome" type="text" required [(ngModel)]="utente.nome" />
+<div class="grid">
+    <div class="col-12">
+        <div class="card">
+            <div class="p-fluid p-formgrid grid">
+                <input pInputText id="tipoUtente" type="hidden" />
+                <input pInputText id="attivo" type="hidden" />
+                <div class="field col-12 md:col-3">
+                    <label htmlFor="nome"><strong>{{'utente.nome' | translate}} *</strong></label>
+                    <input pInputText id="nome" type="text" required />
+                </div>
+                <div class="field col-12 md:col-3">
+                    <label htmlFor="cognome"><strong>{{'utente.cognome' | translate}} *</strong></label>
+                    <input pInputText id="cognome" type="text" required />
+                </div>
+                <div class="field col-12 md:col-3">
+                    <label htmlFor="codiceFiscale"><strong>{{'utente.codiceFiscale' | translate}} *</strong></label>
+                    <input pInputText id="codiceFiscale" type="text" />
+                </div>
+                <div class="field col-12 md:col-3">
+                    <label htmlFor="dataNascita"><strong>{{'utente.dataNascita' | translate}} *</strong></label>
+                    <p-calendar inputId="dataNascita"></p-calendar>
+                </div>
+                <div class="field col-12">
+                    <label htmlFor="indirizzo"><strong>{{'utente.indirizzo' | translate}} *</strong></label>
+                    <input pInputTextarea id="indirizzo" rows="4" required />
+                </div>
+                <div class="field col-12 md:col-6">
+                    <label htmlFor="username"><strong>{{'utente.username' | translate}} *</strong></label>
+                    <input pInputText id="username" type="text" required />
+                </div>
+                <div class="field col-12 md:col-6">
+                    <label htmlFor="password"><strong>{{'utente.password' | translate}} *</strong></label>
+                    <input pInputText id="password" type="text" required />
+                </div>
+                <div class="field col-12">
+                    <label htmlFor="allegati"><strong>{{'utente.allegati' | translate}}</strong></label>
+                    <p-fileUpload name="allegati" [multiple]=multipleUpload (onUpload)="onUpload($event)"
+                        accept="application/pdf" uploadLabel="{{'uploader.uploadLabel' | translate}}"
+                        cancelLabel="{{'uploader.cancelLabel' | translate}}" [maxFileSize]=5000000>
+                        <ng-template pTemplate="content">
+                            <ul *ngIf="uploadedFiles.length">
+                                <li *ngFor="let file of uploadedFiles">{{file.name}} - {{file.size}} bytes</li>
+                            </ul>
+                        </ng-template>
+                    </p-fileUpload>
+                </div>
+
+                <div class="grid">
+                <div class="col">
+                    <button pButton label="{{'azioni.salva' | translate}}" type="button"></button>
+                </div>
+                <div class="col">
+                    <button pButton label="{{'azioni.annulla' | translate}}" type="button" class="p-button-secondary"></button>
+                </div>
+                </div>
+
+            </div>
+        </div>
     </div>
-    <div class="field col-12 md:col-3">
-        <label htmlFor="cognome">{{'utente.cognome' | translate}} *</label>
-        <input pInputText id="cognome" type="text" required [(ngModel)]="utente.cognome" />
-    </div>
-    <div class="field col-12 md:col-3">
-        <label htmlFor="codiceFiscale">{{'utente.codiceFiscale' | translate}} *</label>
-        <input pInputText id="codiceFiscale" type="text" [(ngModel)]="utente.codiceFiscale"  />
-    </div>
-    <div class="field col-12 md:col-3">
-        <label htmlFor="dataNascita">{{'utente.dataNascita' | translate}} *</label>
-        <p-calendar inputId="dataNascita" [(ngModel)]="utente.dataNascita"></p-calendar>
-    </div>    
-    <div class="field col-12">
-        <label htmlFor="indirizzo">{{'utente.indirizzo' | translate}} *</label>
-        <input pInputTextarea id="indirizzo" rows="4" [(ngModel)]="utente.indirizzo" required />
-    </div>
-    <div class="field col-12 md:col-6">
-        <label htmlFor="username">{{'utente.username' | translate}} *</label>
-        <input pInputText id="username" type="text" [(ngModel)]="utente.username" required="" />
-    </div>
-    <div class="field col-12 md:col-6">
-        <label htmlFor="password">{{'utente.password' | translate}} *</label>
-        <input pInputText id="password" type="text" [(ngModel)]="utente.password" required />
-    </div>
-    <div class="field col-12">
-        <label htmlFor="allegati">{{'utente.allegati' | translate}}</label>
-        <p-fileUpload   name="allegati" 
-                        [multiple]=multipleUpload
-                        (onUpload)="onUpload($event)" 
-                        accept="application/pdf"
-                        uploadLabel="{{'uploader.uploadLabel' | translate}}"
-                        cancelLabel="{{'uploader.cancelLabel' | translate}}"
-                        [maxFileSize]=5000000>
-            <ng-template pTemplate="content">
-                <ul *ngIf="uploadedFiles.length">
-                    <li *ngFor="let file of uploadedFiles">{{file.name}} - {{file.size}} bytes</li>
-                </ul>
-            </ng-template>
-        </p-fileUpload>
-    </div>    
-    <div class="field col-12">
-        <button pButton pRipple type="button" label="Salva" class="mr-2 mb-2"></button>
-        <button pButton pRipple type="reset" label="Annulla" class="p-button-secondary mr-2 mb-2"></button>
-    </div>    
 </div>

@@ -6,11 +6,15 @@
         "dataNascita":"Data di nascita",
         "indirizzo":"Indirizzo",
         "username":"Username",
-        "password":"password",
+        "password":"Password",
         "allegati":"Allegati utente"
     },
     "uploader":{
         "uploadLabel":"Allega file",
         "cancelLabel":"Cancella file"
+    },
+    "azioni":{
+        "salva": "Salva",
+        "annulla": "Annulla"
     }
 }

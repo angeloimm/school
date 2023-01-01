@@ -6,7 +6,7 @@ export const routes: Routes = [
   {
       path: "init/applicazione",
       title: "Inserimento amministratore",
-      component: UtenteComponent
+      loadChildren: () => import ('./components/shared/utenti/utente/utente-componente-module/utente-componente-module.module').then((m)=> m.UtenteComponenteModuleModule)
   }
 ];
 
