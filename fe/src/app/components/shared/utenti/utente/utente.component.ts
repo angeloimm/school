@@ -4,6 +4,7 @@ import { ActivatedRoute } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { Message } from 'primeng/api';
 import { Utente } from 'src/app/models/utente';
+import { FormUtilsService } from 'src/app/shared/services/form-utils.service';
 import { LoggingServiceService } from 'src/app/shared/services/logging-service.service';
 import { PasswordValidator } from 'src/app/validators/password.validator';
 
@@ -16,7 +17,7 @@ export class UtenteComponent implements OnInit {
   utente: Utente = {};
   msgs: Message[] = [];
   msg: Message = {};
-  
+  maxDateValue:Date = new Date();
   uploadedFiles: any[] = [];
   multipleUpload: boolean = true;
   //Form utils
@@ -31,7 +32,8 @@ export class UtenteComponent implements OnInit {
   constructor(private route: ActivatedRoute,
     private log: LoggingServiceService,
     private translate: TranslateService,
-    private fb:FormBuilder) { }
+    private fb:FormBuilder,
+    public formUtils:FormUtilsService) { }
   ngOnInit(): void {
     this.initPannello();
     this.createForm();

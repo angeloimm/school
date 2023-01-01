@@ -10,6 +10,7 @@ import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { MessageService } from 'primeng/api';
 import { TopBarComponent } from './components/layout/top-bar/top-bar.component';
 import { LayoutService } from './components/layout/service/layout.service';
+import { FormUtilsService } from './shared/services/form-utils.service';
 /**
  * CONFIG la gestione dell'internazionalizzazione;
  */
@@ -38,7 +39,8 @@ export function HttpLoaderFactory(http: HttpClient) {
   providers: [
     AuthGuard,
     MessageService,
-    LayoutService
+    LayoutService,
+    FormUtilsService
   ],
   bootstrap: [AppComponent]
 })

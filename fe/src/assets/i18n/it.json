@@ -2,7 +2,18 @@
     "topbar":{
         "titolo":"Programmazione corsi"
     },
+    "common":{
+        "errors":{
+            "required": "Campo obbligatorio"
+        }
+    },
     "utente":{
+        "pick-password":"Seleziona una password",
+        "pick-password-min-length":"Almeno 8 caratteri",
+        "password-one-numeric":"Almeno un carattere numerico",
+        "pick-password-one-lower":"Almeno un carattere minuscolo",
+        "password-one-upper":"Almeno un carattere maiuscolo",
+        "pick-password-suggestions":"Suggerimenti",
         "titolo-pannello":"Inserimento utente",
         "inserimento-amministratore":"Inserimento amministratore del sistema",
         "inserimento-docente":"Inserimento dati docente",
@@ -29,5 +40,52 @@
     "azioni":{
         "salva": "Salva",
         "annulla": "Annulla"
+    },
+    "primeng": {
+        "startsWith": "Inizia con",
+        "contains": "Contiene",
+        "notContains": "Non contiene",
+        "endsWith": "Finisce con",
+        "equals": "Uguale",
+        "notEquals": "Non uguale",
+        "noFilter": "Nessun filtro",
+        "lt": "Minore di",
+        "lte": "Minore di o uguale a",
+        "gt": "Maggiore di",
+        "gte": "Maggiore di o uguale a",
+        "is": "È",
+        "isNot": "Non è",
+        "before": "Prima",
+        "after": "Dopo",
+        "dateIs": "Data pari a",
+        "dateIsNot": "Data diversa da",
+        "dateBefore": "Data precedente a",
+        "dateAfter": "Data successiva a",
+        "clear": "Pulisci",
+        "apply": "Applica",
+        "matchAll": "Match All",
+        "matchAny": "Match Any",
+        "addRule": "Aggiungi regola",
+        "removeRule": "Rimuovi regola",
+        "accept": "Si",
+        "reject": "No",
+        "choose": "Seleziona",
+        "upload": "Upload",
+        "cancel": "Cancella",
+        "dayNames": ["Domenica", "Lunedì", "Martedì", "Mercoledì", "Giovedì", "Venerdì", "Sabato"],
+        "dayNamesShort": ["Dom", "Lun", "Mar", "Mer", "Gio", "Ven", "Sab"],
+        "dayNamesMin": ["Do","Lu","Ma","Me","Gi","Ve","Sa"],
+        "monthNames": ["Gennaio","Febbraio","Marzo","Aprile","Maggio","Giugno","Luglio","Agosto","Settembre","Ottobre","Novembre","Dicembre"],
+        "monthNamesShort": ["Gen", "Feb", "Mar", "Apr", "Mag", "Giu","Lug", "Ago", "Set", "Ott", "Nov", "Dic"],
+        "dateFormat": "dd/mm/yy",
+        "firstDayOfWeek": 0,
+        "today": "Oggi",
+        "weekHeader": "Wk",
+        "weak": "Debole",
+        "medium": "Media",
+        "strong": "Forte",
+        "passwordPrompt": "Inserisci una password",
+        "emptyMessage": "Nessun risultato trovato",
+        "emptyFilterMessage": "Nessun risultato trovato"
     }
 }

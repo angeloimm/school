@@ -13,7 +13,8 @@ import { RouterModule, Routes } from '@angular/router';
 import { MessagesModule } from 'primeng/messages';
 import { MessageModule } from 'primeng/message';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-
+import {PasswordModule} from 'primeng/password';
+import {DividerModule} from 'primeng/divider';
 const routes: Routes = [
   { path: '', component: UtenteComponent }
 ];
@@ -25,11 +26,13 @@ const routes: Routes = [
     ButtonModule,
     InputTextModule,
     InputTextareaModule,
+    PasswordModule,
     FileUploadModule,
     CalendarModule,
     MessagesModule,
     MessageModule,
     FormsModule,
+    DividerModule,
     ReactiveFormsModule,
     RouterModule.forChild(routes),
     TranslateModule.forChild({
