@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators, ValidationErrors } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { Message } from 'primeng/api';
@@ -29,6 +29,8 @@ export class UtenteComponent implements OnInit {
   indirizzo: FormControl;
   dataNascita: FormControl;
   username: FormControl;
+  password: FormControl;
+  confermaPassword: FormControl;
   constructor(private route: ActivatedRoute,
     private log: LoggingServiceService,
     private translate: TranslateService,
@@ -39,6 +41,7 @@ export class UtenteComponent implements OnInit {
     this.createForm();
   }
   initPannello(){
+    
     this.utente.attivo = true;
     this.route.queryParams.subscribe(params => {
       let tipoUtente = params['tipoUtente'];
@@ -66,16 +69,18 @@ export class UtenteComponent implements OnInit {
     this.dataNascita = new FormControl('',Validators.required);
     this.indirizzo = new FormControl('',Validators.required);
     this.username = new FormControl('',Validators.required);
+    this.password = new FormControl('',Validators.compose([
+      Validators.minLength(8),
+      Validators.required,
+      Validators.pattern('^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$')
+    ]));
+    this.confermaPassword = new FormControl('',Validators.required);
     //Password e match password
     this.matchingPasswordsGroup = new FormGroup({
-      password: new FormControl('', Validators.compose([
-        Validators.minLength(5),
-        Validators.required,
-        Validators.pattern('^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])[a-zA-Z0-9]+$')
-      ])),
-      confirm_password: new FormControl('', Validators.required)
-    }, (formGroup: FormGroup) => {
-      return PasswordValidator.areEqual(formGroup);
+      password: this.password,
+      confermaPassword: this.confermaPassword
+    }, (formGroup: FormGroup)=>{
+          return PasswordValidator.areEqual(formGroup);
     });
 
     this.userDetailsForm = this.fb.group({
@@ -96,4 +101,9 @@ export class UtenteComponent implements OnInit {
   onSubmitUserDetails(value: any){
     console.log(value);
   }  
+  formInvalid(){
+    let errori: ValidationErrors = this.userDetailsForm.get("matchingPasswords").errors;
+    debugger;
+    alert(errori);
+  }
 }

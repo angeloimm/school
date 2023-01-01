@@ -12,53 +12,63 @@
                     <input pInputText id="attivo" [value]="utente.attivo" type="hidden" />
                     <div class="field col-12 md:col-3">
                         <label htmlFor="nome"><strong>{{'utente.nome' | translate}} *</strong></label>
-                        <input pInputText id="nome" [ngClass]="formUtils.getInvalid(userDetailsForm,'nome') ? 'ng-invalid ng-dirty' : '' " [value]="utente.nome" type="text" required formControlName="nome" />
+                        <input pInputText id="nome"
+                            [ngClass]="formUtils.getInvalid(userDetailsForm,'nome') ? 'ng-invalid ng-dirty' : '' "
+                            [value]="utente.nome" type="text"  formControlName="nome" />
                         <small *ngIf="formUtils.getInvalid(userDetailsForm,'nome')" class="p-error">
-                            <strong>{{ 'common.errors.required' | translate}}</strong>
+                            <strong>{{ 'common.errors.' | translate}}</strong>
                         </small>
                     </div>
                     <div class="field col-12 md:col-3">
                         <label htmlFor="cognome"><strong>{{'utente.cognome' | translate}} *</strong></label>
-                        <input pInputText id="cognome" type="text" [value]="utente.cognome" required formControlName="cognome" [ngClass]="formUtils.getInvalid(userDetailsForm,'cognome') ? 'ng-invalid ng-dirty' : '' "/>
+                        <input pInputText id="cognome" type="text" [value]="utente.cognome" 
+                            formControlName="cognome"
+                            [ngClass]="formUtils.getInvalid(userDetailsForm,'cognome') ? 'ng-invalid ng-dirty' : '' " />
                         <small *ngIf="formUtils.getInvalid(userDetailsForm,'cognome')" class="p-error">
-                            <strong>{{ 'common.errors.required' | translate}}</strong>
-                        </small>                        
+                            <strong>{{ 'common.errors.' | translate}}</strong>
+                        </small>
                     </div>
                     <div class="field col-12 md:col-3">
                         <label htmlFor="codiceFiscale"><strong>{{'utente.codiceFiscale' | translate}} *</strong></label>
-                        <input pInputText id="codiceFiscale" type="text" [value]="utente.codiceFiscale" required formControlName="codiceFiscale" [ngClass]="formUtils.getInvalid(userDetailsForm,'codiceFiscale') ? 'ng-invalid ng-dirty' : '' "/>
+                        <input pInputText id="codiceFiscale" type="text" [value]="utente.codiceFiscale" 
+                            formControlName="codiceFiscale"
+                            [ngClass]="formUtils.getInvalid(userDetailsForm,'codiceFiscale') ? 'ng-invalid ng-dirty' : '' " />
                         <small *ngIf="formUtils.getInvalid(userDetailsForm,'codiceFiscale')" class="p-error">
-                            <strong>{{ 'common.errors.required' | translate}}</strong>
+                            <strong>{{ 'common.errors.' | translate}}</strong>
                         </small>
                     </div>
                     <div class="field col-12 md:col-3">
                         <label htmlFor="dataNascita"><strong>{{'utente.dataNascita' | translate}} *</strong></label>
-                        <p-calendar inputId="dataNascita" 
-                                    [maxDate]="maxDateValue" 
-                                    [ngClass]="formUtils.getInvalid(userDetailsForm,'dataNascita') ? 'ng-invalid ng-dirty' : '' "
-                                    formControlName="dataNascita"></p-calendar>
-                                    <small *ngIf="formUtils.getInvalid(userDetailsForm,'dataNascita')" class="p-error">
-                                        <strong>{{ 'common.errors.required' | translate}}</strong>
-                                    </small>
+                        <p-calendar inputId="dataNascita" [maxDate]="maxDateValue"
+                            [ngClass]="formUtils.getInvalid(userDetailsForm,'dataNascita') ? 'ng-invalid ng-dirty' : '' "
+                            formControlName="dataNascita"></p-calendar>
+                        <small *ngIf="formUtils.getInvalid(userDetailsForm,'dataNascita')" class="p-error">
+                            <strong>{{ 'common.errors.' | translate}}</strong>
+                        </small>
                     </div>
                     <div class="field col-12">
                         <label htmlFor="indirizzo"><strong>{{'utente.indirizzo' | translate}} *</strong></label>
-                        <input pInputTextarea id="indirizzo" rows="4" required formControlName="indirizzo" [ngClass]="formUtils.getInvalid(userDetailsForm,'indirizzo') ? 'ng-invalid ng-dirty' : '' " />
+                        <input pInputTextarea id="indirizzo" rows="4"  formControlName="indirizzo"
+                            [ngClass]="formUtils.getInvalid(userDetailsForm,'indirizzo') ? 'ng-invalid ng-dirty' : '' " />
                         <small *ngIf="formUtils.getInvalid(userDetailsForm,'indirizzo')" class="p-error">
-                            <strong>{{ 'common.errors.required' | translate}}</strong>
+                            <strong>{{ 'common.errors.' | translate}}</strong>
                         </small>
                     </div>
                     <div class="field col-12 md:col-4">
                         <label htmlFor="username"><strong>{{'utente.username' | translate}} *</strong></label>
-                        <input pInputText id="username" type="text" required formControlName="username" [ngClass]="formUtils.getInvalid(userDetailsForm,'username') ? 'ng-invalid ng-dirty' : '' "/>
+                        <input pInputText id="username" type="text"  formControlName="username"
+                            [ngClass]="formUtils.getInvalid(userDetailsForm,'username') ? 'ng-invalid ng-dirty' : '' " />
                         <small *ngIf="formUtils.getInvalid(userDetailsForm,'username')" class="p-error">
-                            <strong>{{ 'common.errors.required' | translate}}</strong>
+                            <strong>{{ 'common.errors.' | translate}}</strong>
                         </small>
                     </div>
                     <div formGroupName="matchingPasswords" class="field col-12 md:col-8 grid">
                         <div class="field col">
                             <label htmlFor="password"><strong>{{'utente.password' | translate}} *</strong></label>
-                            <p-password [toggleMask]="true" id="password"required [ngClass]="formUtils.getInvalid(userDetailsForm,'password') ? 'ng-invalid ng-dirty' : '' ">
+                            <p-password [toggleMask]="true" 
+                                        id="password" 
+                                        [ngClass]="formUtils.getInvalid(userDetailsForm,'password') ? 'ng-invalid ng-dirty' : '' "
+                                        formControlName="password">
                                 <ng-template pTemplate="header">
                                     <h6>{{'utente.pick-password' | translate}}</h6>
                                 </ng-template>
@@ -78,11 +88,20 @@
                             </small>
                         </div>
                         <div class="field col">
-                            <label htmlFor="confermapassword"><strong>{{'utente.confermapassword' | translate}}
+                            <label htmlFor="confermaPassword"><strong>{{'utente.confermapassword' | translate}}
                                     *</strong></label>
-                            <p-password id="confermapassword" type="password" required [ngClass]="formUtils.getInvalid(userDetailsForm,'confermapassword') ? 'ng-invalid ng-dirty' : '' "></p-password>
-                        </div>
+                            <p-password id="confermaPassword" 
+                                        type="password"  
+                                        [feedback]=false
+                                        [ngClass]="formUtils.getInvalid(userDetailsForm,'confermaPassword') ? 'ng-invalid ng-dirty' : '' "
+                                        formControlName="confermaPassword"></p-password>
+                                        
+                                        <small *ngIf="matchingPasswordsGroup.errors?.['areEqual']" class="p-error">
+                                            <strong>{{ 'common.errors.checkpassword' | translate}}</strong>
+                                        </small>                                          
+                        </div>                      
                     </div>
+
                     <div class="field col-12">
                         <label htmlFor="allegati"><strong>{{'utente.allegati' | translate}}</strong></label>
                         <p-fileUpload name="allegati" [multiple]=multipleUpload (onUpload)="onUpload($event)"
@@ -100,14 +119,14 @@
 
                     <div class="grid">
                         <div class="col">
-                            <button pButton label="{{'azioni.salva' | translate}}" type="button"></button>
+                            <button pButton [disabled]="userDetailsForm.invalid" label="{{'azioni.salva' | translate}}"
+                                type="button"></button>
                         </div>
                         <div class="col">
                             <button pButton label="{{'azioni.annulla' | translate}}" type="button"
                                 class="p-button-secondary"></button>
                         </div>
                     </div>
-
                 </div>
             </form>
         </div>

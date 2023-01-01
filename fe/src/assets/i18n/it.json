@@ -4,15 +4,16 @@
     },
     "common":{
         "errors":{
-            "required": "Campo obbligatorio"
+            "required": "Campo obbligatorio",
+            "checkpassword":"Conferma password non valida"
         }
     },
     "utente":{
         "pick-password":"Seleziona una password",
         "pick-password-min-length":"Almeno 8 caratteri",
-        "password-one-numeric":"Almeno un carattere numerico",
+        "pick-password-one-numeric":"Almeno un carattere numerico",
         "pick-password-one-lower":"Almeno un carattere minuscolo",
-        "password-one-upper":"Almeno un carattere maiuscolo",
+        "pick-password-one-upper":"Almeno un carattere maiuscolo",
         "pick-password-suggestions":"Suggerimenti",
         "titolo-pannello":"Inserimento utente",
         "inserimento-amministratore":"Inserimento amministratore del sistema",

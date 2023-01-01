@@ -7,7 +7,7 @@
 
 
     <!--<div #topbarmenu class="layout-topbar-menu" [ngClass]="{'layout-topbar-menu-mobile-active': layoutService.state.profileSidebarVisible}">-->
-        <div class="layout-topbar-menu">
+        <div class="layout-topbar-menu" *ngIf="layoutService.isPanelVisible()">
         <button class="p-link layout-topbar-button">
             <i class="pi pi-calendar"></i>
             <span>Calendar</span>
