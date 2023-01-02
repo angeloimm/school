@@ -6,52 +6,66 @@
     </div>
     <div class="col-12">
         <div class="card">
-            <form [formGroup]="userDetailsForm" (ngSubmit)="onSubmitUserDetails(userDetailsForm.value)">
+            <form [formGroup]="userDetailsForm">
                 <div class="p-fluid p-formgrid grid">
                     <input pInputText id="tipoUtente" [value]="utente.tipoUtente" type="hidden" />
                     <input pInputText id="attivo" [value]="utente.attivo" type="hidden" />
-                    <div class="field col-12 md:col-3">
+                    <div class="field col-12 md:col-2">
                         <label htmlFor="nome"><strong>{{'utente.nome' | translate}} *</strong></label>
                         <input pInputText id="nome"
                             [ngClass]="formUtils.getInvalid(userDetailsForm,'nome') ? 'ng-invalid ng-dirty' : '' "
                             [value]="utente.nome" type="text"  formControlName="nome" />
                         <small *ngIf="formUtils.getInvalid(userDetailsForm,'nome')" class="p-error">
-                            <strong>{{ 'common.errors.' | translate}}</strong>
+                            <strong>{{ 'common.errors.required' | translate}}</strong>
                         </small>
                     </div>
-                    <div class="field col-12 md:col-3">
+                    <div class="field col-12 md:col-2">
                         <label htmlFor="cognome"><strong>{{'utente.cognome' | translate}} *</strong></label>
                         <input pInputText id="cognome" type="text" [value]="utente.cognome" 
                             formControlName="cognome"
                             [ngClass]="formUtils.getInvalid(userDetailsForm,'cognome') ? 'ng-invalid ng-dirty' : '' " />
                         <small *ngIf="formUtils.getInvalid(userDetailsForm,'cognome')" class="p-error">
-                            <strong>{{ 'common.errors.' | translate}}</strong>
+                            <strong>{{ 'common.errors.required' | translate}}</strong>
                         </small>
                     </div>
-                    <div class="field col-12 md:col-3">
+                    <div class="field col-12 md:col-2">
                         <label htmlFor="codiceFiscale"><strong>{{'utente.codiceFiscale' | translate}} *</strong></label>
                         <input pInputText id="codiceFiscale" type="text" [value]="utente.codiceFiscale" 
                             formControlName="codiceFiscale"
                             [ngClass]="formUtils.getInvalid(userDetailsForm,'codiceFiscale') ? 'ng-invalid ng-dirty' : '' " />
                         <small *ngIf="formUtils.getInvalid(userDetailsForm,'codiceFiscale')" class="p-error">
-                            <strong>{{ 'common.errors.' | translate}}</strong>
+                            <strong>{{ 'common.errors.required' | translate}}</strong>
                         </small>
                     </div>
-                    <div class="field col-12 md:col-3">
+                    <div class="field col-12 md:col-2">
                         <label htmlFor="dataNascita"><strong>{{'utente.dataNascita' | translate}} *</strong></label>
                         <p-calendar inputId="dataNascita" [maxDate]="maxDateValue"
                             [ngClass]="formUtils.getInvalid(userDetailsForm,'dataNascita') ? 'ng-invalid ng-dirty' : '' "
                             formControlName="dataNascita"></p-calendar>
                         <small *ngIf="formUtils.getInvalid(userDetailsForm,'dataNascita')" class="p-error">
-                            <strong>{{ 'common.errors.' | translate}}</strong>
+                            <strong>{{ 'common.errors.required' | translate}}</strong>
                         </small>
                     </div>
+                    <div class="field col-12 md:col-2">
+                        <label htmlFor="sesso"><strong>{{'utente.sesso' | translate}} *</strong></label>
+                        <p-dropdown [options]="elencoSessi" 
+                                    id="sesso"
+                                    name="sesso"
+                                    [ngClass]="formUtils.getInvalid(userDetailsForm,'sesso') ? 'ng-invalid ng-dirty' : '' "
+                                    formControlName="sessoFc"
+                                    optionLabel="name" 
+                                    optionValue="code" 
+                                    placeholder="{{'utente.sessoplaceholder'|translate}}"></p-dropdown>
+                        <small *ngIf="formUtils.getInvalid(userDetailsForm,'sesso')" class="p-error">
+                            <strong>{{ 'common.errors.required' | translate}}</strong>
+                        </small>
+                    </div>                    
                     <div class="field col-12">
                         <label htmlFor="indirizzo"><strong>{{'utente.indirizzo' | translate}} *</strong></label>
                         <input pInputTextarea id="indirizzo" rows="4"  formControlName="indirizzo"
                             [ngClass]="formUtils.getInvalid(userDetailsForm,'indirizzo') ? 'ng-invalid ng-dirty' : '' " />
                         <small *ngIf="formUtils.getInvalid(userDetailsForm,'indirizzo')" class="p-error">
-                            <strong>{{ 'common.errors.' | translate}}</strong>
+                            <strong>{{ 'common.errors.required' | translate}}</strong>
                         </small>
                     </div>
                     <div class="field col-12 md:col-4">
@@ -107,23 +121,81 @@
 
                     <div class="field col-12">
                         <label htmlFor="allegati"><strong>{{'utente.allegati' | translate}}</strong></label>
-                        <p-fileUpload name="allegati" [multiple]=multipleUpload (onUpload)="onUpload($event)"
-                            accept="application/pdf" chooseLabel="{{'uploader.chooseLabel' | translate}}"
-                            uploadLabel="{{'uploader.uploadLabel' | translate}}"
-                            cancelLabel="{{'uploader.cancelLabel' | translate}}" [showUploadButton]=false
-                            [showCancelButton]=false [maxFileSize]=5000000>
+                        <p-fileUpload   #uploaderAllegatiUtente
+                                        id="allegati"
+                                        name="allegati" 
+                                        [url]="uploadUrl"
+                                        [multiple]=multipleUpload 
+                                        (onBeforeUpload)="addData($event)"
+                                        (onUpload)="uploadFinished($event)"
+                                        (onError)="uploadError($event)"
+                                        accept="application/pdf" 
+                                        chooseLabel="{{'uploader.chooseLabel' | translate}}"
+                                        uploadLabel="{{'uploader.uploadLabel' | translate}}"
+                                        cancelLabel="{{'uploader.cancelLabel' | translate}}" 
+                                        [showUploadButton]=false
+                                        [showCancelButton]=false 
+                                        [maxFileSize]=5000000
+                                        [auto]="false"
+                                        >
+                            <ng-template pTemplate="toolbar">
+                                <div><strong>{{'uploader.toolbarmsg'|translate}}</strong></div>
+                            </ng-template>      
+                            <!--<ng-template pTemplate="file">
+                                <p-table *ngIf="allegatiCaricati.length" [value]="allegatiCaricati" [tableStyle]="{'min-width': '50rem'}">
+                                    <ng-template pTemplate="header">
+                                        <tr>
+                                            <th>{{'uploader.content.nome-file'|translate}}</th>
+                                            <th>{{'uploader.content.tipo-file'|translate}}</th>
+                                            <th>{{'uploader.content.dimensione-file'|translate}}</th>
+                                        </tr>
+                                    </ng-template>
+                                    <ng-template pTemplate="body" let-file>
+                                        <tr>
+                                            <td>{{file.name}}</td>
+                                            <td>{{file.type}}</td>
+                                            <td>{{toHumanFileSize(file.size, true)}}</td>
+                                        </tr>
+                                    </ng-template>
+                                </p-table>
+                            </ng-template>-->     
                             <ng-template pTemplate="content">
-                                <ul *ngIf="uploadedFiles.length">
-                                    <li *ngFor="let file of uploadedFiles">{{file.name}} - {{file.size}} bytes</li>
-                                </ul>
+                                <p-table *ngIf="uploaderAllegatiUtente.files.length" [value]="uploaderAllegatiUtente.files" [tableStyle]="{'min-width': '50rem'}">
+                                    <ng-template pTemplate="header">
+                                        <tr>
+                                            <th>{{'uploader.content.nome-file'|translate}}</th>
+                                            <th>{{'uploader.content.tipo-file'|translate}}</th>
+                                            <th>{{'uploader.content.dimensione-file'|translate}}</th>
+                                            <th></th>
+                                        </tr>
+                                    </ng-template>
+                                    <ng-template pTemplate="body" let-file>
+                                        <tr>
+                                            <td>{{file.name}}</td>
+                                            <td>{{file.type}}</td>
+                                            <td>{{toHumanFileSize(file.size, true)}}</td>
+                                            <td>
+                                                <p-button class="p-button-rounded p-button-danger" 
+                                                    icon="pi pi-times" 
+                                                    class="p-button-rounded p-button-danger" 
+                                                    (onClick)="rimuoviFile(file.name)"
+                                                >
+                                                </p-button>
+                                            </td>
+                                        </tr>
+                                    </ng-template>
+                                </p-table>
                             </ng-template>
                         </p-fileUpload>
                     </div>
 
                     <div class="grid">
                         <div class="col">
-                            <button pButton [disabled]="userDetailsForm.invalid" label="{{'azioni.salva' | translate}}"
-                                type="button"></button>
+                            <p-button   [disabled]="userDetailsForm.invalid" 
+                                        label="{{'azioni.salva' | translate}}"
+                                        (onClick)="sendData($event)"
+                            >
+                            </p-button>
                         </div>
                         <div class="col">
                             <button pButton label="{{'azioni.annulla' | translate}}" type="button"

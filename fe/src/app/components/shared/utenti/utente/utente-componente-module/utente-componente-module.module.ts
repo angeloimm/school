@@ -15,6 +15,8 @@ import { MessageModule } from 'primeng/message';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import {PasswordModule} from 'primeng/password';
 import {DividerModule} from 'primeng/divider';
+import {DropdownModule} from 'primeng/dropdown';
+import {TableModule} from 'primeng/table';
 const routes: Routes = [
   { path: '', component: UtenteComponent }
 ];
@@ -34,6 +36,8 @@ const routes: Routes = [
     FormsModule,
     DividerModule,
     ReactiveFormsModule,
+    DropdownModule,
+    TableModule,
     RouterModule.forChild(routes),
     TranslateModule.forChild({
       loader: {

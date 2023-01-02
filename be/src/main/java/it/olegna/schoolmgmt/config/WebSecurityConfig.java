@@ -22,7 +22,9 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
+import org.springframework.security.web.csrf.CsrfTokenRepository;
 import org.springframework.security.web.csrf.CsrfTokenRequestAttributeHandler;
+import org.springframework.security.web.csrf.CsrfTokenRequestHandler;
 
 import java.io.IOException;
 
@@ -89,9 +91,9 @@ public class WebSecurityConfig {
                 })
                 .and()
                 .csrf(csrf -> {
-                    csrf.csrfTokenRequestHandler(new CsrfTokenRequestAttributeHandler());
-                    csrf.csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse());
-                    csrf.ignoringRequestMatchers("/h2-console/**");
+                    csrf.csrfTokenRequestHandler(this.csrfTokenRequestHandler());
+                    csrf.csrfTokenRepository(csrfTokenRepository());
+                    //csrf.ignoringRequestMatchers("/h2-console/**");
                 })
                 .logout()
                 .logoutUrl(LOGOUT_URL)
@@ -102,7 +104,16 @@ public class WebSecurityConfig {
                 .and()
                 .build();
     }
-
+    CsrfTokenRequestHandler csrfTokenRequestHandler(){
+        CsrfTokenRequestAttributeHandler result = new CsrfTokenRequestAttributeHandler();
+        return result;
+    }
+    CsrfTokenRepository csrfTokenRepository(){
+        CookieCsrfTokenRepository repository = CookieCsrfTokenRepository.withHttpOnlyFalse();
+        repository.setSecure(true);
+        repository.setCookiePath("/");
+        return  repository;
+    }
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();

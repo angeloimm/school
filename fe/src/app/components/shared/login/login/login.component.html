@@ -1,0 +1,45 @@
+<div class="grid">
+    <div class="col-12">
+        <div class="card">
+            <p-messages [(value)]="msgs"></p-messages>
+        </div>
+    </div>
+    <div class="col-12">
+        <div class="card">
+            <form [formGroup]="credenzialiUtente">
+                <div class="p-fluid p-formgrid grid">
+                    <div class="field col-12 md:col-6">
+                        <label htmlFor="username"><strong>{{'utente.username' | translate}} *</strong></label>
+                        <input pInputText id="username" type="text"  formControlName="username"
+                            [ngClass]="formUtils.getInvalid(credenzialiUtente,'username') ? 'ng-invalid ng-dirty' : '' " />
+                        <small *ngIf="username.errors?.['required']" class="p-error">
+                            <strong>{{ 'common.errors.required' | translate}}</strong>
+                        </small>                             
+                    </div>
+                    <div class="field col-12 md:col-6">
+                        <label htmlFor="password"><strong>{{'utente.password' | translate}}
+                            *</strong></label>
+                    <p-password id="password" 
+                                type="password"  
+                                [feedback]=false
+                                [ngClass]="formUtils.getInvalid(credenzialiUtente,'password') ? 'ng-invalid ng-dirty' : '' "
+                                formControlName="password"></p-password>
+                                <small *ngIf="username.errors?.['required']" class="p-error">
+                                    <strong>{{ 'common.errors.required' | translate}}</strong>
+                                </small> 
+                    </div>
+                    <div class="grid">
+                        <div class="col">
+                            <p-button   [disabled]="credenzialiUtente.invalid" 
+                                        label="{{'login.btn.accedi' | translate}}"
+                                        (onClick)="login($event)"
+                            >
+                            </p-button>
+                        </div>
+
+                    </div>                 
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

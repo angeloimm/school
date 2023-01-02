@@ -28,16 +28,46 @@
         "cognome":"Cognome",
         "codiceFiscale":"Codice Fiscale",
         "dataNascita":"Data di nascita",
+        "sesso":"Sesso",
+        "sessoplaceholder":"Seleziona sesso",
         "indirizzo":"Indirizzo",
         "username":"Username",
         "password":"Password",
         "confermapassword":"Conferma password",
         "allegati":"Allegati utente"
     },
+    "initdb":{
+        "msgs":{
+            "summary":"Inizializzazione db completa",
+            "detail":"Il sistema è stato inizializzato. Tra 5 secondi verrai rediretto alla pagina di login"
+        }
+
+    },
+    "login":{
+        "msgs":{
+            "welcome":{
+                "summary":"Accesso al sistema",
+                "detail":"Inserisci username e password per accedere al sistema"
+            }
+        },
+        "btn":{
+            "accedi":"Login"
+        }
+    },
     "uploader":{
         "chooseLabel":"Scegli file",
         "uploadLabel":"Allega file",
-        "cancelLabel":"Cancella file"
+        "cancelLabel":"Cancella file",
+        "upload-ok-summary":"Successo",
+        "upload-ko-summary":"Errore",
+        "upload-ok-detail":"Operazione terminata con successo",
+        "upload-ko-detail":"Errore durante l'operazione. Ti preghiamo di riprovare più tardi",
+        "toolbarmsg":"Sono ammessi solo file PDF e con dimensione massima di 5MB",
+        "content":{
+            "nome-file":"Nome",
+            "tipo-file":"Tipo",
+            "dimensione-file":"Dimensione"
+        }
     },
     "azioni":{
         "salva": "Salva",

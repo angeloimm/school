@@ -1,5 +1,6 @@
 package it.olegna.schoolmgmt.web.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import it.olegna.schoolmgmt.dto.UtenteDto;
 import it.olegna.schoolmgmt.dto.UtenteTableDto;
 import it.olegna.schoolmgmt.dto.UtenteWithAttachDto;
@@ -15,6 +16,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -24,7 +26,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
@@ -34,6 +38,8 @@ import java.util.UUID;
 public class UtenteController {
     @Autowired
     private UtenteSvc utenteSvc;
+    @Autowired
+    private MappingJackson2HttpMessageConverter springMvcJacksonConverter;
     @Autowired
     private HttpServletRequest req;
 
@@ -103,9 +109,11 @@ public class UtenteController {
         return ResponseEntity.noContent().build();
     }
 
-    @PostMapping(consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE}, produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
-    public ResponseEntity<ApiResponse<UtenteDto>> creaUtente(UtenteDto utente) {
-        return ResponseEntity.ok(ApiResponse.<UtenteDto>builder().payload(utenteSvc.createModificaUtente(utente)).build());
+    @PostMapping(consumes = {MediaType.MULTIPART_FORM_DATA_VALUE}, produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
+    public ResponseEntity<ApiResponse<UtenteDto>> creaUtente(@RequestParam(name = "allegati", required = false) MultipartFile mf,
+                                                                     @RequestParam(name = "datiUtente", required = true)String jsonUtente) throws JsonProcessingException {
+        UtenteDto utente = springMvcJacksonConverter.getObjectMapper().readValue(jsonUtente, UtenteDto.class);
+        return ResponseEntity.ok(ApiResponse.<UtenteDto>builder().payload(utenteSvc.createModificaUtente(utente, Collections.singletonList(mf))).build());
     }
 
     @PostMapping(value = {"save-utente"}, consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE},
@@ -115,8 +123,10 @@ public class UtenteController {
         return ResponseEntity.ok(ApiResponse.<UtenteDto>builder().payload(this.utenteSvc.createUtenteWithAttach(utente)).build());
     }
 
-    @PutMapping(consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE}, produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
-    public ResponseEntity<ApiResponse<UtenteDto>> modificaUtente(@RequestBody UtenteDto utente) {
-        return ResponseEntity.ok(ApiResponse.<UtenteDto>builder().payload(utenteSvc.createModificaUtente(utente)).build());
+    @PutMapping(consumes = {MediaType.MULTIPART_FORM_DATA_VALUE}, produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
+    public ResponseEntity<ApiResponse<UtenteDto>> modificaUtente(@RequestParam(name = "allegati", required = false) MultipartFile mf,
+                                                             @RequestParam(name = "datiUtente", required = true)String jsonUtente) throws JsonProcessingException {
+        UtenteDto utente = springMvcJacksonConverter.getObjectMapper().readValue(jsonUtente, UtenteDto.class);
+        return ResponseEntity.ok(ApiResponse.<UtenteDto>builder().payload(utenteSvc.createModificaUtente(utente, Collections.singletonList(mf))).build());
     }
 }

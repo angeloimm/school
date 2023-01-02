@@ -8,4 +8,10 @@ export interface Utente{
     password?:string;
     tipoUtente?:string;
     attivo?:boolean;
+    sesso?:string;
+}
+
+export interface Sesso{
+    name?:string;
+    code?:string;
 }

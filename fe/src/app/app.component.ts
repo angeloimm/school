@@ -32,6 +32,8 @@ export class AppComponent implements OnInit {
     this.initDb.get(CONST.INIT_DB_URL).subscribe((response)=>{
       if(response.payload===true){
         this.router.navigate(["init/applicazione"],{queryParams:{tipoUtente:'A',init:true}});
+      }else{
+        this.router.navigate(["login"]);
       }
     });
   }

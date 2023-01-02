@@ -12,6 +12,7 @@ import it.olegna.schoolmgmt.persistence.repository.AllegatoRepository;
 import it.olegna.schoolmgmt.persistence.repository.UtenteRepository;
 import it.olegna.schoolmgmt.service.UtenteSvc;
 import lombok.extern.slf4j.Slf4j;
+import org.hibernate.engine.jdbc.BlobProxy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -19,7 +20,9 @@ import org.springframework.data.domain.Sort;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -39,11 +42,30 @@ public class UtenteSvcImpl implements UtenteSvc {
 
     @Override
     @Transactional(readOnly = false)
-    public UtenteDto createModificaUtente(UtenteDto utente) {
+    public UtenteDto createModificaUtente(UtenteDto utente, List<MultipartFile> attaches) {
         log.trace("Creazione utente {}", utente);
         String originalPwd = utente.getPassword();
         utente.setPassword(passwordEncoder.encode(originalPwd));
-        return mapper.toDto(repository.save(mapper.toEntity(utente)));
+        Utente utenteDb = repository.save(mapper.toEntity(utente));
+        UtenteDto result = mapper.toDto(utenteDb);
+        if( attaches != null && !attaches.isEmpty() ){
+            final List<Allegato> allegatoList = new ArrayList<>(attaches.size());
+            attaches.stream().forEach(mp ->{
+                try {
+                    allegatoList.add(Allegato.builder()
+                                                .utente(utenteDb)
+                                                .contenutoFile(BlobProxy.generateProxy(mp.getInputStream(), mp.getSize()))
+                                                .nomeFile(mp.getOriginalFilename())
+                                                .contentTypeFile(mp.getContentType())
+                                                .dimensioneFile((int)mp.getSize())
+                                                .build());
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            });
+            this.allegatoRepository.saveAll(allegatoList);
+        }
+        return  result;
     }
 
     @Override
