@@ -58,9 +58,12 @@
                         <label htmlFor="username"><strong>{{'utente.username' | translate}} *</strong></label>
                         <input pInputText id="username" type="text"  formControlName="username"
                             [ngClass]="formUtils.getInvalid(userDetailsForm,'username') ? 'ng-invalid ng-dirty' : '' " />
-                        <small *ngIf="formUtils.getInvalid(userDetailsForm,'username')" class="p-error">
-                            <strong>{{ 'common.errors.' | translate}}</strong>
-                        </small>
+                        <small *ngIf="username.errors?.['required']" class="p-error">
+                            <strong>{{ 'common.errors.required' | translate}}</strong>
+                        </small>                           
+                        <small *ngIf="username.errors?.['usernameDuplicated']" class="p-error">
+                            <strong>{{ 'common.errors.usernameduplication' | translate}}</strong>
+                        </small>   
                     </div>
                     <div formGroupName="matchingPasswords" class="field col-12 md:col-8 grid">
                         <div class="field col">

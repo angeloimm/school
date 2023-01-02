@@ -3,10 +3,13 @@ import { FormBuilder, FormControl, FormGroup, Validators, ValidationErrors } fro
 import { ActivatedRoute } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { Message } from 'primeng/api';
+import { LayoutService } from 'src/app/components/layout/service/layout.service';
 import { Utente } from 'src/app/models/utente';
+import { InitDbServiceService } from 'src/app/shared/services/api/init-db-service.service';
 import { FormUtilsService } from 'src/app/shared/services/form-utils.service';
 import { LoggingServiceService } from 'src/app/shared/services/logging-service.service';
 import { PasswordValidator } from 'src/app/validators/password.validator';
+import { UniqueUsernameValidator } from 'src/app/validators/unique-username-validator';
 
 @Component({
   selector: 'app-utente',
@@ -35,7 +38,9 @@ export class UtenteComponent implements OnInit {
     private log: LoggingServiceService,
     private translate: TranslateService,
     private fb:FormBuilder,
-    public formUtils:FormUtilsService) { }
+    public formUtils:FormUtilsService,
+    private layoutSvc:LayoutService,
+    private initDb:InitDbServiceService) { }
   ngOnInit(): void {
     this.initPannello();
     this.createForm();
@@ -60,6 +65,11 @@ export class UtenteComponent implements OnInit {
         this.msg.detail = this.translate.instant('utente.tipo-utente-sconosciuto', { tipo: tipoUtente });
       }
       this.msgs.push(this.msg);
+      let init:string = params['init'];
+      if( init != null && init==="true" ){
+
+        this.layoutSvc.hideTopBarInfoPanel();
+      }
     });
   }
   createForm(){
@@ -68,7 +78,7 @@ export class UtenteComponent implements OnInit {
     this.codiceFiscale = new FormControl('',Validators.required);
     this.dataNascita = new FormControl('',Validators.required);
     this.indirizzo = new FormControl('',Validators.required);
-    this.username = new FormControl('',Validators.required);
+    this.username = new FormControl('',{validators: [ Validators.required, Validators.minLength(3)], asyncValidators: [UniqueUsernameValidator.validateUsername(this.initDb)]});
     this.password = new FormControl('',Validators.compose([
       Validators.minLength(8),
       Validators.required,

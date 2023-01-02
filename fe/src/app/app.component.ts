@@ -31,7 +31,7 @@ export class AppComponent implements OnInit {
     this.translate.get('primeng').subscribe(res => this.config.setTranslation(res));
     this.initDb.get(CONST.INIT_DB_URL).subscribe((response)=>{
       if(response.payload===true){
-        this.router.navigate(["init/applicazione"],{queryParams:{tipoUtente:'A'}});
+        this.router.navigate(["init/applicazione"],{queryParams:{tipoUtente:'A',init:true}});
       }
     });
   }

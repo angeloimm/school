@@ -5,7 +5,8 @@
     "common":{
         "errors":{
             "required": "Campo obbligatorio",
-            "checkpassword":"Conferma password non valida"
+            "checkpassword":"Conferma password non valida",
+            "usernameduplication":"Username già esistente"
         }
     },
     "utente":{
