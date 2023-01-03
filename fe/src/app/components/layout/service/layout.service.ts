@@ -7,6 +7,7 @@ import { Subject } from 'rxjs';
 })
 export class LayoutService {
     private topBarInfoPanelEnabled:boolean = true;
+    private showLoadingDialog:boolean = false;
     constructor(){}
     public hideTopBarInfoPanel(){
         this.topBarInfoPanelEnabled = false;
@@ -16,5 +17,11 @@ export class LayoutService {
     }
     public isPanelVisible(){
         return this.topBarInfoPanelEnabled;
+    }
+    public setShowLoadingDialog(show:boolean){
+        this.showLoadingDialog = show;
+    }
+    public isShowLoadingDialog(){
+        return this.showLoadingDialog;
     }
 }

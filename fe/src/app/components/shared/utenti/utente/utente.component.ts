@@ -2,11 +2,11 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators, ValidationErrors } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
-import { Message } from 'primeng/api';
+import { Message, MessageService } from 'primeng/api';
 import { FileUpload } from 'primeng/fileupload';
 import { LayoutService } from 'src/app/components/layout/service/layout.service';
 import { Sesso, Utente } from 'src/app/models/utente';
-import { CONST } from 'src/app/shared/constants';
+import { CONST, ROUTE_PATH } from 'src/app/shared/constants';
 import { InitDbServiceService } from 'src/app/shared/services/api/init-db-service.service';
 import { FormUtilsService } from 'src/app/shared/services/form-utils.service';
 import { LoggingServiceService } from 'src/app/shared/services/logging-service.service';
@@ -46,14 +46,15 @@ export class UtenteComponent implements OnInit {
   private initDbSaveAdminUrl:string = CONST.INIT_DB_SAVE_ADMIN_URL;
   private protectedSaveUserUrl:string = CONST.USERS_PROTECTED_URL;
   uploadUrl:string;
-  constructor(private route: ActivatedRoute,
+  constructor(private activatedRoute: ActivatedRoute,
     private router:Router,
     private log: LoggingServiceService,
     private translate: TranslateService,
     private fb:FormBuilder,
     public formUtils:FormUtilsService,
     private layoutSvc:LayoutService,
-    private initDb:InitDbServiceService) { }
+    private initDb:InitDbServiceService,
+    private messageService:MessageService) { }
   ngOnInit(): void {
     this.initPannello();
     this.initSesso();
@@ -62,7 +63,7 @@ export class UtenteComponent implements OnInit {
   initPannello(){
     
     this.utente.attivo = true;
-    this.route.queryParams.subscribe(params => {
+    this.activatedRoute.queryParams.subscribe(params => {
       let tipoUtente = params['tipoUtente'];
       this.msg.summary = this.translate.instant('utente.titolo-pannello');
       this.msg.severity = 'info';
@@ -80,6 +81,7 @@ export class UtenteComponent implements OnInit {
         this.msg.detail = this.translate.instant('utente.tipo-utente-sconosciuto', { tipo: tipoUtente });
       }
       this.msgs.push(this.msg);
+      this.messageService.addAll(this.msgs);
       let init:string = params['init'];
       if( init != null && init==="true" ){
         this.inizializzazioneDb = true;
@@ -100,20 +102,32 @@ export class UtenteComponent implements OnInit {
     let altro:Sesso = {code:'O', name:'Altro'};
     this.elencoSessi = [uomo, donna, altro];
   }
+  private getSessoUtente(){
+    if( this.utente.sesso == null ){
+      return null;
+    }
+    if(this.utente.sesso === 'M'){
+      return this.elencoSessi[0];
+    }else if(this.utente.sesso === 'F'){
+      return this.elencoSessi[1];
+    }else{
+      return this.elencoSessi[2];
+    }
+  }
   createForm(){
-    this.nome = new FormControl('',Validators.required);
-    this.cognome = new FormControl('',Validators.required);
-    this.codiceFiscale = new FormControl('',{validators:[Validators.required, Validators.pattern("^[A-Za-z]{6}[0-9]{2}[A-Za-z]{1}[0-9]{2}[A-Za-z]{1}[0-9]{3}[A-Za-z]{1}$")]});
-    this.dataNascita = new FormControl('',Validators.required);
-    this.sessoFc = new FormControl('', Validators.required);
-    this.indirizzo = new FormControl('',Validators.required);
-    this.username = new FormControl('',{validators: [ Validators.required, Validators.minLength(3)], asyncValidators: [UniqueUsernameValidator.validateUsername(this.initDb)]});
-    this.password = new FormControl('',Validators.compose([
+    this.nome = new FormControl(this.utente.nome,{validators: Validators.required});
+    this.cognome = new FormControl(this.utente.cognome,{validators: Validators.required});
+    this.codiceFiscale = new FormControl(this.utente.codiceFiscale,{validators:[Validators.required, Validators.pattern("^[A-Za-z]{6}[0-9]{2}[A-Za-z]{1}[0-9]{2}[A-Za-z]{1}[0-9]{3}[A-Za-z]{1}$")]});
+    this.dataNascita = new FormControl(this.utente.dataNascita,{validators: Validators.required});
+    this.sessoFc = new FormControl(this.getSessoUtente, {validators: Validators.required});
+    this.indirizzo = new FormControl(this.utente.indirizzo, {validators: Validators.required});
+    this.username = new FormControl(this.utente.username,{validators: [ Validators.required, Validators.minLength(3)], asyncValidators: [UniqueUsernameValidator.validateUsername(this.initDb)]});
+    this.password = new FormControl(null,Validators.compose([
       Validators.minLength(8),
       Validators.required,
       Validators.pattern('^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$')
     ]));
-    this.confermaPassword = new FormControl('',Validators.required);
+    this.confermaPassword = new FormControl('',{validators: Validators.required});
     //Password e match password
     this.matchingPasswordsGroup = new FormGroup({
       password: this.password,
@@ -176,7 +190,12 @@ export class UtenteComponent implements OnInit {
     this.utente.codiceFiscale = this.codiceFiscale.value;
     this.utente.dataNascita = this.dataNascita.value;
     this.selectedSesso = this.userDetailsForm.get('sesso').value;
-    this.utente.sesso = this.selectedSesso.code;
+    if( this.selectedSesso instanceof Object ){
+    
+      this.utente.sesso = this.selectedSesso.code;
+    }else{
+      this.utente.sesso = this.selectedSesso;
+    }
     this.utente.indirizzo = this.indirizzo.value;
     this.utente.username = this.username.value;
     this.utente.password = this.password.value;
@@ -185,10 +204,10 @@ export class UtenteComponent implements OnInit {
   uploadFinished(event){
     //Messaggio di OK upload/salvataggio
     let messaggio:Message = {};
-    messaggio.severity = 'info';
+    messaggio.severity = 'success';
     messaggio.summary = this.translate.instant('uploader.upload-ok-summary');
     messaggio.detail = this.translate.instant('uploader.upload-ok-detail');
-    this.msgs.push(messaggio);
+    this.messageService.add(messaggio);
     //Svuoto i file
     this.allegatiCaricati = this.uploaderAllegatiUtente.files;
     this.uploaderAllegatiUtente.files = [];
@@ -197,16 +216,16 @@ export class UtenteComponent implements OnInit {
       messaggio.severity = 'info';
       messaggio.summary = this.translate.instant('initdb.msgs.summary');
       messaggio.detail = this.translate.instant('initdb.msgs.detail');
-      this.msgs.push(messaggio);
-      setTimeout(()=>{this.router.navigate(["login"]);}, 5000);
+      this.messageService.add(messaggio);
+      setTimeout(()=>{this.router.navigate([ROUTE_PATH.APP_LOGIN_ROUTE]);}, 5000);
     }
   }
   uploadError($event){
     let messaggio:Message = {};
     messaggio.severity = 'error';
     messaggio.summary = this.translate.instant('uploader.upload-ko-summary');
-    messaggio.detail = this.translate.instant('uploader.upload-ok-detail');
-    this.msgs.push(messaggio);
+    messaggio.detail = this.translate.instant('uploader.upload-ko-detail');
     
+    this.messageService.add(messaggio);
   }
 }

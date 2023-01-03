@@ -1,0 +1,17 @@
+<div class="grid">
+  <div class="col-12">
+    <div class="card">
+        <p-messages [(value)]="msgs"></p-messages>
+    </div>
+  </div>
+  <div class="col-12">
+    <div class="card">
+      <full-calendar *ngIf='calendarVisible' [options]='calendarOptions'>
+        <ng-template #eventContent let-arg>
+          <b>{{ arg.timeText }}</b>
+          <i>{{ arg.event.title }}</i>
+        </ng-template>
+      </full-calendar>
+    </div>
+  </div>
+</div>

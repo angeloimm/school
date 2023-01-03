@@ -1,9 +1,20 @@
-<router-outlet></router-outlet>
 <div class="layout-wrapper">
   <app-top-bar></app-top-bar>
   <div class="layout-main-container">
       <div class="layout-main">
-          <router-outlet></router-outlet>
+        <p-dialog [visible]="layoutService.isShowLoadingDialog()" 
+                  [showHeader]="false" 
+                  [resizable]="false" 
+                  [modal]="true" 
+                  
+                  [focusOnShow]="false">
+          <!--<div style="width: 900px;height: 500px;padding-top: 20%;">
+              <div class="progress-spinner">-->
+                  <p-progressSpinner></p-progressSpinner>
+              <!--</div>
+          </div>-->
+      </p-dialog>
+        <router-outlet></router-outlet>
       </div>
       <!--<app-footer></app-footer>-->
   </div>

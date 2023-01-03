@@ -2,11 +2,33 @@
     "topbar":{
         "titolo":"Programmazione corsi"
     },
+    "generic-error":{
+        "500":{
+            "summary":"Errore",
+            "detail":"Spiacenti. È avvenuto un errore nel processo di login."
+        },
+        "403":{
+            "summary":"Attenzione",
+            "detail":"Spiacenti. Non hai i permessi per visualizzare la pagina richiesta"
+        },
+        "404":{
+            "summary":"Attenzione",
+            "detail":"La pagina richiesta non è esistente"
+        }
+    },
     "common":{
         "errors":{
             "required": "Campo obbligatorio",
             "checkpassword":"Conferma password non valida",
             "usernameduplication":"Username già esistente"
+        }
+    },
+    "amministratore":{
+        "msgs":{
+            "welcome":{
+                "summary":"I corsi di oggi",
+                "detail":"Benvenuto. Di seguito i corsi programmati per la data (o range di date) selezionata"
+            }
         }
     },
     "utente":{
@@ -48,6 +70,10 @@
             "welcome":{
                 "summary":"Accesso al sistema",
                 "detail":"Inserisci username e password per accedere al sistema"
+            },
+            "badcredentials":{
+                "summary":"Errore",
+                "detail":"Username e/o password errate."
             }
         },
         "btn":{

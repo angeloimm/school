@@ -1,7 +1,10 @@
 package it.olegna.schoolmgmt.config;
 
 import it.olegna.schoolmgmt.domain.SchoolUserDetail;
+import it.olegna.schoolmgmt.dto.UtenteDto;
+import it.olegna.schoolmgmt.dto.api.ApiError;
 import it.olegna.schoolmgmt.dto.api.ApiResponse;
+import it.olegna.schoolmgmt.dto.api.ErrorDetail;
 import it.olegna.schoolmgmt.service.impl.SchoolUserDetailManager;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -27,6 +30,7 @@ import org.springframework.security.web.csrf.CsrfTokenRequestAttributeHandler;
 import org.springframework.security.web.csrf.CsrfTokenRequestHandler;
 
 import java.io.IOException;
+import java.util.Collections;
 
 @Configuration
 @Slf4j
@@ -70,7 +74,16 @@ public class WebSecurityConfig {
                         //Recupero utente corrente
                         if (authentication instanceof UsernamePasswordAuthenticationToken) {
                             SchoolUserDetail currentUser = (SchoolUserDetail) authentication.getPrincipal();
-                            ApiResponse<SchoolUserDetail> userDetail = ApiResponse.<SchoolUserDetail>builder().payload(currentUser).build();
+                            ApiResponse<UtenteDto> userDetail = ApiResponse.<UtenteDto>builder().payload(UtenteDto.builder()
+                                                                                                            .nome(currentUser.getNome())
+                                                                                                            .cognome(currentUser.getCognome())
+                                                                                                            .sesso(currentUser.getSesso())
+                                                                                                            .dataNascita(currentUser.getDataNascita())
+                                                                                                            .tipoUtente(currentUser.getTipoUtente().get(0))
+                                                                                                            .username(currentUser.getUsername())
+                                                                                                            .id(currentUser.getIdUtente())
+                                                                                                            .build())
+                                                                .build();
                             response.getWriter().append(springMvcJacksonConverter.getObjectMapper().writeValueAsString(userDetail));
                             response.setStatus(200);
                         } else {
@@ -84,9 +97,18 @@ public class WebSecurityConfig {
                     @Override
                     public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) throws IOException, ServletException {
                         log.error("AuthenticationException ", exception);
-                        ApiResponse<String> resp = ApiResponse.<String>builder().payload("Errore nel processo di autenticazione. Eccezione " + exception.getMessage()).build();
+                        ApiResponse<String> resp = ApiResponse.<String>builder()
+                                .payload("Errore nel processo di autenticazione. Eccezione " + exception.getMessage())
+                                .error(true)
+                                .errori(ApiError.builder()
+                                        .path(request.getRequestURI())
+                                        .details(Collections.singletonList(ErrorDetail.builder()
+                                                                            .code("BC")
+                                                                            .build()))
+                                        .build())
+                                .build();
                         response.getWriter().append(springMvcJacksonConverter.getObjectMapper().writeValueAsString(resp));
-                        response.setStatus(401);
+                        response.setStatus(496);
                     }
                 })
                 .and()

@@ -52,7 +52,7 @@
                                     id="sesso"
                                     name="sesso"
                                     [ngClass]="formUtils.getInvalid(userDetailsForm,'sesso') ? 'ng-invalid ng-dirty' : '' "
-                                    formControlName="sessoFc"
+                                    formControlName="sesso"
                                     optionLabel="name" 
                                     optionValue="code" 
                                     placeholder="{{'utente.sessoplaceholder'|translate}}"></p-dropdown>
@@ -72,7 +72,7 @@
                         <label htmlFor="username"><strong>{{'utente.username' | translate}} *</strong></label>
                         <input pInputText id="username" type="text"  formControlName="username"
                             [ngClass]="formUtils.getInvalid(userDetailsForm,'username') ? 'ng-invalid ng-dirty' : '' " />
-                        <small *ngIf="username.errors?.['required']" class="p-error">
+                        <small *ngIf="formUtils.getInvalid(userDetailsForm,'username') && username.errors?.['required']" class="p-error">
                             <strong>{{ 'common.errors.required' | translate}}</strong>
                         </small>                           
                         <small *ngIf="username.errors?.['usernameDuplicated']" class="p-error">
@@ -141,8 +141,8 @@
                             <ng-template pTemplate="toolbar">
                                 <div><strong>{{'uploader.toolbarmsg'|translate}}</strong></div>
                             </ng-template>      
-                            <!--<ng-template pTemplate="file">
-                                <p-table *ngIf="allegatiCaricati.length" [value]="allegatiCaricati" [tableStyle]="{'min-width': '50rem'}">
+                            <ng-template pTemplate="file">
+                                <!--<p-table *ngIf="allegatiCaricati.length" [value]="allegatiCaricati" [tableStyle]="{'min-width': '50rem'}">
                                     <ng-template pTemplate="header">
                                         <tr>
                                             <th>{{'uploader.content.nome-file'|translate}}</th>
@@ -157,8 +157,8 @@
                                             <td>{{toHumanFileSize(file.size, true)}}</td>
                                         </tr>
                                     </ng-template>
-                                </p-table>
-                            </ng-template>-->     
+                                </p-table>-->
+                            </ng-template>     
                             <ng-template pTemplate="content">
                                 <p-table *ngIf="uploaderAllegatiUtente.files.length" [value]="uploaderAllegatiUtente.files" [tableStyle]="{'min-width': '50rem'}">
                                     <ng-template pTemplate="header">

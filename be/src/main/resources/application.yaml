@@ -49,7 +49,7 @@ logging:
 server:
   port: 9090
   servlet:
-    context-path: /api
+    context-path:
   compression:
     enabled: true
     mime-types: text/html,text/xml,text/plain,text/css,text/javascript,application/javascript,application/json

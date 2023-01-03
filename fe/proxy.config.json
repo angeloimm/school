@@ -1,6 +1,18 @@
 {
 
-"/api/*": {
+"/public/*": {
+    "target": "http://127.0.0.1:9090/",
+    "secure": true,
+    "logLevel": "debug",
+    "changeOrigin": true
+  },
+  "/protected/*": {
+    "target": "http://127.0.0.1:9090/",
+    "secure": true,
+    "logLevel": "debug",
+    "changeOrigin": true
+  },
+  "/login/*": {
     "target": "http://127.0.0.1:9090/",
     "secure": true,
     "logLevel": "debug",

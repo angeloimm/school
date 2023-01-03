@@ -45,7 +45,7 @@ const routes: Routes = [
           useFactory: HttpLoaderFactory,
           deps: [HttpClient]
       }
-  }),
+  })
   ]
 })
 export class UtenteComponenteModuleModule { }
