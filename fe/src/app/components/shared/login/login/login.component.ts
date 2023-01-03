@@ -30,37 +30,58 @@ import { LoggingServiceService } from 'src/app/shared/services/logging-service.s
     }, */
 export class LoginComponent implements OnInit {
   msgs: Message[] = [];
-  username:FormControl;
-  password:FormControl;
-  credenzialiUtente:FormGroup;
-  constructor( private router:Router,
+  username: FormControl;
+  password: FormControl;
+  credenzialiUtente: FormGroup;
+  constructor(private router: Router,
     private activatedRoute: ActivatedRoute,
     private log: LoggingServiceService,
     private translate: TranslateService,
-    private fb:FormBuilder,
-    public formUtils:FormUtilsService,
-    private layoutSvc:LayoutService,
-    private loggedUserSvc:LoggedUserService,
-    private msgService:MessageService,
-    private http:HttpClient){
+    private fb: FormBuilder,
+    public formUtils: FormUtilsService,
+    private layoutSvc: LayoutService,
+    private loggedUserSvc: LoggedUserService,
+    private msgService: MessageService,
+    private http: HttpClient) {
 
   }
   ngOnInit(): void {
     //Welcom msg
-    const welcomMsg:Message = {};
-    welcomMsg.severity="info";
-    welcomMsg.summary=this.translate.instant('login.msgs.welcome.summary');
-    welcomMsg.detail=this.translate.instant('login.msgs.welcome.detail');
+    const welcomMsg: Message = {};
+    welcomMsg.severity = "info";
+    welcomMsg.summary = this.translate.instant('login.msgs.welcome.summary');
+    welcomMsg.detail = this.translate.instant('login.msgs.welcome.detail');
     this.msgs.push(welcomMsg);
     //Errore di login?
     this.activatedRoute.queryParams.subscribe(params => {
+      //Caso di errore?
       let errorCode = params['errorCode'];
-      if( errorCode && errorCode==='496' ){
-        const badCredentials:Message = {};
-        badCredentials.severity="error";
-        badCredentials.summary=this.translate.instant('login.msgs.badcredentials.summary');
-        badCredentials.detail=this.translate.instant('login.msgs.badcredentials.detail');
+      console.log("errorCode "+errorCode);
+      if (errorCode && errorCode === '496') {
+        const badCredentials: Message = {};
+        badCredentials.severity = "error";
+        badCredentials.summary = this.translate.instant('login.msgs.badcredentials.summary');
+        badCredentials.detail = this.translate.instant('login.msgs.badcredentials.detail');
         this.msgService.add(badCredentials);
+      
+      }else if (errorCode && errorCode === '403') {
+        const badCredentials: Message = {};
+        welcomMsg.summary = this.translate.instant('login.msgs.'+errorCode+'.summary');
+        welcomMsg.detail = this.translate.instant('login.msgs.'+errorCode+'.detail');
+        welcomMsg.severity = 'warn';
+        this.msgService.add(badCredentials);
+        
+        console.log(badCredentials);
+      }
+      //Caso di logout?
+      let logout = params['logout'];
+      if (logout && logout === 'true') {
+        const logout: Message = {};
+        logout.severity = "success";
+        logout.summary = this.translate.instant('login.msgs.logout.summary');
+        logout.detail = this.translate.instant('login.msgs.logout.detail');
+        this.msgService.add(logout);
+        console.log(logout);
       }
     });
     //Form
@@ -72,35 +93,35 @@ export class LoginComponent implements OnInit {
     });
     this.layoutSvc.hideTopBarInfoPanel();
   }
-  login($event){
+  login($event) {
     let body = new URLSearchParams();
     body.set('username', this.username.value);
     body.set('password', this.password.value);
     let options = {
       headers: new HttpHeaders().set('Content-Type', 'application/x-www-form-urlencoded')
-  };
-  
-  this.http
+    };
+
+    this.http
       .post<ApiResponse<Utente>>(CONST.LOGIN_APP_URL, body.toString(), options)
       .subscribe({
-        next:response => {
+        next: response => {
           //Conservo nel service le info dell'utente
-          const utenteLoggato:Utente = response.payload;
+          const utenteLoggato: Utente = response.payload;
           this.loggedUserSvc.setLoggedUser(utenteLoggato);
           //Controllo se amministraotre o altro
-          const tipoUtente:string = utenteLoggato.tipoUtente;
-          if(tipoUtente === TIPO_UTENTE_VALUES.AMMINISTRATORE){
+          const tipoUtente: string = utenteLoggato.tipoUtente;
+          if (tipoUtente === TIPO_UTENTE_VALUES.AMMINISTRATORE) {
             //redirigo alla HP ammministratore
             this.router.navigate([ROUTE_PATH.APP_HP_AMMINISTRATORE_ROUTE]);
-          }else if(tipoUtente === TIPO_UTENTE_VALUES.DOCENTE){
+          } else if (tipoUtente === TIPO_UTENTE_VALUES.DOCENTE) {
             //redirigo alla HP docente
-          }else if(tipoUtente === TIPO_UTENTE_VALUES.STUDENTE){
+          } else if (tipoUtente === TIPO_UTENTE_VALUES.STUDENTE) {
             //redirigo alla HP studente
           }
         },
-        error: (error:HttpErrorResponse) =>{
+        error: (error: HttpErrorResponse) => {
           //Redirigo alla pagina di cortesia
-          this.router.navigate([ROUTE_PATH.APP_LOGIN_ROUTE],{queryParams:{errorCode:error.status}});
+          this.router.navigate([ROUTE_PATH.APP_LOGIN_ROUTE], { queryParams: { errorCode: error.status } });
         }
       });
   }

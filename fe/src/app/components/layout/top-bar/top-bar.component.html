@@ -8,13 +8,28 @@
 
     <!--<div #topbarmenu class="layout-topbar-menu" [ngClass]="{'layout-topbar-menu-mobile-active': layoutService.state.profileSidebarVisible}">-->
         <div class="layout-topbar-menu" *ngIf="layoutService.isPanelVisible()">
-        <button class="p-link layout-topbar-button">
-            <i class="pi pi-calendar"></i>
-            <span>Calendar</span>
+        <button title="{{'topbar.titolo'|translate}}" class="p-link layout-topbar-button" [hidden]="loggedUserService.isStudente()" (click)="goToPage($event, 'schedule')">
+            <i class="pi pi-fw pi-calendar"></i>
+            <span>{{'topbar.titolo'|translate}}</span>
         </button>
-        <button class="p-link layout-topbar-button">
-            <i class="pi pi-user"></i>
-            <span>Profile</span>
+        <button title="{{'topbar.menu.docenti'|translate}}" class="p-link layout-topbar-button" [hidden]="!loggedUserService.isAmministratore()" (click)="goToPage($event, 'docenti')">
+            <i class="pi pi-fw pi-table"></i>
+            <span>{{'topbar.menu.docenti'|translate}}</span>
+        </button>        
+        <button title="{{'topbar.menu.studenti'|translate}}" class="p-link layout-topbar-button" [hidden]="!loggedUserService.isAmministratore()" (click)="goToPage($event, 'studenti')">
+            <i class="pi pi-fw pi-users"></i>
+            <span>{{'topbar.menu.studenti'|translate}}</span>
+        </button>        
+        <button title="{{'topbar.menu.signout'|translate}}" class="p-link layout-topbar-button" [hidden]="!loggedUserService.isAmministratore()" (click)="logout($event)">
+            <i class="pi pi-fw pi-sign-out"></i>
+            <span>{{'topbar.menu.signout.label'|translate}}</span>
         </button>
     </div>
 </div>
+<p-dialog [modal]="true" [closable]="true" [(visible)]="displayErrorDialog">
+    <ng-template pTemplate="header">
+        <strong>{{'topbar.menu.signout.error.header'|translate}}</strong>
+    </ng-template>
+    {{'topbar.menu.signout.error.content'|translate}}
+    
+</p-dialog>

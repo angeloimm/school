@@ -15,6 +15,7 @@ import {DialogModule} from 'primeng/dialog';
 import {ProgressSpinnerModule} from 'primeng/progressspinner';
 import { LoaderDialogInterceptor } from './shared/interceptors/loader.dialog.interceptor';
 import {MenubarModule} from 'primeng/menubar';
+import { UtentePageComponent } from './components/pages/utente/utente-page/utente-page.component';
 
 /**
  * CONFIG la gestione dell'internazionalizzazione;

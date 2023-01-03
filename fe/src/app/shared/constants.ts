@@ -7,6 +7,7 @@ export class CONST {
     public static INIT_DB_SAVE_ADMIN_URL:string = this.INIT_DB_URL+"/admin";
     public static USERS_PROTECTED_URL:string=this.PROTECTED_BASE_URL+"/utenti";
     public static LOGIN_APP_URL:string="/login";
+    public static LOGOUT_APP_URL:string=this.PUBLIC_BASE_URL+"/logout";
     public static USR_STORAGE_KEY :string = "CURRENT_USER_VALUE";
 }
 
@@ -15,8 +16,7 @@ export class ROUTE_PATH{
     public static APP_LOGIN_ROUTE = "app/login";
     public static APP_GENERIC_ERROR_ROUTE = "app/generic-error";
     public static APP_HP_AMMINISTRATORE_ROUTE = "app/hp/amministratore";
-    public static APP_HP_DOCENTE_ROUTE = "app/hp/docente";
-    public static APP_HP_STUDENTE_ROUTE = "app/hp/studente";
+    public static APP_HP_UTENTE_ROUTE = "app/hp/utente";
 }
 
 export class TIPO_UTENTE_VALUES{

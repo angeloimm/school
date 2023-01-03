@@ -17,6 +17,7 @@ import org.springframework.http.converter.json.MappingJackson2HttpMessageConvert
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -24,6 +25,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
+import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 import org.springframework.security.web.csrf.CsrfTokenRepository;
 import org.springframework.security.web.csrf.CsrfTokenRequestAttributeHandler;
@@ -47,11 +49,27 @@ public class WebSecurityConfig {
     public SecurityFilterChain configure(HttpSecurity http) throws Exception {
 
         return http
+                /*.sessionManagement(sessione ->{
+                    sessione.sessionCreationPolicy(SessionCreationPolicy.I);
+                })*/
                 .authorizeHttpRequests(exchanges ->
                         exchanges
                                 .requestMatchers("/public/**",
                                         "/favicon.ico",
+                                        //Erogazione angular da static
                                         "/index.html",
+                                        "/*.js**",
+                                        "/*.css*",
+                                        "/*.scss*",
+                                        "/*.png*",
+                                        "/*.svg*",
+                                        "/*.ttf*",
+                                        "/*.woff*",
+                                        "/*.woff2*",
+                                        "/*.eot*",
+                                        "/*.txt*",
+                                        "/assets/**",
+                                        //Fine erogazione angular da static
                                         "/v3/api-docs/**",
                                         "/swagger-ui/**",
                                         "/swagger-ui.html",
@@ -63,7 +81,7 @@ public class WebSecurityConfig {
                                 .requestMatchers("/protected/**")
                                 .authenticated())
                 .formLogin()
-                .loginPage(LOGIN_URL)
+                //.loginPage(LOGIN_URL)
                 .loginProcessingUrl("/login")
                 .permitAll()
                 .usernameParameter("username")
@@ -118,6 +136,15 @@ public class WebSecurityConfig {
                     //csrf.ignoringRequestMatchers("/h2-console/**");
                 })
                 .logout()
+                .logoutSuccessHandler(new LogoutSuccessHandler() {
+                    @Override
+                    public void onLogoutSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
+                        ApiResponse<Boolean> userDetail = ApiResponse.<Boolean>builder().payload(Boolean.TRUE)
+                                        .build();
+                        response.getWriter().append(springMvcJacksonConverter.getObjectMapper().writeValueAsString(userDetail));
+                        response.setStatus(200);
+                    }
+                })
                 .logoutUrl(LOGOUT_URL)
                 .permitAll()
                 .clearAuthentication(true)

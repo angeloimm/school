@@ -24,7 +24,13 @@ export const routes: Routes = [
     title: "HP Amministrazione",
     canActivate:[AdminGuard],
     loadChildren: () => import ('./components/pages/amministratore/admin-page/admin-page.module').then((m)=> m.AdminPageModule)
-  }
+  },
+  {
+    path: ROUTE_PATH.APP_HP_UTENTE_ROUTE,
+    title: "Gestione utenti",
+    canActivate:[AdminGuard],
+    loadChildren: () => import ('./components/pages/utente/utente-page/utente-page.module').then((m)=> m.UtentePageModule)
+  }  
 ];
 
 @NgModule({

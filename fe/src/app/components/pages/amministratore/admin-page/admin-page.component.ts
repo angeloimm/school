@@ -56,9 +56,11 @@ export class AdminPageComponent implements OnInit {
   constructor(private changeDetector: ChangeDetectorRef,
               private layoutSvc:LayoutService,
               private translate:TranslateService) {
+
   }
 
   ngOnInit(): void {
+    this.layoutSvc.showTopBarInfoPanel();
     const welcomeMsg:Message = {};
     welcomeMsg.severity='info';
     welcomeMsg.summary=this.translate.instant('amministratore.msgs.welcome.summary');

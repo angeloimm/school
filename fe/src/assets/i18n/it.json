@@ -1,6 +1,18 @@
 {
     "topbar":{
-        "titolo":"Programmazione corsi"
+        "titolo":"Programmazione corsi",
+        "menu":{
+            "docenti":"Gestione docenti",
+            "studenti":"Gestione studenti",
+            "profilo":"Profilo",
+            "signout":{
+                "label":"Esci",
+                "error":{
+                    "header":"Errore nel logout",
+                    "content":"Spiacente. È avvenuto un erorre nel logout. Se il problema persiste prova a chiudere la finestra, cancellare i cookie e a riprovare"
+                }
+            }
+        }
     },
     "generic-error":{
         "500":{
@@ -83,6 +95,14 @@
             "badcredentials":{
                 "summary":"Errore",
                 "detail":"Username e/o password errate."
+            },
+            "logout":{
+                "summary":"Successo",
+                "detail":"Logout effettuato con successo."
+            },
+            "403":{
+                "summary":"Attentione",
+                "detail":"Logout non effettuato."
             }
         },
         "btn":{
