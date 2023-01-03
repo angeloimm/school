@@ -27,7 +27,16 @@ export class AdminPageComponent implements OnInit {
       center: 'title',
       right: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek'
     },
+    firstDay:1,
+    buttonText:{
+      today:this.translate.instant('amministratore.scheduling.buttonText.today'),
+      month:this.translate.instant('amministratore.scheduling.buttonText.month'),
+      week:this.translate.instant('amministratore.scheduling.buttonText.week'),
+      day:this.translate.instant('amministratore.scheduling.buttonText.day'),
+      list:this.translate.instant('amministratore.scheduling.buttonText.list')
+    },
     initialView: 'dayGridMonth',
+    locale:this.translate.getDefaultLang(),
     //initialEvents: INITIAL_EVENTS, // alternatively, use the `events` setting to fetch from a feed
     weekends: true,
     editable: true,
@@ -63,6 +72,7 @@ export class AdminPageComponent implements OnInit {
   handleWeekendsToggle() {
     const { calendarOptions } = this;
     calendarOptions.weekends = !calendarOptions.weekends;
+    
   }
 
   handleDateSelect(selectInfo: DateSelectArg) {

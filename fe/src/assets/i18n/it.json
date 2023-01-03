@@ -29,6 +29,15 @@
                 "summary":"I corsi di oggi",
                 "detail":"Benvenuto. Di seguito i corsi programmati per la data (o range di date) selezionata"
             }
+        },
+        "scheduling":{
+            "buttonText":{
+                "today":"Oggi",
+                "month":"Mese",
+                "week":"Settimana",
+                "day":"Giorno",
+                "list":"Elenco"
+            }
         }
     },
     "utente":{
