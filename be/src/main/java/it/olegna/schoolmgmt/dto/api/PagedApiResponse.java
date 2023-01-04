@@ -12,9 +12,7 @@ import lombok.experimental.SuperBuilder;
 @NoArgsConstructor
 @SuperBuilder
 @ToString
-public class ApiResponse<T> {
-    private boolean error;
-    private T payload;
-    private ApiError errori;
+public class PagedApiResponse<T> extends  ApiResponse<T>{
+    private Integer totalRecords;
 
 }

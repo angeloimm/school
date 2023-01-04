@@ -43,9 +43,9 @@ export class AppComponent implements OnInit {
           if( loggedUser.tipoUtente === TIPO_UTENTE_VALUES.AMMINISTRATORE ){
             this.router.navigate([ROUTE_PATH.APP_HP_AMMINISTRATORE_ROUTE]);  
           }else if( loggedUser.tipoUtente === TIPO_UTENTE_VALUES.DOCENTE ){
-            this.router.navigate([ROUTE_PATH.APP_HP_DOCENTE_ROUTE]);  
+            this.router.navigate([ROUTE_PATH.APP_HP_UTENTE_ROUTE],{queryParams:{tipoUtente:'D'}});  
           }else if( loggedUser.tipoUtente === TIPO_UTENTE_VALUES.STUDENTE ){
-            this.router.navigate([ROUTE_PATH.APP_HP_STUDENTE_ROUTE]);  
+            this.router.navigate([ROUTE_PATH.APP_HP_UTENTE_ROUTE],{queryParams:{tipoUtente:'S'}});  
           }
         }else{
         

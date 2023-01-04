@@ -6,6 +6,8 @@ import it.olegna.schoolmgmt.dto.UtenteTableDto;
 import it.olegna.schoolmgmt.dto.UtenteWithAttachDto;
 import it.olegna.schoolmgmt.dto.api.ApiResponse;
 import it.olegna.schoolmgmt.dto.api.DataTableResponse;
+import it.olegna.schoolmgmt.dto.api.PagedApiResponse;
+import it.olegna.schoolmgmt.dto.ricerca.utente.RicercaUtenteUtils;
 import it.olegna.schoolmgmt.enums.TipoUtenteEnum;
 import it.olegna.schoolmgmt.service.UtenteSvc;
 import jakarta.servlet.http.HttpServletRequest;
@@ -17,6 +19,8 @@ import org.springframework.data.domain.Sort;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
+import org.springframework.util.Base64Utils;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -44,15 +48,12 @@ public class UtenteController {
     private HttpServletRequest req;
 
     @GetMapping(consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE}, produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
-    public ResponseEntity<DataTableResponse<List<UtenteTableDto>>> utenti(@RequestParam(name = "tipoUtente", required = true) String tipoUtente,
-                                                                          @RequestParam(name = "draw", required = true) Long draw,
-                                                                          @RequestParam(name = "start", required = true) Integer start,
-                                                                          @RequestParam(name = "length", required = true) Integer length,
-                                                                          @RequestParam(name = "order[0][column]", required = false) Integer indiceColonnaOrdinamento,
-                                                                          @RequestParam(name = "order[0][dir]", required = false) String versoOrdinamento) {
-        log.trace("Recupero tutti gli utenti");
+    public ResponseEntity<PagedApiResponse<List<UtenteTableDto>>> utenti(@RequestParam(name = "q", required = true) String q) throws JsonProcessingException {
+        String decoded = new String(Base64Utils.decodeFromString(q));
+        RicercaUtenteUtils ruu = this.springMvcJacksonConverter.getObjectMapper().readValue(decoded,RicercaUtenteUtils.class);
+        log.info("Ricerco gli utenti per tipo utente {}", ruu.getTipoUtente());
         TipoUtenteEnum tipoUtenteEnum = null;
-        switch (tipoUtente) {
+        switch (ruu.getTipoUtente()) {
             case "S":
                 tipoUtenteEnum = TipoUtenteEnum.STUDENTE;
                 break;
@@ -63,38 +64,37 @@ public class UtenteController {
                 tipoUtenteEnum = TipoUtenteEnum.AMMINISTRATORE;
                 break;
             default:
-                throw new IllegalArgumentException("Tipo utente non riconosciuto " + tipoUtente + ". Valori ammessi: S, D e A");
+                throw new IllegalArgumentException("Tipo utente non riconosciuto " + ruu.getTipoUtente() + ". Valori ammessi: S, D e A");
         }
-        log.info("Ricerco gli utenti per tipo utente {}", tipoUtente);
-        String nomeProprietaOrdinamento = req.getParameter("columns[" + indiceColonnaOrdinamento + "][data]");
+        log.trace("Recupero gli utenti con questa query {} e questo oggetto {}; b64 query {}", decoded, ruu, q);
         Sort sort = null;
-        switch (versoOrdinamento.toLowerCase()) {
-            case "asc": {
+        if(StringUtils.hasText(ruu.getEvent().getSortField())) {
+            String sortField = ruu.getEvent().getSortField();
+            switch (ruu.getEvent().getSortOrder()) {
+                case 1: {
 
-                sort = Sort.by(Sort.Order.asc(nomeProprietaOrdinamento));
-                break;
-            }
-            case "desc": {
+                    sort = Sort.by(Sort.Order.asc(sortField));
+                    break;
+                }
+                case -1: {
 
-                sort = Sort.by(Sort.Order.desc(nomeProprietaOrdinamento));
-                break;
+                    sort = Sort.by(Sort.Order.desc(sortField));
+                    break;
+                }
+                default:
+                    throw new IllegalArgumentException("Valore ordinamento inaspettato: " + ruu.getEvent().getSortOrder());
             }
-            default:
-                throw new IllegalArgumentException("Unexpected value: " + versoOrdinamento.toLowerCase());
         }
-
         PageRequest pageRequest = null;
         if (sort != null) {
-            pageRequest = PageRequest.of(start, length, sort);
+            pageRequest = PageRequest.of(ruu.getEvent().getFirst(), ruu.getEvent().getRows(), sort);
         } else {
-            pageRequest = PageRequest.of(start, length);
+            pageRequest = PageRequest.of(ruu.getEvent().getFirst(), ruu.getEvent().getRows());
         }
         Page<UtenteTableDto> utenti = this.utenteSvc.findByTipoUtente(tipoUtenteEnum, pageRequest);
-        return ResponseEntity.ok(DataTableResponse.<List<UtenteTableDto>>builder()
-                .recordsTotal(utenti.getTotalElements())
-                .draw(draw)
-                .recordsFiltered(utenti.getTotalElements())
-                .payload(utenti.getContent()).build());
+        return ResponseEntity.ok(PagedApiResponse.<List<UtenteTableDto>>builder()
+                        .totalRecords(utenti.getTotalPages())
+                        .payload(utenti.getContent()).build());
     }
 
     @GetMapping(value = {"{idUtente}"}, consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE}, produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})

@@ -16,3 +16,7 @@ export interface ApiResponse<T>{
     payload?: T;
     errori?: ApiError;
 }
+
+export interface PagedApiResponse<T> extends ApiResponse<T>{
+    totalRecords?:number;
+}
