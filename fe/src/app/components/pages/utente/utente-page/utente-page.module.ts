@@ -11,7 +11,8 @@ import { InputTextareaModule } from 'primeng/inputtextarea';
 import { TableModule } from 'primeng/table';
 import { MessageModule } from 'primeng/message';
 import { MessagesModule } from 'primeng/messages';
-
+import { DialogModule } from 'primeng/dialog';
+import {ConfirmDialogModule} from 'primeng/confirmdialog';
 const routes: Routes = [
   { path: '', component: UtentePageComponent }
 ];
@@ -26,6 +27,8 @@ const routes: Routes = [
     InputTextareaModule,
     MessageModule,
     MessagesModule,
+    DialogModule,
+    ConfirmDialogModule,
     TableModule,
     RouterModule.forChild(routes),
     TranslateModule.forChild({

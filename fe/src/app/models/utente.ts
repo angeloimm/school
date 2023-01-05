@@ -1,4 +1,5 @@
 export interface Utente{
+    id?:string;
     nome?:string;
     cognome?:string;
     codiceFiscale?:string;

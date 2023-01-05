@@ -52,13 +52,15 @@ public class UtenteSvcImpl implements UtenteSvc {
             final List<Allegato> allegatoList = new ArrayList<>(attaches.size());
             attaches.stream().forEach(mp ->{
                 try {
-                    allegatoList.add(Allegato.builder()
-                                                .utente(utenteDb)
-                                                .contenutoFile(BlobProxy.generateProxy(mp.getInputStream(), mp.getSize()))
-                                                .nomeFile(mp.getOriginalFilename())
-                                                .contentTypeFile(mp.getContentType())
-                                                .dimensioneFile((int)mp.getSize())
-                                                .build());
+                    if( mp != null ) {
+                        allegatoList.add(Allegato.builder()
+                                .utente(utenteDb)
+                                .contenutoFile(BlobProxy.generateProxy(mp.getInputStream(), mp.getSize()))
+                                .nomeFile(mp.getOriginalFilename())
+                                .contentTypeFile(mp.getContentType())
+                                .dimensioneFile((int) mp.getSize())
+                                .build());
+                    }
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }

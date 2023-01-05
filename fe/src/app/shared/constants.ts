@@ -17,10 +17,17 @@ export class ROUTE_PATH{
     public static APP_GENERIC_ERROR_ROUTE = "app/generic-error";
     public static APP_HP_AMMINISTRATORE_ROUTE = "app/hp/amministratore";
     public static APP_HP_UTENTE_ROUTE = "app/hp/utente";
+    public static APP_ADD_UTENTE_ROUTE = "app/utenti";
 }
 
 export class TIPO_UTENTE_VALUES{
     public static AMMINISTRATORE = "AMMINISTRATORE";
     public static STUDENTE = "STUDENTE";
     public static DOCENTE = "DOCENTE";
+}
+
+export class TIPO_UTENTE_KEYS{
+    public static AMMINISTRATORE = "A";
+    public static STUDENTE = "S";
+    public static DOCENTE = "D";
 }

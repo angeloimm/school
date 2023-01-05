@@ -6,7 +6,7 @@ import { Message, MessageService } from 'primeng/api';
 import { FileUpload } from 'primeng/fileupload';
 import { LayoutService } from 'src/app/components/layout/service/layout.service';
 import { Sesso, Utente } from 'src/app/models/utente';
-import { CONST, ROUTE_PATH } from 'src/app/shared/constants';
+import { CONST, ROUTE_PATH, TIPO_UTENTE_KEYS, TIPO_UTENTE_VALUES } from 'src/app/shared/constants';
 import { InitDbServiceService } from 'src/app/shared/services/api/init-db-service.service';
 import { FormUtilsService } from 'src/app/shared/services/form-utils.service';
 import { LoggingServiceService } from 'src/app/shared/services/logging-service.service';
@@ -42,6 +42,7 @@ export class UtenteComponent implements OnInit {
   selectedSesso:Sesso;
   method:string = "POST";
   inizializzazioneDb:boolean;
+
   allegatiCaricati:File[];
   private initDbSaveAdminUrl:string = CONST.INIT_DB_SAVE_ADMIN_URL;
   private protectedSaveUserUrl:string = CONST.USERS_PROTECTED_URL;
@@ -67,14 +68,14 @@ export class UtenteComponent implements OnInit {
       let tipoUtente = params['tipoUtente'];
       this.msg.summary = this.translate.instant('utente.titolo-pannello');
       this.msg.severity = 'info';
-      if (tipoUtente === 'A') {
-        this.utente.tipoUtente = 'AMMINISTRATORE';
+      if (tipoUtente === TIPO_UTENTE_KEYS.AMMINISTRATORE) {
+        this.utente.tipoUtente = TIPO_UTENTE_VALUES.AMMINISTRATORE;
         this.msg.detail = this.translate.instant('utente.inserimento-amministratore');
-      } else if (tipoUtente === 'D') {
-        this.utente.tipoUtente = 'DOCENTE';
+      } else if (tipoUtente === TIPO_UTENTE_KEYS.DOCENTE) {
+        this.utente.tipoUtente = TIPO_UTENTE_VALUES.DOCENTE;
         this.msg.detail = this.translate.instant('utente.inserimento-docente');
-      } else if (tipoUtente === 'S') {
-        this.utente.tipoUtente = 'STUDENTE';
+      } else if (tipoUtente === TIPO_UTENTE_KEYS.STUDENTE) {
+        this.utente.tipoUtente = TIPO_UTENTE_VALUES.STUDENTE;
         this.msg.detail = this.translate.instant('utente.inserimento-studente');
       } else {
         this.msg.severity = 'warning';
@@ -212,13 +213,25 @@ export class UtenteComponent implements OnInit {
     this.allegatiCaricati = this.uploaderAllegatiUtente.files;
     this.uploaderAllegatiUtente.files = [];
     //se inizializzazione db --> redirect alla login se tutto OK
-    if(this.inizializzazioneDb){
+    
       messaggio.severity = 'info';
       messaggio.summary = this.translate.instant('initdb.msgs.summary');
       messaggio.detail = this.translate.instant('initdb.msgs.detail');
       this.messageService.add(messaggio);
-      setTimeout(()=>{this.router.navigate([ROUTE_PATH.APP_LOGIN_ROUTE]);}, 5000);
-    }
+      setTimeout(()=>{
+        if(this.inizializzazioneDb){
+          this.router.navigate([ROUTE_PATH.APP_LOGIN_ROUTE]);
+        }else{
+          if( this.utente.tipoUtente === TIPO_UTENTE_VALUES.DOCENTE ){
+            this.router.navigate([ROUTE_PATH.APP_HP_UTENTE_ROUTE],{queryParams:{tipoUtente:TIPO_UTENTE_KEYS.DOCENTE}});
+          }else if( this.utente.tipoUtente === TIPO_UTENTE_VALUES.STUDENTE ){
+            this.router.navigate([ROUTE_PATH.APP_HP_UTENTE_ROUTE],{queryParams:{tipoUtente:TIPO_UTENTE_KEYS.STUDENTE}});
+
+          }else if( this.utente.tipoUtente === TIPO_UTENTE_VALUES.AMMINISTRATORE ){
+            this.router.navigate([ROUTE_PATH.APP_HP_UTENTE_ROUTE],{queryParams:{tipoUtente:TIPO_UTENTE_KEYS.AMMINISTRATORE}});
+          }
+        }
+      }, 5000);
   }
   uploadError($event){
     let messaggio:Message = {};

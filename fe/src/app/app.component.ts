@@ -1,7 +1,7 @@
 
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { CONST, ROUTE_PATH, TIPO_UTENTE_VALUES } from './shared/constants';
+import { CONST, ROUTE_PATH, TIPO_UTENTE_KEYS, TIPO_UTENTE_VALUES } from './shared/constants';
 import { InitDbServiceService } from './shared/services/api/init-db-service.service';
 import { LoggingServiceService } from './shared/services/logging-service.service';
 import { TranslateService } from '@ngx-translate/core';
@@ -36,16 +36,16 @@ export class AppComponent implements OnInit {
     this.translate.get('primeng').subscribe(res => this.config.setTranslation(res));
     this.initDb.get(CONST.INIT_DB_URL).subscribe((response)=>{
       if(response.payload===true){
-        this.router.navigate([ROUTE_PATH.APP_INIT_ROUTE],{queryParams:{tipoUtente:'A',init:true}});
+        this.router.navigate([ROUTE_PATH.APP_INIT_ROUTE],{queryParams:{tipoUtente:TIPO_UTENTE_KEYS.AMMINISTRATORE,init:true}});
       }else{
         if( this.loggedUserSvc.getLoggedUSer() != null ){
           const loggedUser:Utente = this.loggedUserSvc.getLoggedUSer();
           if( loggedUser.tipoUtente === TIPO_UTENTE_VALUES.AMMINISTRATORE ){
             this.router.navigate([ROUTE_PATH.APP_HP_AMMINISTRATORE_ROUTE]);  
           }else if( loggedUser.tipoUtente === TIPO_UTENTE_VALUES.DOCENTE ){
-            this.router.navigate([ROUTE_PATH.APP_HP_UTENTE_ROUTE],{queryParams:{tipoUtente:'D'}});  
+            this.router.navigate([ROUTE_PATH.APP_HP_UTENTE_ROUTE],{queryParams:{tipoUtente:TIPO_UTENTE_KEYS.DOCENTE}});
           }else if( loggedUser.tipoUtente === TIPO_UTENTE_VALUES.STUDENTE ){
-            this.router.navigate([ROUTE_PATH.APP_HP_UTENTE_ROUTE],{queryParams:{tipoUtente:'S'}});  
+            this.router.navigate([ROUTE_PATH.APP_HP_UTENTE_ROUTE],{queryParams:{tipoUtente:TIPO_UTENTE_KEYS.STUDENTE}});  
           }
         }else{
         

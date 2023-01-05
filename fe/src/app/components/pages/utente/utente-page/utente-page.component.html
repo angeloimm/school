@@ -3,57 +3,77 @@
         <div class="card">
             <p-messages [(value)]="msgs"></p-messages>
         </div>
-    </div>    
+    </div>
     <div class="col-12">
         <div class="card">
-            <p-table [value]="utenti" 
-                [lazy]="true" 
-                (onLazyLoad)="loadUtenti($event)" 
-                dataKey="id"
-                [tableStyle]="{'min-width': '75rem'}" 
-                [selection]="utentiSelezionati"
-                (selectionChange)="onSelectionChange($event)" 
-                [selectAll]="selectAll"
-                [paginator]="true" 
-                [rows]="10"
-                [totalRecords]="totalRecords" 
-                [loading]="loading" 
-                [globalFilterFields]="['nome','cognome', 'dataNascita','codiceFiscale']">
-                <ng-template pTemplate="header">
-                    <tr>
-                        <th style="width: 4rem"></th>
-                        <th pSortableColumn="nome">{{'gestione-utenti.tabella-utenti.column-nome'|translate}}<p-sortIcon
-                                field="nome"></p-sortIcon></th>
-                        <th pSortableColumn="cognome">
-                            {{'gestione-utenti.tabella-utenti.column-cognome'|translate}}<p-sortIcon
-                                field="cognome"></p-sortIcon></th>
-                        <th pSortableColumn="dataNascita">
-                            {{'gestione-utenti.tabella-utenti.column-data-nascita'|translate}}<p-sortIcon
-                                field="dataNascita"></p-sortIcon></th>
-                        <th pSortableColumn="codiceFiscale">
-                            {{'gestione-utenti.tabella-utenti.column-codice-fiscale'|translate}}<p-sortIcon
-                                field="codiceFiscale"></p-sortIcon></th>
-                    </tr>
-                </ng-template>
-                <ng-template pTemplate="body" let-utente>
-                    <tr>
-                        <td>
-                            <p-tableCheckbox [value]="utente"></p-tableCheckbox>
-                        </td>
-                        <td>{{utente.nome}}</td>
-                        <td>{{utente.cognome}}</td>
-                        <td>{{utente.dataNascita}}</td>
-                        <td>{{utente.codiceFiscale}}</td>
-                    </tr>
-                </ng-template>
-                <ng-template pTemplate="emptymessage" let-columns>
-                    <tr>
-                        <td colspan="5" class="text-center">
-                            <span class="font-bold text-center">{{'gestione-utenti.tabella-utenti.no-record'|translate}}</span>
-                        </td>
-                    </tr>
-                </ng-template>
-            </p-table>
+            <div class="row">
+                <div class="col">
+                    <p-button [label]="lablePulsanteAggiungi" (onClick)="gotoPage($event)"></p-button>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <p-table 
+                        [value]="utenti" 
+                        [lazy]="true" 
+                        (onLazyLoad)="loadUtenti($event)" dataKey="id"
+                        [tableStyle]="{'min-width': '75rem'}" [selection]="utentiSelezionati"
+                        (selectionChange)="onSelectionChange($event)" [selectAll]="selectAll" [paginator]="true"
+                        [rows]="10" 
+                        [paginator]="true"
+                        
+                        [rowsPerPageOptions]="[10,25,50]"
+                        [totalRecords]="totalRecords" 
+                        [loading]="loading"
+                        [globalFilterFields]="['nome','cognome', 'dataNascita','codiceFiscale']">
+                        <ng-template pTemplate="header">
+                            <tr>
+                                <th pSortableColumn="nome">
+                                    {{'gestione-utenti.tabella-utenti.column-nome'|translate}}<p-sortIcon
+                                        field="nome"></p-sortIcon></th>
+                                <th pSortableColumn="cognome">
+                                    {{'gestione-utenti.tabella-utenti.column-cognome'|translate}}<p-sortIcon
+                                        field="cognome"></p-sortIcon></th>
+                                <th pSortableColumn="dataNascita">
+                                    {{'gestione-utenti.tabella-utenti.column-data-nascita'|translate}}<p-sortIcon
+                                        field="dataNascita"></p-sortIcon></th>
+                                <th pSortableColumn="codiceFiscale">
+                                    {{'gestione-utenti.tabella-utenti.column-codice-fiscale'|translate}}<p-sortIcon
+                                        field="codiceFiscale"></p-sortIcon></th>
+                                <th style="width: 12rem"></th>
+                            </tr>
+                        </ng-template>
+                        <ng-template pTemplate="body" let-utente>
+                            <tr>
+                                <td>{{utente.nome}}</td>
+                                <td>{{utente.cognome}}</td>
+                                <td>{{utente.dataNascita}}</td>
+                                <td>{{utente.codiceFiscale}}</td>
+                                <td>
+                                    <div class="grid">
+                                        <div class="row">
+                                        <div class="col-1">
+                                            <button title="{{'gestione-utenti.tabella-utenti.azioni.modifica-utente' | translate: {nome: utente.nome, cognome: utente.cognome} }}" type="button" pButton pRipple icon="pi pi-user-edit" (click)="modificaUtente(utente)"></button>
+                                        </div>
+                                        <div class="col-2">
+                                            <button title="{{'gestione-utenti.tabella-utenti.azioni.cancella-utente' | translate: {nome: utente.nome, cognome: utente.cognome} }}" type="button" pButton pRipple class="p-button-danger" icon="pi pi-trash" (click)="cancellaUtente(utente)"></button>
+                                        </div>
+                                    </div>
+                                    </div>
+                                </td>
+                            </tr>
+                        </ng-template>
+                        <ng-template pTemplate="emptymessage" let-columns>
+                            <tr>
+                                <td colspan="5" class="text-center">
+                                    <span
+                                        class="font-bold text-center">{{'gestione-utenti.tabella-utenti.no-record'|translate}}</span>
+                                </td>
+                            </tr>
+                        </ng-template>
+                    </p-table>
+                </div>
+            </div>
         </div>
     </div>
 </div>

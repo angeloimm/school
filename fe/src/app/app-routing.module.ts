@@ -30,7 +30,13 @@ export const routes: Routes = [
     title: "Gestione utenti",
     canActivate:[AdminGuard],
     loadChildren: () => import ('./components/pages/utente/utente-page/utente-page.module').then((m)=> m.UtentePageModule)
-  }  
+  },
+  {
+    path: ROUTE_PATH.APP_ADD_UTENTE_ROUTE,
+    title: "Inserimento utente",
+    canActivate:[AdminGuard],
+    loadChildren: () => import ('./components/shared/utenti/utente/utente-componente-module/utente-componente-module.module').then((m)=> m.UtenteComponenteModuleModule)
+  }
 ];
 
 @NgModule({

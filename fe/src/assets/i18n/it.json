@@ -59,7 +59,13 @@
             "column-data-nascita":"Data di nascita",
             "column-sesso":"Sesso",
             "column-codice-fiscale":"Codice fiscale",
-            "no-record":"Nessun record trovato"
+            "no-record":"Nessun record trovato",
+            "azioni":{
+                "modifica-utente":"Modifica i dati di {{nome}} {{cognome}}",
+                "cancella-utente":"Cancella {{nome}} {{cognome}}",
+                "cancellazione-utente":{
+                }
+            }
         },
         "msgs":{
             "welcome":{
@@ -68,6 +74,11 @@
                 "studenti":"Benvenuto. Di seguito l'elenco degli studenti registrati nel sistema",
                 "amministratori":"Benvenuto. Di seguito l'elenco degli amministratori registrati nel sistema",
                 "unknown":"Spiacente. Tipo {{tipoUtente}} non riconosciuto"
+            },
+            "azioni":{
+                "aggiungi-amministratore":"Aggiungi amministratore",
+                "aggiungi-docente":"Aggiungi docente",
+                "aggiungi-studente":"Aggiungi studente"
             }
         }
     },

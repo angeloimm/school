@@ -1,9 +1,9 @@
-import { Component, OnInit } from '@angular/core';
-import { LazyLoadEvent, Message, MessageService } from 'primeng/api';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ConfirmationService, LazyLoadEvent, Message, MessageService } from 'primeng/api';
 import { Utente } from 'src/app/models/utente';
 import { UtenteApiService } from 'src/app/shared/services/api/utente-api.service';
-import {CONST} from 'src/app/shared/constants';
-import { ActivatedRoute } from '@angular/router';
+import { CONST, ROUTE_PATH, TIPO_UTENTE_KEYS } from 'src/app/shared/constants';
+import { ActivatedRoute, Router } from '@angular/router';
 import { LoggingServiceService } from 'src/app/shared/services/logging-service.service';
 import { TranslateService } from '@ngx-translate/core';
 import { RicercaUtenteQueryStringUtils } from './ricerca-utente-query-string-utils';
@@ -13,86 +13,102 @@ import { encodeBase64 } from 'src/app/shared/utils/common-utils';
 @Component({
   selector: 'app-utente-page',
   templateUrl: './utente-page.component.html',
-  styleUrls: ['./utente-page.component.scss']
+  styleUrls: ['./utente-page.component.scss'],
+  providers:[ConfirmationService]
 })
 export class UtentePageComponent implements OnInit {
   utenti: Utente[];
   totalRecords: number;
   loading: boolean;
   selectAll: boolean = false;
-  tipoUtente:string;
+  tipoUtente: string;
   utentiSelezionati: Utente[];
-  msgs:Message[] = [];
+  lablePulsanteAggiungi:string;
+  msgs: Message[] = [];
 
-  constructor(private utenteSvc:UtenteApiService,
-              private activatedRoute: ActivatedRoute,
-              private log:LoggingServiceService,
-              private translate:TranslateService,
-              private msgSvc:MessageService){
+  constructor(private utenteSvc: UtenteApiService,
+    private activatedRoute: ActivatedRoute,
+    private log: LoggingServiceService,
+    private translate: TranslateService,
+    private confirmationService:ConfirmationService, 
+    private router:Router) {
 
   }
   ngOnInit(): void {
   }
-
   onSelectionChange(value = []) {
     this.selectAll = value.length === this.totalRecords;
     this.utentiSelezionati = value;
   }
+
+  modificaUtente(utente:Utente){
+    alert(utente.id)
+  }
+  cancellaUtente(utente:Utente){
+    this.confirmationService.confirm({
+      message: this.translate.instant('gestione-utenti.tabella-utenti.azioni.cancellazione-utente',{nome: utente.nome, cognome: utente.cognome}),
+      accept:() => {
+alert('OK')
+      },
+      reject:() => {
+        alert('KO')
+      }
+    });
+    //alert(utente.id)
+  }  
   loadUtenti(event: LazyLoadEvent) {
+    
     this.loading = true;
     //Capisco che tipo di utente caricare...
     this.activatedRoute.queryParams.subscribe(params => {
-      let tipoUtente = params['tipoUtente'];
+      this.tipoUtente = params['tipoUtente'];
       let parametri = new URLSearchParams();
-      const messaggio:Message = {};
-      messaggio.severity="info";
+      const messaggio: Message = {};
+      messaggio.severity = "info";
       messaggio.summary = this.translate.instant('gestione-utenti.msgs.welcome.summary');
-      for(let key in event){
+      for (let key in event) {
         parametri.set(key, event[key]);
       }
-      if( tipoUtente && tipoUtente != '' ){
-        parametri.set('tipoUtente', tipoUtente);
-        if( tipoUtente === 'A' ){
+      if (this.tipoUtente && this.tipoUtente != '') {
+        parametri.set('tipoUtente', this.tipoUtente);
+        if (this.tipoUtente === TIPO_UTENTE_KEYS.AMMINISTRATORE) {
           messaggio.detail = this.translate.instant('gestione-utenti.msgs.welcome.amministratori');
-        }else if( tipoUtente === 'D' ){
+          this.lablePulsanteAggiungi = this.translate.instant('gestione-utenti.msgs.azioni.aggiungi-amministratore');
+        } else if (this.tipoUtente === TIPO_UTENTE_KEYS.DOCENTE) {
           messaggio.detail = this.translate.instant('gestione-utenti.msgs.welcome.docenti');
-        }else if( tipoUtente === 'S' ){
+          this.lablePulsanteAggiungi = this.translate.instant('gestione-utenti.msgs.azioni.aggiungi-docente');
+        } else if (this.tipoUtente === TIPO_UTENTE_KEYS.STUDENTE) {
           messaggio.detail = this.translate.instant('gestione-utenti.msgs.welcome.studenti');
-        }else{
+          this.lablePulsanteAggiungi = this.translate.instant('gestione-utenti.msgs.azioni.aggiungi-studente');
+        } else {
           messaggio.severity = "warn";
-          messaggio.detail = this.translate.instant('gestione-utenti.msgs.welcome.unknown',{tipoUtente:tipoUtente});
+          messaggio.detail = this.translate.instant('gestione-utenti.msgs.welcome.unknown', { tipoUtente: this.tipoUtente });
         }
       }
       this.msgs.push(messaggio);
-      const ricercaUtenteQueryStringUtils:RicercaUtenteQueryStringUtils = {};
+      const ricercaUtenteQueryStringUtils: RicercaUtenteQueryStringUtils = {};
       ricercaUtenteQueryStringUtils.event = event;
-      ricercaUtenteQueryStringUtils.tipoUtente = tipoUtente;
-      const queryString:string = JSON.stringify(ricercaUtenteQueryStringUtils);
-      const b64Qs:string = encodeBase64(queryString);
-      const finalUrl:string = CONST.USERS_PROTECTED_URL+'?q='+b64Qs;      
-      this.log.printLog("Ricerco utenti di tipo " + tipoUtente + " su URL: " + finalUrl+" query string: "+queryString);
+      ricercaUtenteQueryStringUtils.tipoUtente = this.tipoUtente;
+      const queryString: string = JSON.stringify(ricercaUtenteQueryStringUtils);
+      const b64Qs: string = encodeBase64(queryString);
+      const finalUrl: string = CONST.USERS_PROTECTED_URL + '?q=' + b64Qs;
+      this.log.printLog("Ricerco utenti di tipo " + this.tipoUtente + " su URL: " + finalUrl + " query string: " + queryString);
       this.utenteSvc.get(finalUrl).subscribe({
         next: (response) => {
-          this.totalRecords = response.totalRecords;
+          this.totalRecords = 0;//response.totalRecords;
           this.utenti = response.payload;
           this.loading = false;
         },
-        error: (error) =>{
-  
+        error: (error) => {
+
           this.loading = false;
         },
       });
     });
-
-
-    /*setTimeout(() => {
-        this.customerService.getCustomers({lazyEvent: JSON.stringify(event)}).then(res => {
-            this.customers = res.customers;
-            this.totalRecords = res.totalRecords;
-            this.loading = false;
-        })
-    }, 1000);*/
-}
+  }
+  gotoPage($event){
+    this.router.navigate([ROUTE_PATH.APP_ADD_UTENTE_ROUTE],{queryParams:{tipoUtente:this.tipoUtente}});  
+  }
   /*
   onSelectAllChange(event) {
       const checked = event.checked;
