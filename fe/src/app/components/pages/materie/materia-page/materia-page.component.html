@@ -77,3 +77,34 @@
  rejectLabel="{{'gestione-materie.tabella-materie.azioni.cancellazione-materia.annulla'|translate}}"
  icon="pi pi-exclamation-triangle"></p-confirmDialog>
 <p-toast position="bottom-center"></p-toast> 
+<p-dialog header="Title" [(visible)]="display">
+    <div class="col-12">
+        <div class="card">
+            <form [formGroup]="materiaForm">
+                <div class="p-fluid p-formgrid grid">
+                    <div class="field col-12 md:col-6">
+                        <label htmlFor="nome"><strong>{{'gestione-materie.nome-materia' | translate}} *</strong></label>
+                        <input pInputText id="nome"
+                            [ngClass]="formUtils.getInvalid(materiaForm,'nomeMateria') ? 'ng-invalid ng-dirty' : '' "
+                             type="text"  formControlName="nomeMateria" />
+                        <small *ngIf="formUtils.getInvalid(materiaForm,'nomeMateria')" class="p-error">
+                            <strong>{{ 'common.errors.required' | translate}}</strong>
+                        </small>
+                    </div>
+                    <div class="field col-12 md:col-6">
+                        <label htmlFor="docenti"><strong>{{'gestione-materie.docenti-materia' | translate}} *</strong></label>
+                        <p-autoComplete 
+                            formControlName="docentiMateria" 
+                            [suggestions]="results" 
+                            field="name"
+                            (completeMethod)="searchDocenti($event)" 
+                            [multiple]="true"></p-autoComplete>
+                        <small *ngIf="formUtils.getInvalid(materiaForm,'docentiMateria')" class="p-error">
+                            <strong>{{ 'common.errors.required' | translate}}</strong>
+                        </small>
+                    </div>                    
+                </div>
+            </form>
+        </div>
+    </div>
+</p-dialog>

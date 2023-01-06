@@ -47,7 +47,7 @@ public class UtenteController {
     private HttpServletRequest req;
 
     @GetMapping(consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE}, produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
-    public ResponseEntity<PagedApiResponse<List<UtenteTableDto>>> utenti(@RequestParam(name = "q", required = true) String q) throws JsonProcessingException {
+    public ResponseEntity<PagedApiResponse<List<UtenteTableDto>>> utenti(@RequestParam(name = "q", required = true) String q, @RequestParam(name = "nome-cognome", required = false) String nomeCognome) throws JsonProcessingException {
         String decoded = new String(Base64Utils.decodeFromString(q));
         RicercaTabelleUtils ruu = this.springMvcJacksonConverter.getObjectMapper().readValue(decoded, RicercaTabelleUtils.class);
         log.info("Ricerco gli utenti per tipo utente {}", ruu.getTipoUtente());
@@ -66,31 +66,36 @@ public class UtenteController {
                 throw new IllegalArgumentException("Tipo utente non riconosciuto " + ruu.getTipoUtente() + ". Valori ammessi: S, D e A");
         }
         log.trace("Recupero gli utenti con questa query {} e questo oggetto {}; b64 query {}", decoded, ruu, q);
-        Sort sort = null;
-        if(StringUtils.hasText(ruu.getEvent().getSortField())) {
-            String sortField = ruu.getEvent().getSortField();
-            switch (ruu.getEvent().getSortOrder()) {
-                case 1: {
-
-                    sort = Sort.by(Sort.Order.asc(sortField));
-                    break;
-                }
-                case -1: {
-
-                    sort = Sort.by(Sort.Order.desc(sortField));
-                    break;
-                }
-                default:
-                    throw new IllegalArgumentException("Valore ordinamento inaspettato: " + ruu.getEvent().getSortOrder());
-            }
-        }
         PageRequest pageRequest = null;
-        if (sort != null) {
-            pageRequest = PageRequest.of(ruu.getEvent().getFirst(), ruu.getEvent().getRows(), sort);
-        } else {
-            pageRequest = PageRequest.of(ruu.getEvent().getFirst(), ruu.getEvent().getRows());
+        if( ruu.getEvent() != null ) {
+            Sort sort = null;
+            if (StringUtils.hasText(ruu.getEvent().getSortField())) {
+                String sortField = ruu.getEvent().getSortField();
+                switch (ruu.getEvent().getSortOrder()) {
+                    case 1: {
+
+                        sort = Sort.by(Sort.Order.asc(sortField));
+                        break;
+                    }
+                    case -1: {
+
+                        sort = Sort.by(Sort.Order.desc(sortField));
+                        break;
+                    }
+                    default:
+                        throw new IllegalArgumentException("Valore ordinamento inaspettato: " + ruu.getEvent().getSortOrder());
+                }
+            }
+
+            if (sort != null) {
+                pageRequest = PageRequest.of(ruu.getEvent().getFirst(), ruu.getEvent().getRows(), sort);
+            } else {
+                pageRequest = PageRequest.of(ruu.getEvent().getFirst(), ruu.getEvent().getRows());
+            }
+        }else{
+            pageRequest = PageRequest.of(0, Integer.MAX_VALUE, Sort.by(Sort.Order.asc("nome"),Sort.Order.asc("cognome")));
         }
-        Page<UtenteTableDto> utenti = this.utenteSvc.findByTipoUtente(tipoUtenteEnum, pageRequest);
+        Page<UtenteTableDto> utenti = this.utenteSvc.findByTipoUtente(tipoUtenteEnum, pageRequest, nomeCognome);
         return ResponseEntity.ok(PagedApiResponse.<List<UtenteTableDto>>builder()
                         .totalRecords(utenti.getTotalElements())
                         .payload(utenti.getContent()).build());

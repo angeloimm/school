@@ -41,7 +41,7 @@ public class MateriaController {
     private MappingJackson2HttpMessageConverter springMvcJacksonConverter;
 
     @GetMapping(consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE}, produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
-    public ResponseEntity<PagedApiResponse<List<MateriaTableDto>>> materie(@RequestParam(name = "q", required = true) String q) throws JsonProcessingException {
+    public ResponseEntity<PagedApiResponse<List<MateriaTableDto>>> materie(@RequestParam(name = "q", required = false) String q, @RequestParam(name = "nomeMateria", required = false)String materia) throws JsonProcessingException {
         String decoded = new String(Base64Utils.decodeFromString(q));
         RicercaTabelleUtils ruu = this.springMvcJacksonConverter.getObjectMapper().readValue(decoded, RicercaTabelleUtils.class);
         Sort sort = null;
@@ -68,7 +68,7 @@ public class MateriaController {
         } else {
             pageRequest = PageRequest.of(ruu.getEvent().getFirst(), ruu.getEvent().getRows());
         }
-        Page<MateriaTableDto> materie = this.materiaSvc.recuperaMaterie(null, pageRequest);
+        Page<MateriaTableDto> materie = this.materiaSvc.recuperaMaterie(materia, pageRequest);
         return ResponseEntity.ok(PagedApiResponse.<List<MateriaTableDto>>builder()
                 .totalRecords(materie.getTotalElements())
                 .payload(materie.getContent()).build());

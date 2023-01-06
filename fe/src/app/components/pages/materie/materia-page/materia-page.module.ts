@@ -9,9 +9,11 @@ import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { TableModule } from 'primeng/table';
 import { ToastModule } from 'primeng/toast';
 import { RouterModule, Routes } from '@angular/router';
+import {AutoCompleteModule} from 'primeng/autocomplete';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { HttpLoaderFactory } from 'src/app/app.module';
 import { HttpClient } from '@angular/common/http';
+import { ReactiveFormsModule } from '@angular/forms';
 
 const routes: Routes = [
   { path: '', component: MateriaPageComponent }
@@ -28,6 +30,8 @@ const routes: Routes = [
     InputTextareaModule,
     DialogModule,
     ConfirmDialogModule,
+    AutoCompleteModule,
+    ReactiveFormsModule,
     TableModule,
     ToastModule,
     RouterModule.forChild(routes),

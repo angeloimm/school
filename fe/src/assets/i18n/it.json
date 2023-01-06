@@ -132,6 +132,8 @@
             "welcome":"Gestione delle materie",
             "add":"Aggiungi materia"
         },
+        "nome-materia":"Nome materia",
+        "docenti-materia":"Docenti materia",
         "tabella-materie":{
             "column-nome":"Nome Materia",
             "azioni":{

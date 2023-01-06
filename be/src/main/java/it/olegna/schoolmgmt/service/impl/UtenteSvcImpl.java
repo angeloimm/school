@@ -23,6 +23,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -149,8 +150,12 @@ public class UtenteSvcImpl implements UtenteSvc {
 
     @Override
     @Transactional(readOnly = true)
-    public Page<UtenteTableDto> findByTipoUtente(TipoUtenteEnum tipoUtenteEnum, Pageable pageable) {
-        return this.repository.findByTipoUtente(tipoUtenteEnum, pageable);
+    public Page<UtenteTableDto> findByTipoUtente(TipoUtenteEnum tipoUtenteEnum, Pageable pageable, String nomeCognome) {
+        if(!StringUtils.hasText(nomeCognome)) {
+            return this.repository.findByTipoUtente(tipoUtenteEnum, pageable);
+        }else{
+            return this.repository.findByTipoUtenteAndNomeStartsWithIgnoreCaseOrCognomeStartsWithIgnoreCase(tipoUtenteEnum, nomeCognome, nomeCognome, pageable);
+        }
     }
 
     @Override

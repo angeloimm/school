@@ -16,3 +16,8 @@ export interface Sesso{
     name?:string;
     code?:string;
 }
+
+export interface UtenteAutocomplete{
+    code?:string,
+    name?:string
+}

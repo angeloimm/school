@@ -30,7 +30,7 @@ public interface UtenteSvc {
 
     Optional<List<UtenteTableDto>> findByTipoUtente(TipoUtenteEnum tipoUtenteEnum);
 
-    Page<UtenteTableDto> findByTipoUtente(TipoUtenteEnum tipoUtenteEnum, Pageable pageable);
+    Page<UtenteTableDto> findByTipoUtente(TipoUtenteEnum tipoUtenteEnum, Pageable pageable, String nomeCognome);
 
     Boolean usernameValid(String value);
 }

@@ -26,4 +26,5 @@ public interface UtenteRepository extends JpaRepository<Utente, UUID>, JpaSpecif
     List<UtenteTableDto> findByTipoUtente(@Param("tipoUtente") TipoUtenteEnum tipoUtente, Sort sort);
 
     Page<UtenteTableDto> findByTipoUtente(@Param("tipoUtente") TipoUtenteEnum tipoUtente, Pageable pageable);
+    Page<UtenteTableDto> findByTipoUtenteAndNomeStartsWithIgnoreCaseOrCognomeStartsWithIgnoreCase(@Param("tipoUtente") TipoUtenteEnum tipoUtente, @Param("nome") String n, @Param("cognome") String c, Pageable pageable);
 }
