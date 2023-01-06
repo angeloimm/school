@@ -8,14 +8,19 @@ export class LoaderDialogInterceptor implements HttpInterceptor {
     private totalRequests = 0;
     constructor(private layoutService: LayoutService) { }
     intercept(httpRequest: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-        this.totalRequests++;
-        this.layoutService.setShowLoadingDialog(true);
-        return next.handle(httpRequest).pipe(
-            finalize(() => {
-            this.totalRequests--;
-            if( this.totalRequests === 0 ){
-                this.layoutService.setShowLoadingDialog(false);
-            }
-        }));
+        const method: string = httpRequest.method.toLowerCase();
+        if (method === 'post' || method === 'delete') {
+            this.totalRequests++;
+            this.layoutService.setShowLoadingDialog(true);
+            return next.handle(httpRequest).pipe(
+                finalize(() => {
+                    this.totalRequests--;
+                    if (this.totalRequests === 0) {
+                        this.layoutService.setShowLoadingDialog(false);
+                    }
+                }));
+        }else{
+            return next.handle(httpRequest);
+        }
     }
 }

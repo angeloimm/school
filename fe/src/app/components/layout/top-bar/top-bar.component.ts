@@ -27,8 +27,9 @@ export class TopBarComponent implements OnInit {
       this.router.navigate([ROUTE_PATH.APP_HP_UTENTE_ROUTE],{queryParams:{tipoUtente:TIPO_UTENTE_KEYS.DOCENTE}});
     } else if (page === 'studenti') {
       this.router.navigate([ROUTE_PATH.APP_HP_UTENTE_ROUTE],{queryParams:{tipoUtente:TIPO_UTENTE_KEYS.STUDENTE}});
+    } else if( page === 'materie' ){
+      this.router.navigate([ROUTE_PATH.APP_HP_MATERIE_ROUTE]);      
     } else {
-
       this.router.navigate([ROUTE_PATH.APP_GENERIC_ERROR_ROUTE],{queryParams:{tipoErrore:404}});
     }
   }

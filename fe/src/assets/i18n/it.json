@@ -60,8 +60,6 @@
             "column-data-nascita":"Data di nascita",
             "column-sesso":"Sesso",
             "column-codice-fiscale":"Codice fiscale",
-            "no-record":"Nessun record trovato",
-            "paginatore":"Mostrati da {first} a {last} su {totalRecords} elementi",
             "azioni":{
                 "modifica-utente":"Modifica i dati di {{nome}} {{cognome}}",
                 "cancella-utente":"Cancella {{nome}} {{cognome}}",
@@ -124,7 +122,32 @@
         }
 
     },
-    
+    "tabelle-commons":{
+        "no-record":"Nessun record trovato",
+        "paginatore":"Mostrati da {first} a {last} su {totalRecords} elementi"
+            
+    },
+    "gestione-materie":{
+        "msgs":{
+            "welcome":"Gestione delle materie",
+            "add":"Aggiungi materia"
+        },
+        "tabella-materie":{
+            "column-nome":"Nome Materia",
+            "azioni":{
+                "modifica-materia":"Modifica i dati di {{nome}}",
+                "cancella-materia":"Cancella {{nome}}",
+                "cancellazione-materia":{
+                    "conferma":"Conferma",
+                    "annulla":"Annulla",
+                    "messaggio-conferma":"Confermi di voler cancellare la materia {{nome}}? Tutti i suoi dati saranno cancellati",
+                    "summary-esito":"Esito cancellazione materia",
+                    "detail-esito-ok":"Cancellazione materia effettuata con successo",
+                    "detail-esito-ko":"Errore durante la cancellazione materia"
+                }
+            }
+        }
+    },
     "login":{
         "msgs":{
             "welcome":{

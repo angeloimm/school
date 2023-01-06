@@ -1,5 +1,6 @@
 package it.olegna.schoolmgmt.persistence.model;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -37,6 +38,6 @@ public class Materia {
     @EqualsAndHashCode.Include
     @Column(name = "NOME_MATERIA", nullable = false)
     private String nomeMateria;
-    @OneToMany(mappedBy = "materia", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "materia", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     private List<UtenteMateria> utenti;
 }

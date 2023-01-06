@@ -1,0 +1,79 @@
+<div class="grid">
+    <div class="col-12">
+        <div class="card">
+            <div class="flex flex-wrap md:justify-content-between justify-content-center card-container">
+                <div class="text-blue-700 font-bold hover:text-700">{{'gestione-materie.msgs.welcome'|translate}}</div>
+            </div>
+        </div>
+    </div>
+    <div class="col-12">
+        <div class="card">
+            <div class="row">
+                <div class="col">
+                    <p-button label="{{'gestione-materie.msgs.add'|translate}}" (onClick)="aggiungiModificaMateria(null)"></p-button>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <p-table 
+                        [value]="materie" 
+                        [lazy]="true" 
+                        (onLazyLoad)="loadMaterie($event)" dataKey="id"
+                        [tableStyle]="{'min-width': '75rem'}" 
+                        [paginator]="true"
+                        [rows]="10" 
+                        [paginator]="true"
+                        [rowsPerPageOptions]="[10,25,50,100]"
+                        currentPageReportTemplate="{{'tabelle-commons.paginatore'|translate}}"
+                        [showCurrentPageReport]="true" 
+                        [totalRecords]="totalRecords" 
+                        [loading]="loading"
+                        >
+                        <ng-template pTemplate="header">
+                            <tr>
+                                <th pSortableColumn="nomeMateria">
+                                    {{'gestione-materie.tabella-materie.column-nome'|translate}}
+                                    <p-sortIcon
+                                        field="nomeMateria"></p-sortIcon>
+                                </th>
+                                <th style="width: 12rem"></th>
+                            </tr>
+                        </ng-template>
+                        <ng-template pTemplate="body" let-materia>
+                            <tr>
+                                <td>{{materia.nomeMateria}}</td>
+                                <td>
+                                    <div class="grid">
+                                        <div class="row">
+                                        <div class="col-1">
+                                            <button title="{{'gestione-materie.tabella-materie.azioni.modifica-materia' | translate: {nome: materia.nomeMateria} }}" type="button" pButton pRipple icon="pi pi-user-edit" (click)="aggiungiModificaMateria(materia)"></button>
+                                        </div>
+                                        <div class="col-2">
+                                            <button title="{{'gestione-materie.tabella-materie.azioni.cancella-materia' | translate: {nome: materia.nomeMateria} }}" type="button" pButton pRipple class="p-button-danger" icon="pi pi-trash" (click)="cancellaMateria(materia)"></button>
+                                        </div>
+                                    </div>
+                                    </div>
+                                </td>
+                            </tr>
+                        </ng-template>
+                        <ng-template pTemplate="emptymessage" let-columns>
+                            <tr>
+                                <td colspan="5" class="text-center">
+                                    <span
+                                        class="font-bold text-center">{{'tabelle-commons.no-record'|translate}}</span>
+                                </td>
+                            </tr>
+                        </ng-template>
+                    </p-table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<p-confirmDialog
+ acceptLabel="{{'gestione-materie.tabella-materie.azioni.cancellazione-materia.conferma'|translate}}"
+ acceptAriaLabel="{{'gestione-materie.tabella-materie.azioni.cancellazione-materia.conferma'|translate}}"
+ rejectAriaLabel="{{'gestione-materie.tabella-materie.azioni.cancellazione-materia.annulla'|translate}}"
+ rejectLabel="{{'gestione-materie.tabella-materie.azioni.cancellazione-materia.annulla'|translate}}"
+ icon="pi pi-exclamation-triangle"></p-confirmDialog>
+<p-toast position="bottom-center"></p-toast> 

@@ -36,6 +36,12 @@ export const routes: Routes = [
     title: "Inserimento utente",
     canActivate:[AdminGuard],
     loadChildren: () => import ('./components/shared/utenti/utente/utente-componente-module/utente-componente-module.module').then((m)=> m.UtenteComponenteModuleModule)
+  },
+  {
+    path: ROUTE_PATH.APP_HP_MATERIE_ROUTE,
+    title: "Gestione materie",
+    canActivate:[AdminGuard],
+    loadChildren: () => import ('./components/pages/materie/materia-page/materia-page.module').then((m)=> m.MateriaPageModule)
   }
 ];
 

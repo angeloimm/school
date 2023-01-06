@@ -1,5 +1,7 @@
 package it.olegna.schoolmgmt.persistence.repository;
 
+import it.olegna.schoolmgmt.dto.MateriaDto;
+import it.olegna.schoolmgmt.dto.MateriaTableDto;
 import it.olegna.schoolmgmt.persistence.model.Materia;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -15,7 +17,7 @@ import java.util.UUID;
 
 @Repository
 public interface MateriaRepository extends JpaRepository<Materia, UUID>, JpaSpecificationExecutor<Materia> {
-    Page findByNomeMateriaStartsWithIgnoreCase(@Param("nomeMateria") String nome, Pageable pageable);
-
-    Optional<List<Materia>> findByNomeMateriaStartsWithIgnoreCase(@Param("nomeMateria") String nome, Sort s);
+    Page<MateriaTableDto> findByNomeMateriaStartsWithIgnoreCase(@Param("nomeMateria") String nome, Pageable pageable);
+    //Page<MateriaTableDto> findAllProjectedBy(Pageable p);
+    Optional<List<MateriaTableDto>> findByNomeMateriaStartsWithIgnoreCase(@Param("nomeMateria") String nome, Sort s);
 }

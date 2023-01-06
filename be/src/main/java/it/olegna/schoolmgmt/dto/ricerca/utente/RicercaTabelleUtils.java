@@ -21,7 +21,7 @@ import lombok.ToString;
 @NoArgsConstructor
 @Builder
 @ToString
-public class RicercaUtenteUtils {
+public class RicercaTabelleUtils {
 
     @JsonProperty("event")
     private Event event;

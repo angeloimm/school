@@ -1,6 +1,7 @@
 package it.olegna.schoolmgmt.service.impl;
 
 import it.olegna.schoolmgmt.dto.MateriaDto;
+import it.olegna.schoolmgmt.dto.MateriaTableDto;
 import it.olegna.schoolmgmt.mapper.MateriaMapper;
 import it.olegna.schoolmgmt.persistence.model.Materia;
 import it.olegna.schoolmgmt.persistence.model.Materia_;
@@ -8,10 +9,14 @@ import it.olegna.schoolmgmt.persistence.repository.MateriaRepository;
 import it.olegna.schoolmgmt.service.MateriaSvc;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -45,15 +50,28 @@ public class MateriaSvcImpl implements MateriaSvc {
     }
 
     @Override
-    public List<MateriaDto> recuperaMaterie(String nome) {
+    public Page<MateriaTableDto> recuperaMaterie(String nome, Pageable pageable) {
+        Page<MateriaTableDto> materie = null;
         if (!StringUtils.hasText(nome)) {
-            return mapper.toDtos(repository.findAll(Sort.by(Sort.Order.asc(Materia_.NOME_MATERIA))));
+            Page<Materia> materieP = repository.findAll(pageable);
+            long totalElements = materieP.getTotalElements();
+            materie = new PageImpl<MateriaTableDto>(toMaterieTable(materieP.getContent()),pageable, totalElements);
+        }else {
+            materie = repository.findByNomeMateriaStartsWithIgnoreCase(nome, pageable);
         }
+        return materie;
+    }
+    private List<MateriaTableDto> toMaterieTable(List<Materia> entities){
+        if( entities != null && !entities.isEmpty() ) {
+            List<MateriaTableDto> result = new ArrayList<>(entities.size());
+            entities.forEach( e -> {
+                result.add(MateriaTableDto.builder()
+                                .id(e.getId())
+                                .nomeMateria(e.getNomeMateria())
+                        .build());
+            });
+        }
+        return  Collections.emptyList();
 
-        Optional<List<Materia>> p = repository.findByNomeMateriaStartsWithIgnoreCase(nome, Sort.by(Sort.Order.asc(Materia_.NOME_MATERIA)));
-        if (p.isEmpty()) {
-            return Collections.emptyList();
-        }
-        return mapper.toDtos(p.get());
     }
 }

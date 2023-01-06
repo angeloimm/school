@@ -5,9 +5,8 @@ import it.olegna.schoolmgmt.dto.UtenteDto;
 import it.olegna.schoolmgmt.dto.UtenteTableDto;
 import it.olegna.schoolmgmt.dto.UtenteWithAttachDto;
 import it.olegna.schoolmgmt.dto.api.ApiResponse;
-import it.olegna.schoolmgmt.dto.api.DataTableResponse;
 import it.olegna.schoolmgmt.dto.api.PagedApiResponse;
-import it.olegna.schoolmgmt.dto.ricerca.utente.RicercaUtenteUtils;
+import it.olegna.schoolmgmt.dto.ricerca.utente.RicercaTabelleUtils;
 import it.olegna.schoolmgmt.enums.TipoUtenteEnum;
 import it.olegna.schoolmgmt.service.UtenteSvc;
 import jakarta.servlet.http.HttpServletRequest;
@@ -50,7 +49,7 @@ public class UtenteController {
     @GetMapping(consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE}, produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
     public ResponseEntity<PagedApiResponse<List<UtenteTableDto>>> utenti(@RequestParam(name = "q", required = true) String q) throws JsonProcessingException {
         String decoded = new String(Base64Utils.decodeFromString(q));
-        RicercaUtenteUtils ruu = this.springMvcJacksonConverter.getObjectMapper().readValue(decoded,RicercaUtenteUtils.class);
+        RicercaTabelleUtils ruu = this.springMvcJacksonConverter.getObjectMapper().readValue(decoded, RicercaTabelleUtils.class);
         log.info("Ricerco gli utenti per tipo utente {}", ruu.getTipoUtente());
         TipoUtenteEnum tipoUtenteEnum = null;
         switch (ruu.getTipoUtente()) {

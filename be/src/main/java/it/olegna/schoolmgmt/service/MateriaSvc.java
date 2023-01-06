@@ -1,6 +1,9 @@
 package it.olegna.schoolmgmt.service;
 
 import it.olegna.schoolmgmt.dto.MateriaDto;
+import it.olegna.schoolmgmt.dto.MateriaTableDto;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 import java.util.Optional;
@@ -13,5 +16,5 @@ public interface MateriaSvc {
 
     void cancellaMateria(UUID idMateria);
 
-    List<MateriaDto> recuperaMaterie(String nome);
+    Page<MateriaTableDto> recuperaMaterie(String nome, Pageable pageable);
 }

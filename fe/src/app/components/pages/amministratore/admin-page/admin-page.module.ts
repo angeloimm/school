@@ -6,8 +6,6 @@ import { RouterModule, Routes } from '@angular/router';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { HttpLoaderFactory } from 'src/app/app.module';
 import { HttpClient } from '@angular/common/http';
-import { MessageModule } from 'primeng/message';
-import { MessagesModule } from 'primeng/messages';
 
 const routes: Routes = [
   { path: '', component: AdminPageComponent }
