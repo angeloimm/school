@@ -13,6 +13,6 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 @ToString
 public class PagedApiResponse<T> extends  ApiResponse<T>{
-    private Integer totalRecords;
+    private Long totalRecords;
 
 }

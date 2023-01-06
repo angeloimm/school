@@ -18,8 +18,6 @@ const routes: Routes = [
   imports: [
     CommonModule,
     FullCalendarModule,
-    MessageModule,
-    MessagesModule,
     RouterModule.forChild(routes),
     TranslateModule.forChild({
       loader: {

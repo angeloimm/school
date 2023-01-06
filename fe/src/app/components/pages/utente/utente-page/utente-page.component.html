@@ -1,7 +1,9 @@
 <div class="grid">
     <div class="col-12">
         <div class="card">
-            <p-messages [(value)]="msgs"></p-messages>
+            <div class="flex flex-wrap md:justify-content-between justify-content-center card-container">
+                <div class="text-blue-700 font-bold hover:text-700">{{welcomeMsg}}</div>
+            </div>
         </div>
     </div>
     <div class="col-12">
@@ -17,12 +19,13 @@
                         [value]="utenti" 
                         [lazy]="true" 
                         (onLazyLoad)="loadUtenti($event)" dataKey="id"
-                        [tableStyle]="{'min-width': '75rem'}" [selection]="utentiSelezionati"
-                        (selectionChange)="onSelectionChange($event)" [selectAll]="selectAll" [paginator]="true"
+                        [tableStyle]="{'min-width': '75rem'}" 
+                        [paginator]="true"
                         [rows]="10" 
                         [paginator]="true"
-                        
-                        [rowsPerPageOptions]="[10,25,50]"
+                        [rowsPerPageOptions]="[10,25,50,100]"
+                        currentPageReportTemplate="{{'gestione-utenti.tabella-utenti.paginatore'|translate}}"
+                        [showCurrentPageReport]="true" 
                         [totalRecords]="totalRecords" 
                         [loading]="loading"
                         [globalFilterFields]="['nome','cognome', 'dataNascita','codiceFiscale']">
@@ -47,7 +50,7 @@
                             <tr>
                                 <td>{{utente.nome}}</td>
                                 <td>{{utente.cognome}}</td>
-                                <td>{{utente.dataNascita}}</td>
+                                <td>{{ utente.dataNascita | date:'dd/MM/yyyy' }}</td>
                                 <td>{{utente.codiceFiscale}}</td>
                                 <td>
                                     <div class="grid">
@@ -77,3 +80,10 @@
         </div>
     </div>
 </div>
+<p-confirmDialog
+ acceptLabel="{{'gestione-utenti.tabella-utenti.azioni.cancellazione-utente.conferma'|translate}}"
+ acceptAriaLabel="{{'gestione-utenti.tabella-utenti.azioni.cancellazione-utente.conferma'|translate}}"
+ rejectAriaLabel="{{'gestione-utenti.tabella-utenti.azioni.cancellazione-utente.annulla'|translate}}"
+ rejectLabel="{{'gestione-utenti.tabella-utenti.azioni.cancellazione-utente.annulla'|translate}}"
+ icon="pi pi-exclamation-triangle"></p-confirmDialog>
+<p-toast position="bottom-center"></p-toast> 

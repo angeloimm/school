@@ -19,7 +19,11 @@
         <button title="{{'topbar.menu.studenti'|translate}}" class="p-link layout-topbar-button" [hidden]="!loggedUserService.isAmministratore()" (click)="goToPage($event, 'studenti')">
             <i class="pi pi-fw pi-users"></i>
             <span>{{'topbar.menu.studenti'|translate}}</span>
-        </button>        
+        </button>    
+        <button title="{{'topbar.menu.materie'|translate}}" class="p-link layout-topbar-button" [hidden]="!loggedUserService.isAmministratore()" (click)="goToPage($event, 'materie')">
+            <i class="pi pi-fw pi-book"></i>
+            <span>{{'topbar.menu.studenti'|translate}}</span>
+        </button>             
         <button title="{{'topbar.menu.signout'|translate}}" class="p-link layout-topbar-button" [hidden]="!loggedUserService.isAmministratore()" (click)="logout($event)">
             <i class="pi pi-fw pi-sign-out"></i>
             <span>{{'topbar.menu.signout.label'|translate}}</span>

@@ -22,8 +22,7 @@ export class UtenteComponent implements OnInit {
   @ViewChild('uploaderAllegatiUtente') 
   uploaderAllegatiUtente:FileUpload;
   utente: Utente = {};
-  msgs: Message[] = [];
-  msg: Message = {};
+  welcomeMsg:string;
   maxDateValue:Date = new Date();
   multipleUpload: boolean = true;
   //Form utils
@@ -66,23 +65,19 @@ export class UtenteComponent implements OnInit {
     this.utente.attivo = true;
     this.activatedRoute.queryParams.subscribe(params => {
       let tipoUtente = params['tipoUtente'];
-      this.msg.summary = this.translate.instant('utente.titolo-pannello');
-      this.msg.severity = 'info';
+
       if (tipoUtente === TIPO_UTENTE_KEYS.AMMINISTRATORE) {
         this.utente.tipoUtente = TIPO_UTENTE_VALUES.AMMINISTRATORE;
-        this.msg.detail = this.translate.instant('utente.inserimento-amministratore');
+        this.welcomeMsg = this.translate.instant('utente.inserimento-amministratore');
       } else if (tipoUtente === TIPO_UTENTE_KEYS.DOCENTE) {
         this.utente.tipoUtente = TIPO_UTENTE_VALUES.DOCENTE;
-        this.msg.detail = this.translate.instant('utente.inserimento-docente');
+        this.welcomeMsg = this.translate.instant('utente.inserimento-docente');
       } else if (tipoUtente === TIPO_UTENTE_KEYS.STUDENTE) {
         this.utente.tipoUtente = TIPO_UTENTE_VALUES.STUDENTE;
-        this.msg.detail = this.translate.instant('utente.inserimento-studente');
+        this.welcomeMsg = this.translate.instant('utente.inserimento-studente');
       } else {
-        this.msg.severity = 'warning';
-        this.msg.detail = this.translate.instant('utente.tipo-utente-sconosciuto', { tipo: tipoUtente });
+        this.welcomeMsg = this.translate.instant('utente.tipo-utente-sconosciuto', { tipo: tipoUtente });
       }
-      this.msgs.push(this.msg);
-      this.messageService.addAll(this.msgs);
       let init:string = params['init'];
       if( init != null && init==="true" ){
         this.inizializzazioneDb = true;
@@ -213,13 +208,12 @@ export class UtenteComponent implements OnInit {
     this.allegatiCaricati = this.uploaderAllegatiUtente.files;
     this.uploaderAllegatiUtente.files = [];
     //se inizializzazione db --> redirect alla login se tutto OK
-    
-      messaggio.severity = 'info';
-      messaggio.summary = this.translate.instant('initdb.msgs.summary');
-      messaggio.detail = this.translate.instant('initdb.msgs.detail');
-      this.messageService.add(messaggio);
       setTimeout(()=>{
         if(this.inizializzazioneDb){
+          messaggio.severity = 'info';
+          messaggio.summary = this.translate.instant('initdb.msgs.summary');
+          messaggio.detail = this.translate.instant('initdb.msgs.detail');
+          this.messageService.add(messaggio);
           this.router.navigate([ROUTE_PATH.APP_LOGIN_ROUTE]);
         }else{
           if( this.utente.tipoUtente === TIPO_UTENTE_VALUES.DOCENTE ){

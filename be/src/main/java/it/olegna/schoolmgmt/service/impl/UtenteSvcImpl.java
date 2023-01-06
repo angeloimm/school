@@ -9,6 +9,9 @@ import it.olegna.schoolmgmt.persistence.model.Allegato;
 import it.olegna.schoolmgmt.persistence.model.Utente;
 import it.olegna.schoolmgmt.persistence.model.Utente_;
 import it.olegna.schoolmgmt.persistence.repository.AllegatoRepository;
+import it.olegna.schoolmgmt.persistence.repository.DisponibilitaRepository;
+import it.olegna.schoolmgmt.persistence.repository.StudenteCorsoRepository;
+import it.olegna.schoolmgmt.persistence.repository.UtenteMateriaRepository;
 import it.olegna.schoolmgmt.persistence.repository.UtenteRepository;
 import it.olegna.schoolmgmt.service.UtenteSvc;
 import lombok.extern.slf4j.Slf4j;
@@ -33,6 +36,12 @@ import java.util.UUID;
 public class UtenteSvcImpl implements UtenteSvc {
     @Autowired
     private UtenteRepository repository;
+    @Autowired
+    private UtenteMateriaRepository utenteMateriaRepository;
+    @Autowired
+    private StudenteCorsoRepository studenteCorsoRepository;
+    @Autowired
+    private DisponibilitaRepository disponibilitaRepository;
     @Autowired
     private AllegatoRepository allegatoRepository;
     @Autowired
@@ -111,6 +120,8 @@ public class UtenteSvcImpl implements UtenteSvc {
     @Transactional(readOnly = false)
     public void cancellaUtente(UUID idUtente) {
         log.info("Cancellazione utente con ID {}", idUtente);
+        //cancello gli allegati
+
         repository.deleteById(idUtente);
     }
 

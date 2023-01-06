@@ -9,10 +9,9 @@ import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
 import { InputTextareaModule } from 'primeng/inputtextarea';
 import { TableModule } from 'primeng/table';
-import { MessageModule } from 'primeng/message';
-import { MessagesModule } from 'primeng/messages';
 import { DialogModule } from 'primeng/dialog';
 import {ConfirmDialogModule} from 'primeng/confirmdialog';
+import {ToastModule} from 'primeng/toast';
 const routes: Routes = [
   { path: '', component: UtentePageComponent }
 ];
@@ -25,11 +24,10 @@ const routes: Routes = [
     ButtonModule,
     InputTextModule,
     InputTextareaModule,
-    MessageModule,
-    MessagesModule,
     DialogModule,
     ConfirmDialogModule,
     TableModule,
+    ToastModule,
     RouterModule.forChild(routes),
     TranslateModule.forChild({
       loader: {

@@ -2,6 +2,7 @@ package it.olegna.schoolmgmt.persistence.model;
 
 import it.olegna.schoolmgmt.converters.TipoUtenteConverter;
 import it.olegna.schoolmgmt.enums.TipoUtenteEnum;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Convert;
 import jakarta.persistence.Entity;
@@ -79,12 +80,12 @@ public class Utente {
     @EqualsAndHashCode.Include
     @Column(name = "ATTIVO", nullable = false)
     private Boolean attivo;
-    @OneToMany(mappedBy = "utente", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "utente", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     private List<UtenteMateria> materie;
-    @OneToMany(mappedBy = "utente", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "utente", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     private List<Allegato> allegati;
-    @OneToMany(mappedBy = "docente", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "docente", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     private List<Disponibilita> disponibilita;
-    @OneToMany(mappedBy = "studente")
+    @OneToMany(mappedBy = "studente", cascade = CascadeType.REMOVE)
     private List<StudenteCorso> corsi;
 }

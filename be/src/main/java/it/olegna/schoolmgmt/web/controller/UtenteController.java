@@ -93,7 +93,7 @@ public class UtenteController {
         }
         Page<UtenteTableDto> utenti = this.utenteSvc.findByTipoUtente(tipoUtenteEnum, pageRequest);
         return ResponseEntity.ok(PagedApiResponse.<List<UtenteTableDto>>builder()
-                        .totalRecords(utenti.getTotalPages())
+                        .totalRecords(utenti.getTotalElements())
                         .payload(utenti.getContent()).build());
     }
 
@@ -104,8 +104,9 @@ public class UtenteController {
     }
 
     @DeleteMapping(value = {"{idUtente}"}, consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE}, produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
-    public ResponseEntity<ApiResponse<Void>> deleteUtente(@PathVariable(required = true, name = "idUtente") String id) {
+    public ResponseEntity<ApiResponse<Void>> deleteUtente(@PathVariable(required = true, name = "idUtente") UUID id) {
         log.info("Cancello l'utente con ID {}", id);
+        this.utenteSvc.cancellaUtente(id);
         return ResponseEntity.noContent().build();
     }
 

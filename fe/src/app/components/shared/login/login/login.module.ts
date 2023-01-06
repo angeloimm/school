@@ -4,13 +4,12 @@ import { LoginComponent } from './login.component';
 import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
 import { PasswordModule } from 'primeng/password';
-import { MessageModule } from 'primeng/message';
-import { MessagesModule } from 'primeng/messages';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule, Routes } from '@angular/router';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { HttpLoaderFactory } from 'src/app/app.module';
 import { HttpClient } from '@angular/common/http';
+import { ToastModule } from 'primeng/toast';
 
 const routes: Routes = [
   { path: '', component: LoginComponent }
@@ -23,8 +22,7 @@ const routes: Routes = [
     ButtonModule,
     InputTextModule,
     PasswordModule,
-    MessageModule,
-    MessagesModule,
+    ToastModule,
     FormsModule,
     ReactiveFormsModule,
     RouterModule.forChild(routes),

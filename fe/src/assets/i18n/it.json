@@ -4,6 +4,7 @@
         "menu":{
             "docenti":"Gestione docenti",
             "studenti":"Gestione studenti",
+            "materie":"Gestione materie",
             "profilo":"Profilo",
             "signout":{
                 "label":"Esci",
@@ -60,10 +61,17 @@
             "column-sesso":"Sesso",
             "column-codice-fiscale":"Codice fiscale",
             "no-record":"Nessun record trovato",
+            "paginatore":"Mostrati da {first} a {last} su {totalRecords} elementi",
             "azioni":{
                 "modifica-utente":"Modifica i dati di {{nome}} {{cognome}}",
                 "cancella-utente":"Cancella {{nome}} {{cognome}}",
                 "cancellazione-utente":{
+                    "conferma":"Conferma",
+                    "annulla":"Annulla",
+                    "messaggio-conferma":"Confermi di voler cancellare l'utente {{nome}} {{cognome}}? Tutti i suoi dati saranno cancellati",
+                    "summary-esito":"Esito cancellazione utente",
+                    "detail-esito-ok":"Cancellazione utente effettuata con successo",
+                    "detail-esito-ko":"Errore durante la cancellazione utente"
                 }
             }
         },
@@ -116,22 +124,21 @@
         }
 
     },
+    
     "login":{
         "msgs":{
             "welcome":{
-                "summary":"Accesso al sistema",
+                
                 "detail":"Inserisci username e password per accedere al sistema"
             },
             "badcredentials":{
-                "summary":"Errore",
                 "detail":"Username e/o password errate."
             },
             "logout":{
-                "summary":"Successo",
                 "detail":"Logout effettuato con successo."
             },
             "403":{
-                "summary":"Attentione",
+                
                 "detail":"Logout non effettuato."
             }
         },

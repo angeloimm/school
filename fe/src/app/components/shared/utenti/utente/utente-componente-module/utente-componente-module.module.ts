@@ -10,13 +10,12 @@ import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { HttpLoaderFactory } from 'src/app/app.module';
 import { HttpClient } from '@angular/common/http';
 import { RouterModule, Routes } from '@angular/router';
-import { MessagesModule } from 'primeng/messages';
-import { MessageModule } from 'primeng/message';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import {PasswordModule} from 'primeng/password';
 import {DividerModule} from 'primeng/divider';
 import {DropdownModule} from 'primeng/dropdown';
 import {TableModule} from 'primeng/table';
+import { ToastModule } from 'primeng/toast';
 const routes: Routes = [
   { path: '', component: UtenteComponent }
 ];
@@ -31,13 +30,12 @@ const routes: Routes = [
     PasswordModule,
     FileUploadModule,
     CalendarModule,
-    MessagesModule,
-    MessageModule,
     FormsModule,
     DividerModule,
     ReactiveFormsModule,
     DropdownModule,
     TableModule,
+    ToastModule,
     RouterModule.forChild(routes),
     TranslateModule.forChild({
       loader: {

@@ -17,19 +17,7 @@ import { LoggingServiceService } from 'src/app/shared/services/logging-service.s
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss']
 })
-/**"login":{
-        "msgs":{
-            "welcome":{
-                "summary":"Accesso al sistema",
-                "detail":"Inserisci username e password per accedere al sistema"
-            }
-        },
-        "btn":{
-            "accedi":"Login"
-        }
-    }, */
 export class LoginComponent implements OnInit {
-  msgs: Message[] = [];
   username: FormControl;
   password: FormControl;
   credenzialiUtente: FormGroup;
@@ -46,12 +34,7 @@ export class LoginComponent implements OnInit {
 
   }
   ngOnInit(): void {
-    //Welcom msg
-    const welcomMsg: Message = {};
-    welcomMsg.severity = "info";
-    welcomMsg.summary = this.translate.instant('login.msgs.welcome.summary');
-    welcomMsg.detail = this.translate.instant('login.msgs.welcome.detail');
-    this.msgs.push(welcomMsg);
+    
     //Errore di login?
     this.activatedRoute.queryParams.subscribe(params => {
       //Caso di errore?
@@ -66,12 +49,10 @@ export class LoginComponent implements OnInit {
       
       }else if (errorCode && errorCode === '403') {
         const badCredentials: Message = {};
-        welcomMsg.summary = this.translate.instant('login.msgs.'+errorCode+'.summary');
-        welcomMsg.detail = this.translate.instant('login.msgs.'+errorCode+'.detail');
-        welcomMsg.severity = 'warn';
+        badCredentials.summary = this.translate.instant('login.msgs.'+errorCode+'.summary');
+        badCredentials.detail = this.translate.instant('login.msgs.'+errorCode+'.detail');
+        badCredentials.severity = 'warn';
         this.msgService.add(badCredentials);
-        
-        console.log(badCredentials);
       }
       //Caso di logout?
       let logout = params['logout'];

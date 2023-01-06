@@ -4,7 +4,6 @@ import interactionPlugin from '@fullcalendar/interaction';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import timeGridPlugin from '@fullcalendar/timegrid';
 import listPlugin from '@fullcalendar/list';
-import { Message } from 'primeng/api';
 import { LayoutService } from 'src/app/components/layout/service/layout.service';
 import { TranslateService } from '@ngx-translate/core';
 @Component({
@@ -14,7 +13,7 @@ import { TranslateService } from '@ngx-translate/core';
 })
 export class AdminPageComponent implements OnInit {
   calendarVisible = true;
-  msgs:Message[] = [];
+  welcomeMsg:string;
   calendarOptions: CalendarOptions = {
     plugins: [
       interactionPlugin,
@@ -61,11 +60,7 @@ export class AdminPageComponent implements OnInit {
 
   ngOnInit(): void {
     this.layoutSvc.showTopBarInfoPanel();
-    const welcomeMsg:Message = {};
-    welcomeMsg.severity='info';
-    welcomeMsg.summary=this.translate.instant('amministratore.msgs.welcome.summary');
-    welcomeMsg.detail=this.translate.instant('amministratore.msgs.welcome.detail');
-    this.msgs.push(welcomeMsg);
+    this.welcomeMsg =this.translate.instant('amministratore.msgs.welcome.detail');
   }
   handleCalendarToggle() {
     this.calendarVisible = !this.calendarVisible;

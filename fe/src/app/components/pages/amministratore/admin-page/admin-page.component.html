@@ -1,9 +1,11 @@
 <div class="grid">
   <div class="col-12">
     <div class="card">
-        <p-messages [(value)]="msgs"></p-messages>
+        <div class="flex flex-wrap md:justify-content-between justify-content-center card-container">
+            <div class="text-blue-700 font-bold hover:text-700">{{welcomeMsg}}</div>
+        </div>
     </div>
-  </div>
+</div>
   <div class="col-12">
     <div class="card">
       <full-calendar *ngIf='calendarVisible' [options]='calendarOptions'>
