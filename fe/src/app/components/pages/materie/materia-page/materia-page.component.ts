@@ -127,7 +127,7 @@ export class MateriaPageComponent implements OnInit {
   }
   aggiungiModificaMateria(materia: Materia) {
     if (materia && materia != null) {
-
+      
     } else {
       this.display = true;
     }

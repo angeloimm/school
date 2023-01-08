@@ -3,7 +3,7 @@ import { map, Observable } from "rxjs";
 import { CONST } from "../shared/constants";
 import {InitDbServiceService} from '../shared/services/api/init-db-service.service';
 
-export class UniqueUsernameValidator{
+export class AsyncValidators{
     private static readonly USERNAME_DUPLICATED = { usernameDuplicated: true };
     private static readonly USERNAME_NOT_DUPLICATED = null;
     
@@ -11,7 +11,7 @@ export class UniqueUsernameValidator{
         return (control:AbstractControl):Observable<ValidationErrors> =>{
             const username = control.value;
         const finalUrl = CONST.VALIDATE_USERNAME_URL.endsWith("/")?CONST.VALIDATE_USERNAME_URL+username:CONST.VALIDATE_USERNAME_URL+"/"+username;
-        return initDb.get(finalUrl).pipe(map((response)=>response.payload?UniqueUsernameValidator.USERNAME_NOT_DUPLICATED:UniqueUsernameValidator.USERNAME_DUPLICATED));
+        return initDb.get(finalUrl).pipe(map((response)=>response.payload?AsyncValidators.USERNAME_NOT_DUPLICATED:AsyncValidators.USERNAME_DUPLICATED));
         }
     }
 }

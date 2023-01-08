@@ -11,7 +11,7 @@ import { InitDbServiceService } from 'src/app/shared/services/api/init-db-servic
 import { FormUtilsService } from 'src/app/shared/services/form-utils.service';
 import { LoggingServiceService } from 'src/app/shared/services/logging-service.service';
 import { PasswordValidator } from 'src/app/validators/password.validator';
-import { UniqueUsernameValidator } from 'src/app/validators/unique-username-validator';
+import { AsyncValidators } from 'src/app/validators/async-validator';
 
 @Component({
   selector: 'app-utente',
@@ -117,7 +117,7 @@ export class UtenteComponent implements OnInit {
     this.dataNascita = new FormControl(this.utente.dataNascita,{validators: Validators.required});
     this.sessoFc = new FormControl(this.getSessoUtente, {validators: Validators.required});
     this.indirizzo = new FormControl(this.utente.indirizzo, {validators: Validators.required});
-    this.username = new FormControl(this.utente.username,{validators: [ Validators.required, Validators.minLength(3)], asyncValidators: [UniqueUsernameValidator.validateUsername(this.initDb)]});
+    this.username = new FormControl(this.utente.username,{validators: [ Validators.required, Validators.minLength(3)], asyncValidators: [AsyncValidators.validateUsername(this.initDb)]});
     this.password = new FormControl(null,Validators.compose([
       Validators.minLength(8),
       Validators.required,
