@@ -34,6 +34,9 @@
             "required": "Campo obbligatorio",
             "checkpassword":"Conferma password non valida",
             "usernameduplication":"Username già esistente"
+        },
+        "drop-down":{
+            "empty-result":"Nessun risultato trovato per la ricerca effettuata"
         }
     },
     "amministratore":{
@@ -130,10 +133,15 @@
     "gestione-materie":{
         "msgs":{
             "welcome":"Gestione delle materie",
-            "add":"Aggiungi materia"
+            "add":"Aggiungi materia",
+            "summary-errore":"Errore",
+            "detail-errore":"Spiacente. È avvenuto un errore nell'aggiunta o nella modifica della materia",
+            "summary-ok":"Successo",
+            "detail-ok":"Il salvataggio o la modifica della materia è terminato con successo"
         },
+        "dialog-title":"Inserimento/Modifica materia",
         "nome-materia":"Nome materia",
-        "docenti-materia":"Docenti materia",
+        "docenti-materia":"Docenti materia",    
         "tabella-materie":{
             "column-nome":"Nome Materia",
             "azioni":{

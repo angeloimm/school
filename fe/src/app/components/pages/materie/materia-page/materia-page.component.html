@@ -77,12 +77,13 @@
  rejectLabel="{{'gestione-materie.tabella-materie.azioni.cancellazione-materia.annulla'|translate}}"
  icon="pi pi-exclamation-triangle"></p-confirmDialog>
 <p-toast position="bottom-center"></p-toast> 
-<p-dialog header="Title" [(visible)]="display">
+<p-dialog header="{{'gestione-materie.dialog-title'|translate}}" [(visible)]="display" [modal]="true" [breakpoints]="{'960px': '75vw', '640px': '100vw'}" [style]="{width: '50vw'}">
     <div class="col-12">
         <div class="card">
             <form [formGroup]="materiaForm">
                 <div class="p-fluid p-formgrid grid">
-                    <div class="field col-12 md:col-6">
+                    <input pInputText id="idMateria" type="hidden"  formControlName="idMateria" />
+                    <div class="field col-12">
                         <label htmlFor="nome"><strong>{{'gestione-materie.nome-materia' | translate}} *</strong></label>
                         <input pInputText id="nome"
                             [ngClass]="formUtils.getInvalid(materiaForm,'nomeMateria') ? 'ng-invalid ng-dirty' : '' "
@@ -91,18 +92,37 @@
                             <strong>{{ 'common.errors.required' | translate}}</strong>
                         </small>
                     </div>
-                    <div class="field col-12 md:col-6">
-                        <label htmlFor="docenti"><strong>{{'gestione-materie.docenti-materia' | translate}} *</strong></label>
+                    <div class="field col-12">
+                        <label htmlFor="docenti"><strong>{{'gestione-materie.docenti-materia' | translate}}</strong></label>
                         <p-autoComplete 
                             formControlName="docentiMateria" 
                             [suggestions]="results" 
                             field="name"
-                            (completeMethod)="searchDocenti($event)" 
+                            (onSelect)="addRemoveSelection($event, true)"
+                            (onUnselect)="addRemoveSelection($event, false)"
+                            [dropdown]="true"
+                            [showEmptyMessage]="true"
+                            emptyMessage="{{'common.drop-down.empty-result'|translate}}"
+                            (completeMethod)="searchUtenti($event, docenteKey)" 
                             [multiple]="true"></p-autoComplete>
                         <small *ngIf="formUtils.getInvalid(materiaForm,'docentiMateria')" class="p-error">
                             <strong>{{ 'common.errors.required' | translate}}</strong>
                         </small>
-                    </div>                    
+                    </div>  
+                    
+                    <div class="grid">
+                        <div class="col">
+                            <p-button   [disabled]="materiaForm.invalid" 
+                                        label="{{'azioni.salva' | translate}}"
+                                        (onClick)="sendData($event)"
+                            >
+                            </p-button>
+                        </div>
+                        <div class="col">
+                            <button pButton label="{{'azioni.annulla' | translate}}" type="button"
+                                class="p-button-secondary"></button>
+                        </div>
+                    </div>                  
                 </div>
             </form>
         </div>

@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { ConfirmationService, LazyLoadEvent, MessageService } from 'primeng/api';
 import { Materia } from 'src/app/models/materia';
@@ -29,8 +28,14 @@ export class MateriaPageComponent implements OnInit {
   materie: Materia[] = [];
   materiaForm: FormGroup;
   results: UtenteAutocomplete[] = [];
+  docentiSelezionati:Utente[] = [];
+  idDocentiSelezionati:string[] = [];
   nomeMateria: FormControl;
+  idMateria: FormControl;
   docentiMateria: FormControl;
+  materiaCorrente:Materia={};
+  public docenteKey:string = TIPO_UTENTE_KEYS.DOCENTE;
+  public studenteKey:string = TIPO_UTENTE_KEYS.STUDENTE;
   constructor(
     private log: LoggingServiceService,
     private translate: TranslateService,
@@ -41,22 +46,53 @@ export class MateriaPageComponent implements OnInit {
     private utenteSvc:UtenteApiService,
     private materiaSvc: MateriaApiService) { }
   ngOnInit(): void {
-    this.createFormGroup(null);
+    this.createFormGroup(this.materiaCorrente);
   }
   createFormGroup(materiaSelezionata: Materia) {
     this.nomeMateria = new FormControl(materiaSelezionata ? materiaSelezionata != null ? materiaSelezionata.nomeMateria : '' : '', { validators: [Validators.required] });
-    this.docentiMateria = new FormControl('', { validators: [Validators.required] });
+    this.idMateria = new FormControl(materiaSelezionata ? materiaSelezionata != null ? materiaSelezionata.id : '' : '');
+    this.docentiMateria = new FormControl(this.docentiSelezionati);
     this.materiaForm = this.fb.group({
+      idMateria: this.idMateria,
       nomeMateria: this.nomeMateria,
       docentiMateria: this.docentiMateria
     })
   }
-  searchDocenti(event) {
-    debugger;
-    alert(event);
+  sendData(event){
+    const finalUrl:string = CONST.MATERIA_PROTECTED_URL;
+    const toSend:Materia = {};
+    toSend.id = this.idMateria.value;
+    toSend.nomeMateria = this.nomeMateria.value;
+    toSend.docentiSelezionati = this.idDocentiSelezionati;
+    this.materiaSvc.createT(finalUrl, toSend ).subscribe({
+      next: (response) => {
+        this.messageService.add({severity:'success',summary:this.translate.instant('gestione-materie.msgs.summary-ok'), detail: this.translate.instant('gestione-materie.msgs.detail-ok')})
+        this.loadMaterie(this.currentLazyLoadEvent);
+        this.materiaForm.reset();
+        this.display = false;
+      },
+      error: (error) => {
+        this.messageService.add({severity:'error',summary:this.translate.instant('gestione-materie.msgs.summary-errore'), detail: this.translate.instant('gestione-materie.msgs.detail-errore')})
+      }
+    });
+  }
+  addRemoveSelection(event, add:boolean){
+    //add true --> aggiungo elemento all'arry altrimenti lo rimuovo
+    if( add === true ){
+      this.idDocentiSelezionati.push(event.code);
+    }else{
+      const indice = this.idDocentiSelezionati.findIndex(id => id === event.code);
+      if( indice > -1 ){
+        this.idDocentiSelezionati.splice(indice, 1);
+      }
+    }
+  }
+
+  searchUtenti(event, tipoUtenteLey) {
+    
     const nomeMadocente: string = event.query;
     const ricercaUtenteQueryStringUtils: RicercaUtenteQueryStringUtils = {};
-    ricercaUtenteQueryStringUtils.tipoUtente = TIPO_UTENTE_KEYS.DOCENTE;
+    ricercaUtenteQueryStringUtils.tipoUtente = tipoUtenteLey  ;
     const queryString: string = JSON.stringify(ricercaUtenteQueryStringUtils);
     const b64Qs: string = encodeBase64(queryString);
     let parametri = new URLSearchParams();
@@ -80,7 +116,7 @@ export class MateriaPageComponent implements OnInit {
   }
   cancellaMateria(materia: Materia) {
     this.confirmationService.confirm({
-      message: this.translate.instant('gestione-utenti.tabella-utenti.azioni.cancellazione-utente.messaggio-conferma', { nome: materia.nomeMateria }),
+      message: this.translate.instant('gestione-materie.tabella-materie.azioni.cancellazione-materia.messaggio-conferma', { nome: materia.nomeMateria }),
       accept: () => {
         this.deleteMateria(materia);
       },

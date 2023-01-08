@@ -16,9 +16,9 @@ import java.util.UUID;
 @Builder
 @ToString
 public class MateriaDto {
-    @ToString.Include
-    @EqualsAndHashCode.Include
     private UUID id;
     private String nomeMateria;
     private List<UtenteDto> utenti;
+    private List<UUID> docentiSelezionati;
+    private SchedulazioneCorsoDto schedulazioneCorso;
 }

@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -28,18 +29,21 @@ public class DisponibilitaSvcImpl implements DisponibilitaSvc {
     private DisponibilitaMapper mapper;
 
     @Override
+    @Transactional
     public DisponibilitaDto createModificaDisponibilita(DisponibilitaDto disponibilita) {
         log.trace("Salvo disponibilita {}", disponibilita);
         return mapper.toDto(repository.save(mapper.toEntity(disponibilita)));
     }
 
     @Override
+    @Transactional
     public void cancellaDisponibilita(UUID idDisponibilita) {
         log.info("Cancello disponibilita con ID {}", idDisponibilita);
         repository.deleteById(idDisponibilita);
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Optional<DisponibilitaDto> findDisponibilitaById(UUID id) {
         log.info("Ricerco disponibilita con ID {}", id);
         Optional<Disponibilita> result = repository.findById(id);
@@ -47,6 +51,7 @@ public class DisponibilitaSvcImpl implements DisponibilitaSvc {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Optional<List<DisponibilitaDto>> findDisponibilitaByUsernameDocente(String username) {
         log.info("Ricerco tutte le disponibilita di {}", username);
         List<Disponibilita> result = repository.findAll(this.findByUsernameDocente(username));
@@ -54,6 +59,7 @@ public class DisponibilitaSvcImpl implements DisponibilitaSvc {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<DisponibilitaDto> recuperaDisponibilita() {
         List<Disponibilita> result = repository.findAll(Sort.by(Sort.Order.asc(Disponibilita_.DATA_DISPONIBILITA)));
         return mapper.toDtos(result);

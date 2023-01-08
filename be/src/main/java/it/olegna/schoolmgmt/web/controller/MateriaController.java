@@ -81,8 +81,9 @@ public class MateriaController {
     }
 
     @DeleteMapping(value = {"{idMateria}"}, consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE}, produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
-    public ResponseEntity<ApiResponse<Void>> deleteMateria(@PathVariable(required = true, name = "idMateria") String id) {
+    public ResponseEntity<ApiResponse<Void>> deleteMateria(@PathVariable(required = true, name = "idMateria") UUID id) {
         log.info("Cancello l'Materia con ID {}", id);
+        this.materiaSvc.cancellaMateria(id);
         return ResponseEntity.noContent().build();
     }
 

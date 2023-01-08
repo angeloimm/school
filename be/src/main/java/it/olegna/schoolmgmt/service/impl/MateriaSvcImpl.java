@@ -5,7 +5,12 @@ import it.olegna.schoolmgmt.dto.MateriaTableDto;
 import it.olegna.schoolmgmt.mapper.MateriaMapper;
 import it.olegna.schoolmgmt.persistence.model.Materia;
 import it.olegna.schoolmgmt.persistence.model.Materia_;
+import it.olegna.schoolmgmt.persistence.model.Utente;
+import it.olegna.schoolmgmt.persistence.model.UtenteMateria;
+import it.olegna.schoolmgmt.persistence.model.UtenteMateriaId;
 import it.olegna.schoolmgmt.persistence.repository.MateriaRepository;
+import it.olegna.schoolmgmt.persistence.repository.UtenteMateriaRepository;
+import it.olegna.schoolmgmt.persistence.repository.UtenteRepository;
 import it.olegna.schoolmgmt.service.MateriaSvc;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +19,8 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
@@ -28,15 +35,40 @@ public class MateriaSvcImpl implements MateriaSvc {
     @Autowired
     private MateriaRepository repository;
     @Autowired
+    private UtenteRepository utenteRepository;
+    @Autowired
+    private UtenteMateriaRepository utenteMateriaRepository;
+    @Autowired
     private MateriaMapper mapper;
 
     @Override
+    @Transactional
     public MateriaDto createModificaMateria(MateriaDto materia) {
         log.trace("Salvo materia {}", materia);
-        return mapper.toDto(repository.save(mapper.toEntity(materia)));
+        final Materia materiaEnt = repository.save(mapper.toEntity(materia));
+        //Se gli id dei docenti non sono vuoti --> agiungo docente materia
+        if(!CollectionUtils.isEmpty(materia.getDocentiSelezionati())){
+            List<UUID> docentiSelezionati = materia.getDocentiSelezionati();
+            final List<UtenteMateria> utenteMateriaList = new ArrayList<>(docentiSelezionati.size());
+            docentiSelezionati.forEach(uuid -> {
+                UtenteMateria utenteMateria = new UtenteMateria();
+                UtenteMateriaId id = new UtenteMateriaId();
+                id.setIdMateria(materiaEnt.getId());
+                Utente utente = utenteRepository.getReferenceById(uuid);
+                id.setIdUtente(utente.getId());
+                utenteMateria.setId(id);
+                utenteMateria.setMateria(materiaEnt);
+                utenteMateria.setUtente(utente);
+                utenteMateriaList.add(utenteMateria);
+            });
+            this.utenteMateriaRepository.saveAll(utenteMateriaList);
+        }
+        MateriaDto result = mapper.toDto(materiaEnt);
+        return result;
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Optional<MateriaDto> findMateriaById(UUID id) {
         log.info("Ricrco materia con ID {}", id);
         Optional<Materia> result = this.repository.findById(id);
@@ -44,12 +76,14 @@ public class MateriaSvcImpl implements MateriaSvc {
     }
 
     @Override
+    @Transactional
     public void cancellaMateria(UUID idMateria) {
         log.info("Cancellazione materia con ID {}", idMateria);
         repository.deleteById(idMateria);
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Page<MateriaTableDto> recuperaMaterie(String nome, Pageable pageable) {
         Page<MateriaTableDto> materie = null;
         if (!StringUtils.hasText(nome)) {
@@ -70,6 +104,7 @@ public class MateriaSvcImpl implements MateriaSvc {
                                 .nomeMateria(e.getNomeMateria())
                         .build());
             });
+            return result;
         }
         return  Collections.emptyList();
 

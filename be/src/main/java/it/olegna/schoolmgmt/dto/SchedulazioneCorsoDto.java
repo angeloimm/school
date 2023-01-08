@@ -7,6 +7,7 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -15,10 +16,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @Builder
 @ToString
-public class MateriaTableDto {
-    @ToString.Include
-    @EqualsAndHashCode.Include
-    private UUID id;
-    private String nomeMateria;
-
+public class SchedulazioneCorsoDto {
+   private Date dataCorso;
+   private List<UUID> studentiSelezionati;
 }
