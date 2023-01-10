@@ -119,8 +119,10 @@
                             </p-button>
                         </div>
                         <div class="col">
-                            <button pButton label="{{'azioni.annulla' | translate}}" type="button"
-                                class="p-button-secondary"></button>
+                            <p-button 
+                                label="{{'azioni.annulla' | translate}}"
+                                (onClick)="chiudi($event)"
+                                styleClass="p-button-secondary"></p-button>
                         </div>
                     </div>                  
                 </div>

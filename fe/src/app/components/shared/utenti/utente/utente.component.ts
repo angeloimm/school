@@ -143,7 +143,9 @@ export class UtenteComponent implements OnInit {
       matchingPasswords: this.matchingPasswordsGroup
     });
   }
-
+  chiudi(event){
+    this.userDetailsForm.reset();
+  }
   sendData(event){
     
     this.uploaderAllegatiUtente.upload();

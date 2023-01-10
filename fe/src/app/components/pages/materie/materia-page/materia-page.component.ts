@@ -125,6 +125,10 @@ export class MateriaPageComponent implements OnInit {
       }
     });
   }
+  chiudi(event){
+    this.materiaForm.reset();
+    this.display = false;
+  }
   aggiungiModificaMateria(materia: Materia) {
     if (materia && materia != null) {
       
