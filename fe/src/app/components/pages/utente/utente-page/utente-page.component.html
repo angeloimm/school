@@ -53,16 +53,9 @@
                                 <td>{{ utente.dataNascita | date:'dd/MM/yyyy' }}</td>
                                 <td>{{utente.codiceFiscale}}</td>
                                 <td>
-                                    <div class="grid">
-                                        <div class="row">
-                                        <div class="col-1">
-                                            <button title="{{'gestione-utenti.tabella-utenti.azioni.modifica-utente' | translate: {nome: utente.nome, cognome: utente.cognome} }}" type="button" pButton pRipple icon="pi pi-user-edit" (click)="modificaUtente(utente)"></button>
-                                        </div>
-                                        <div class="col-2">
+                                
+                                            <button title="{{'gestione-utenti.tabella-utenti.azioni.modifica-utente' | translate: {nome: utente.nome, cognome: utente.cognome} }}" type="button" pButton pRipple icon="pi pi-user-edit" (click)="modificaUtente(utente)"  style="margin-right: 1rem;"></button>
                                             <button title="{{'gestione-utenti.tabella-utenti.azioni.cancella-utente' | translate: {nome: utente.nome, cognome: utente.cognome} }}" type="button" pButton pRipple class="p-button-danger" icon="pi pi-trash" (click)="cancellaUtente(utente)"></button>
-                                        </div>
-                                    </div>
-                                    </div>
                                 </td>
                             </tr>
                         </ng-template>

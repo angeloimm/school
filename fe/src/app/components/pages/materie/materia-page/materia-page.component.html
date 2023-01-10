@@ -43,16 +43,11 @@
                             <tr>
                                 <td>{{materia.nomeMateria}}</td>
                                 <td>
-                                    <div class="grid">
-                                        <div class="row">
-                                        <div class="col-1">
-                                            <button title="{{'gestione-materie.tabella-materie.azioni.modifica-materia' | translate: {nome: materia.nomeMateria} }}" type="button" pButton pRipple icon="pi pi-user-edit" (click)="aggiungiModificaMateria(materia)"></button>
-                                        </div>
-                                        <div class="col-2">
-                                            <button title="{{'gestione-materie.tabella-materie.azioni.cancella-materia' | translate: {nome: materia.nomeMateria} }}" type="button" pButton pRipple class="p-button-danger" icon="pi pi-trash" (click)="cancellaMateria(materia)"></button>
-                                        </div>
-                                    </div>
-                                    </div>
+                                   
+                                    <button title="{{'gestione-materie.tabella-materie.azioni.modifica-materia' | translate: {nome: materia.nomeMateria} }}" type="button" pButton pRipple icon="pi pi-user-edit" (click)="aggiungiModificaMateria(materia)" style="margin-right: 1rem;"></button>
+                                    <button title="{{'gestione-materie.tabella-materie.azioni.cancella-materia' | translate: {nome: materia.nomeMateria} }}" type="button" pButton pRipple class="p-button-danger" icon="pi pi-trash" (click)="cancellaMateria(materia)"></button>
+                                   
+                                   
                                 </td>
                             </tr>
                         </ng-template>
