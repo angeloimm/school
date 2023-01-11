@@ -37,7 +37,7 @@ export class UtentePageComponent implements OnInit {
   }
 
   modificaUtente(utente:Utente){
-    alert(utente.id)
+    this.router.navigate([ROUTE_PATH.APP_ADD_UTENTE_ROUTE],{queryParams:{id:utente.id}});
   }
   cancellaUtente(utente:Utente){
     this.confirmationService.confirm({

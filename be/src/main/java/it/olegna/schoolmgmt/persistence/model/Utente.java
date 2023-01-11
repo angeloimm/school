@@ -10,6 +10,8 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.NamedAttributeNode;
+import jakarta.persistence.NamedEntityGraph;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.persistence.Temporal;
@@ -25,6 +27,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
+@NamedEntityGraph(name = "Utente.allegati", attributeNodes = @NamedAttributeNode("allegati"))
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

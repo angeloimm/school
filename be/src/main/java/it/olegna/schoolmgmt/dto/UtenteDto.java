@@ -54,7 +54,7 @@ public class UtenteDto {
     @EqualsAndHashCode.Include
     private Boolean attivo;
     private List<UtenteMateria> materie;
-    private List<Allegato> allegati;
+    private List<AllegatoDto> allegati;
     private List<Disponibilita> disponibilita;
     private List<StudenteCorso> corsi;
 }

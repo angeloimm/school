@@ -1,5 +1,6 @@
 package it.olegna.schoolmgmt.service.impl;
 
+import it.olegna.schoolmgmt.dto.AllegatoDto;
 import it.olegna.schoolmgmt.dto.UtenteDto;
 import it.olegna.schoolmgmt.dto.UtenteTableDto;
 import it.olegna.schoolmgmt.dto.UtenteWithAttachDto;
@@ -108,7 +109,34 @@ public class UtenteSvcImpl implements UtenteSvc {
     public Optional<UtenteDto> findUtenteById(UUID idUtente) {
         log.info("Ricerco utente con ID {}", idUtente);
         Optional<Utente> result = this.repository.findById(idUtente);
-        return result.isEmpty() ? Optional.empty() : Optional.of(mapper.toDto(result.get()));
+        if(result.isEmpty() ){
+            return Optional.empty();
+        }
+        Utente utente = result.get();
+        UtenteDto.UtenteDtoBuilder dtoBuilder = UtenteDto.builder()
+                .id(utente.getId())
+                .tipoUtente(utente.getTipoUtente())
+                .sesso(utente.getSesso())
+                .nome(utente.getNome())
+                .cognome(utente.getCognome())
+                .username(utente.getUsername())
+                .indirizzo(utente.getIndirizzo())
+                .dataNascita(utente.getDataNascita())
+                .attivo(utente.getAttivo())
+                .codiceFiscale(utente.getCodiceFiscale());
+        if( utente.getAllegati() != null && !utente.getAllegati().isEmpty() ){
+            final List<AllegatoDto> allegatoDtoList = new ArrayList<>(utente.getAllegati().size());
+            utente.getAllegati().forEach(allegato ->{
+                allegatoDtoList.add(AllegatoDto.builder()
+                                        .id(allegato.getId())
+                                        .nomeFile(allegato.getNomeFile())
+                                        .dimensioneFile(allegato.getDimensioneFile())
+                                        .contentTypeFile(allegato.getContentTypeFile())
+                                        .build());
+            });
+        }
+        return Optional.of(dtoBuilder.build());
+        //return result.isEmpty() ? Optional.empty() : Optional.of(mapper.toDto(result.get()));
     }
 
     @Override

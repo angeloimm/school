@@ -102,9 +102,9 @@ public class UtenteController {
     }
 
     @GetMapping(value = {"{idUtente}"}, consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE}, produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
-    public ResponseEntity<ApiResponse<UtenteDto>> utente(@PathVariable(required = true, name = "idUtente") UUID id) {
+    public ResponseEntity<PagedApiResponse<List<UtenteDto>>> utente(@PathVariable(required = true, name = "idUtente") UUID id) {
         log.info("Recupero i dettagli dell'utente con ID {}", id);
-        return ResponseEntity.ok(ApiResponse.<UtenteDto>builder().error(false).payload(this.utenteSvc.findUtenteById(id).orElseThrow()).build());
+        return ResponseEntity.ok(PagedApiResponse.<List<UtenteDto>>builder().error(false).payload(Collections.singletonList(this.utenteSvc.findUtenteById(id).orElseThrow())).build());
     }
 
     @DeleteMapping(value = {"{idUtente}"}, consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE}, produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
